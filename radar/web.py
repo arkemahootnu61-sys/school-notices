@@ -17,7 +17,6 @@ import re
 import secrets
 import socket
 import sqlite3
-import sys
 import threading
 import time
 from urllib.parse import parse_qs, urlsplit
@@ -199,10 +198,8 @@ class ConsoleController:
                 items = [item for item in latest.get('items', []) if item.get('state') in {'baseline', 'new', 'updated'}]
                 if items:
                     # Result items preserve this run's states; SQLite supplies the
-                    # durable timestamps, including copy/redirect associations.
-                    saved = store.list_notices(limit=sys.maxsize)['items']
-                    by_url = {url: item for item in saved
-                              for url in [item['url'], *item.get('alternative_urls', [])]}
+                    # durable timestamps for the notices referenced by this run.
+                    by_url = store.notice_timestamps([item['url'] for item in items])
                     for item in items:
                         stored = by_url.get(item['url'], {})
                         for field in ('first_seen', 'last_seen', 'last_checked_at'):

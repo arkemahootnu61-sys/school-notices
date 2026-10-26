@@ -84,7 +84,7 @@ class FakeTransport:
         self.reads = []
         self.closed = False
 
-    def fetch(self, url, hosts, *, raw=False):
+    def fetch(self, url, hosts, *, raw=False, allow_http_detail=False):
         self.calls += 1
         self.reads.append((url, raw))
         value = self.responses[url] if isinstance(self.responses, dict) else self.responses
@@ -403,9 +403,9 @@ class NetworkTests(unittest.TestCase):
     def test_crawl_delay_applies_across_http_and_browser_fallback(self):
         origin = 'https://fixture.example'
         class WaitingTransport(FakeTransport):
-            def fetch(self, url, hosts, *, raw=False):
+            def fetch(self, url, hosts, *, raw=False, allow_http_detail=False):
                 self.throttle.wait(url)
-                return super().fetch(url, hosts, raw=raw)
+                return super().fetch(url, hosts, raw=raw, allow_http_detail=allow_http_detail)
 
         def http_factory(*args, throttle, **kwargs):
             return WaitingTransport({

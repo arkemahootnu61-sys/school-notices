@@ -19,7 +19,7 @@ class MemoryTransport:
         self.blocked_methods = 0
         self.throttle = Throttle(.2)
 
-    def fetch(self,url,hosts,*,raw=False):
+    def fetch(self,url,hosts,*,raw=False,allow_http_detail=False):
         self.calls += 1
         if raw: return Page(url,'',200,'text/plain')
         value = self.pages[url]

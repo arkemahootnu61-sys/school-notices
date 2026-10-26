@@ -93,11 +93,14 @@ def _authentication_url(url):
                           parts.netloc + parts.path, re.I))
 
 
-def _redirect(current, next_url, hosts, *, raw=False):
+def _redirect(current, next_url, hosts, *, raw=False, allow_http_detail=False):
     if _authentication_url(next_url):
         raise AccessIssue('跳转本人认证入口；请先在专用窗口手动登录', code='login_required')
+    # HTTPS→HTTP downgrade is refused by default. A source may explicitly opt in
+    # via allow_http_detail for business pages; robots.txt (raw) stays strict.
     if urlsplit(current).scheme == 'https' and urlsplit(next_url).scheme != 'https':
-        raise FetchError('拒绝 HTTPS 降级跳转', code='unsafe_redirect')
+        if not (allow_http_detail and not raw):
+            raise FetchError('拒绝 HTTPS 降级跳转', code='unsafe_redirect')
     if raw and urlsplit(current).path == '/robots.txt':
         before, after = urlsplit(current), urlsplit(next_url)
         if ((before.scheme, before.netloc) != (after.scheme, after.netloc)
@@ -121,7 +124,7 @@ class HttpTransport:
         self.calls = 0
         self.blocked_methods = 0
 
-    def fetch(self, url, hosts, *, raw=False):
+    def fetch(self, url, hosts, *, raw=False, allow_http_detail=False):
         current = allowed_url(url, hosts)
         redirects = 0
         while True:
@@ -162,7 +165,7 @@ class HttpTransport:
             if status in (301, 302, 303, 307, 308):
                 next_url = urljoin(current, response.headers.get('Location', ''))
                 response.close()
-                current = _redirect(current, next_url, hosts, raw=raw)
+                current = _redirect(current, next_url, hosts, raw=raw, allow_http_detail=allow_http_detail)
                 redirects += 1
                 if redirects > 5:
                     raise FetchError('跳转次数超过安全上限', code='unsafe_redirect')
@@ -294,7 +297,7 @@ class BrowserTransport:
         # Continue through any test fixture or other read-only route, without bypassing this guard.
         route.fallback()
 
-    def fetch(self, url, hosts, *, raw=False):
+    def fetch(self, url, hosts, *, raw=False, allow_http_detail=False):
         target = allowed_url(url, hosts)
         if urlsplit(target).scheme != 'https':
             raise FetchError('专用浏览器只允许已确认的 HTTPS 入口', code='unsafe_redirect')
@@ -410,12 +413,12 @@ class AutoTransport:
                 raise
         return self.browser
 
-    def fetch(self, url, hosts, *, raw=False):
+    def fetch(self, url, hosts, *, raw=False, allow_http_detail=False):
         allowed_url(url, hosts)
         if self.mode == 'browser':
             return self._chrome().fetch(url, hosts, raw=raw)
         try:
-            return self.http.fetch(url, hosts, raw=raw)
+            return self.http.fetch(url, hosts, raw=raw, allow_http_detail=allow_http_detail)
         except (FetchError, AccessIssue) as error:
             if self.mode != 'auto':
                 raise

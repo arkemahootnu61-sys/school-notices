@@ -27,7 +27,7 @@ def validate_config(config):
     if set(config) - allowed_root:
         raise ValueError('来源配置含不支持的字段；Cookie、密码、请求头或登录状态不能放在来源清单中')
     source_fields = {'id','name','group','url','allowed_hosts','seed_urls','enabled','access_status','requires_confirmation',
-                     'note','allow_robots_unavailable', *SELECTOR_FIELDS}
+                     'note','allow_robots_unavailable','allow_http_detail', *SELECTOR_FIELDS}
     ids = set()
     for source in config['sources']:
         if not isinstance(source, dict) or set(source) - source_fields:
@@ -53,6 +53,8 @@ def validate_config(config):
         if not isinstance(source.get('enabled', True), bool): raise ValueError('enabled 需要为 true 或 false')
         if not isinstance(source.get('allow_robots_unavailable', False), bool):
             raise ValueError('allow_robots_unavailable 需要为 true 或 false，默认关闭')
+        if not isinstance(source.get('allow_http_detail', False), bool):
+            raise ValueError('allow_http_detail 需要为 true 或 false，默认关闭；仅允许详情页 HTTPS 降级到同域 HTTP')
         for key in SELECTOR_FIELDS:
             if key not in source:
                 continue

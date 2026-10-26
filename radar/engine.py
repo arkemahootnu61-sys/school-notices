@@ -207,7 +207,8 @@ class Collector:
                 try:
                     self.detail_attempts += 1
                     self.pages += 1
-                    page = self.transport.fetch(candidate.url, hosts)
+                    page = self.transport.fetch(candidate.url, hosts,
+                                                allow_http_detail=source.get('allow_http_detail', False))
                     self._check_cancel()
                     notice = extract_detail(page.text, page.url, candidate, source)
                     state = self.store.remember(notice, not bool(row['baseline_candidate']))

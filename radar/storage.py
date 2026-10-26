@@ -264,6 +264,16 @@ class Store:
         items.sort(key=lambda item: item['published_date'] or '', reverse=True)
         return {'items': items[offset:offset + limit], 'total': len(items)}
 
+    def notice_timestamps(self, urls):
+        """Durable first_seen/last_seen for notices whose url is in the given set."""
+        if not urls:
+            return {}
+        placeholders = ','.join('?' for _ in urls)
+        rows = self.db.execute(f'SELECT url, first_seen, last_seen FROM notices WHERE url IN ({placeholders})',
+                               list(urls))
+        return {row['url']: {'first_seen': row['first_seen'], 'last_seen': row['last_seen'],
+                             'last_checked_at': row['last_seen']} for row in rows}
+
     def latest_result(self) -> dict | None:
         row = self.db.execute('SELECT result_json FROM runs ORDER BY id DESC LIMIT 1').fetchone()
         return json.loads(row[0]) if row and row[0] is not None else None
