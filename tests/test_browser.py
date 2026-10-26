@@ -118,15 +118,32 @@ class GuardTests(unittest.TestCase):
                 raise AssertionError('invalid cookies must not reach the browser')
 
         for text in ('not JSON', '[]', '{"cookies": "invalid"}',
-                     '{"cookies":[{"name":"x","value":"secret","domain":"outside.example","path":"/"}]}'):
+                     '{"cookies":[{"name":"x","value":"secret","path":"/"}]}'):
             with self.subTest(text=text), tempfile.TemporaryDirectory() as directory:
                 path = Path(directory) / 'browser-state.json'
                 path.write_text(text, encoding='utf-8')
                 with self.assertRaises(FetchError) as caught:
-                    restore_browser_state(Context(), path)
+                    restore_browser_state(Context(), path, {'xidian.edu.cn'})
                 self.assertEqual(caught.exception.code, 'session_invalid')
                 self.assertNotIn('secret', str(caught.exception))
                 self.assertEqual(path.read_text(encoding='utf-8'), text)
+
+    def test_snapshot_from_another_school_is_trimmed_not_fatal(self):
+        loaded = []
+        class Context:
+            def add_cookies(self, cookies):
+                loaded.extend(cookies)
+
+        text = ('{"cookies":[{"name":"school","value":"ok","domain":".xidian.edu.cn","path":"/"},'
+                '{"name":"other","value":"secret","domain":".elsewhere.example","path":"/"}],'
+                '"origins":[{"origin":"https://ids.xidian.edu.cn","localStorage":[]},'
+                '{"origin":"https://elsewhere.example","localStorage":[]}]}')
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / 'browser-state.json'
+            path.write_text(text, encoding='utf-8')
+            # Changing school must not block the login window that could refresh the session.
+            restore_browser_state(Context(), path, {'xidian.edu.cn'})
+            self.assertEqual([cookie['name'] for cookie in loaded], ['school'])
 
 
 @unittest.skipUnless(os.environ.get('RUN_BROWSER_TESTS') == '1', 'Set RUN_BROWSER_TESTS=1 to open Chrome')

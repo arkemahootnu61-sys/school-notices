@@ -63,6 +63,12 @@ def _safe_message(message):
     return text.replace('\r', ' ').replace('\n', ' ')[:500]
 
 
+def _login_capable(source, domains):
+    """The login window only opens entries this handler may also open."""
+    parts = urlsplit(source.get('url') or '')
+    return parts.scheme == 'https' and _session_domain_allowed(parts.hostname or '', domains)
+
+
 class ConsoleController:
     def __init__(self, config_path: Path, data_dir: Path, output: Path, *, direct=True, timeout=15, delay=1):
         self.config_path, self.data_dir, self.output = (Path(path).resolve() for path in (config_path, data_dir, output))
@@ -101,8 +107,7 @@ class ConsoleController:
         domains = session_domains(config)
         effective = [{**source, 'enabled': source.get('enabled', True),
                       'allow_robots_unavailable': source.get('allow_robots_unavailable', False),
-                      'login_allowed': urlsplit(source['url']).scheme == 'https'
-                                       and _session_domain_allowed(urlsplit(source['url']).hostname or '', domains)}
+                      'login_allowed': _login_capable(source, domains)}
                      for source in config['sources']]
         return {'revision': hashlib.sha256(raw).hexdigest(), 'sources': effective}, config
 
@@ -304,13 +309,15 @@ class ConsoleController:
                     if 'source_id' in body:
                         source = next((source for source in config['sources']
                                        if source['id'] == body['source_id']), None)
+                        if source is None or not _login_capable(source, known):
+                            raise APIError(400, 'invalid_source', '学校登录只允许当前配置中的学校 HTTPS 来源')
                     else:
+                        # The console posts no id for the default entry, which must pick
+                        # an entry this handler accepts rather than the first one listed.
                         source = next((source for source in config['sources']
-                                       if source.get('enabled', True)), None)
-                    parts = urlsplit(source['url']) if source else None
-                    host = parts.hostname if parts else ''
-                    if not parts or parts.scheme != 'https' or not _session_domain_allowed(host, known):
-                        raise APIError(400, 'invalid_source', '学校登录只允许当前配置中的学校 HTTPS 来源')
+                                       if source.get('enabled', True) and _login_capable(source, known)), None)
+                        if source is None:
+                            raise APIError(400, 'invalid_source', '没有可用于学校登录的 HTTPS 来源')
                     argument = source['url']
             self.cancel_event, self.finish_event = threading.Event(), threading.Event()
             self.job = {'id': secrets.token_urlsafe(18), 'type': kind, 'status': 'running',

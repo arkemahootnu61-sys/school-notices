@@ -279,8 +279,15 @@ def extract_listing(content: str, url: str, hosts: set[str], source: dict, *,
                    bool(re.search('暂无相关|暂无信息|暂无内容|没有相关', soup.get_text(' ', strip=True))), trusted)
 
 
-def _site_chrome(node):
-    """True when a heading belongs to the site frame, not to one article."""
+def _site_chrome(node, body=None):
+    """True when a heading belongs to the site frame, not to one article.
+
+    A heading that shares the body's own container is article content even when it
+    sits in `<article><header>` or a `class="header"` title bar.
+    """
+    if body is not None and body.parent is not None and body.parent.name not in ('[document]', 'html', 'body'):
+        if any(parent is body.parent for parent in node.parents):
+            return False
     for parent in node.parents:
         if getattr(parent, 'name', None) in CHROME_TAGS:
             return True
@@ -292,7 +299,7 @@ def _site_chrome(node):
 
 def _enclosing_body(body):
     """A body region that also wraps the article heading instead of only its text."""
-    return body.name == 'article' or body.get('id') == 'content'
+    return body.name == 'article'
 
 
 def _find_title(soup, body=None):
@@ -311,7 +318,7 @@ def _find_title(soup, body=None):
     if body is None:
         return candidates[0]
     # Site headers, logos and related blocks never title an article.
-    formal = [node for node in candidates if not _site_chrome(node)] or candidates
+    formal = [node for node in candidates if not _site_chrome(node, body)] or candidates
     ancestors, node, depth = {}, body, 0
     while node is not None:
         ancestors[id(node)] = depth

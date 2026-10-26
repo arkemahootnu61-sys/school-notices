@@ -3,6 +3,7 @@ from __future__ import annotations
 
 from copy import deepcopy
 from datetime import datetime
+import ipaddress
 import json
 from pathlib import Path
 import re
@@ -16,6 +17,10 @@ ROOT = Path(__file__).resolve().parents[1]
 # Social feeds are never notices; further exclusions belong to the configuration,
 # because which sites count as campus news differs by school.
 BUILTIN_EXCLUDED_HOSTS = {'weibo.com', 'www.weibo.com', 'weibo.cn'}
+# Second-level public suffixes; never granted as a session domain on their own.
+PUBLIC_SUFFIXES = frozenset({'edu.cn', 'gov.cn', 'com.cn', 'net.cn', 'org.cn', 'ac.cn',
+                             'edu.hk', 'edu.tw', 'edu.mo', 'ac.jp', 'co.jp', 'ac.uk', 'co.uk',
+                             'edu.au', 'com.au', 'edu.sg', 'com.sg', 'edu.my', 'ac.in', 'co.in'})
 
 
 def json_read(path):
@@ -87,15 +92,37 @@ def validate_config(config):
     return config
 
 
+def _ip_host(host):
+    try:
+        ipaddress.ip_address(host)
+        return True
+    except ValueError:
+        return False
+
+
 def session_domains(config):
-    """Institution domains whose session may be saved: declared ones plus source parents."""
-    domains = set(config.get('session_domains') or [])
+    """Institution domains whose session may be saved.
+
+    Declared domains come first; sources contribute their own hosts plus one parent
+    level, but never a public suffix and never part of an IP address. Deeper SSO
+    hosts (e.g. `ids.` beside `notice.xx.school.edu.cn`) must be declared explicitly
+    with `session_domains`.
+    """
+    domains = {str(domain).lower().lstrip('.') for domain in (config.get('session_domains') or [])}
+    domains.discard('')
     for source in config['sources']:
         for host in source.get('allowed_hosts', []):
-            parts = host.lower().lstrip('.').split('.')
-            domains.add(host.lower().lstrip('.'))
-            if len(parts) > 2:
-                domains.add('.'.join(parts[1:]))
+            host = host.lower().lstrip('.')
+            if not host:
+                continue
+            domains.add(host)
+            if _ip_host(host):
+                continue
+            labels = host.split('.')
+            if len(labels) > 2:
+                parent = '.'.join(labels[1:])
+                if parent not in PUBLIC_SUFFIXES:
+                    domains.add(parent)
     return sorted(domains)
 
 

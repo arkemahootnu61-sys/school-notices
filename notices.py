@@ -7,6 +7,7 @@ from concurrent.futures import CancelledError
 import json
 from pathlib import Path
 import sqlite3
+import subprocess
 import sys
 import webbrowser
 
@@ -51,6 +52,8 @@ def login(args, data_dir):
     from radar.config import json_read, session_domains, validate_config
     from radar.runner import ManualLoginSession
     config = validate_config(json_read(args.config))
+    if not config['sources']:
+        raise ValueError('来源配置为空，请先添加来源或运行 init 生成默认配置')
     session = ManualLoginSession(data_dir, direct=args.direct, domains=session_domains(config))
     try:
         session.open(args.url or config['sources'][0]['url'])
@@ -139,6 +142,38 @@ def parser():
     return p
 
 
+def recover_tracked_config(path: Path) -> bool:
+    """Restore a configuration that an older release kept in Git.
+
+    Releases before 1.0.0 tracked `sources.json`, so pulling that change deletes the
+    file. The last committed copy is the person's own sources and per-site
+    permissions, so it is restored instead of silently regenerating the template.
+    """
+    if not (ROOT / '.git').exists():
+        return False
+    try:
+        history = subprocess.run(['git', '-C', str(ROOT), 'log', '--no-renames', '--format=%H',
+                                  '--', 'sources.json'],
+                                 capture_output=True, text=True, timeout=20, check=True).stdout.split()
+        for commit in history[:50]:
+            content = subprocess.run(['git', '-C', str(ROOT), 'show', f'{commit}:sources.json'],
+                                     capture_output=True, text=True, encoding='utf-8', timeout=20)
+            if content.returncode == 0:
+                break
+        else:
+            return False
+    except (OSError, subprocess.SubprocessError):
+        return False
+    try:
+        from radar import config as configuration
+        configuration.validate_config(json.loads(content.stdout))
+    except (ValueError, TypeError, KeyError):
+        return False
+    path.write_text(content.stdout, encoding='utf-8')
+    print('已从 Git 历史恢复旧版本跟踪的 sources.json；如需默认来源，请删除该文件后重新运行 init。')
+    return True
+
+
 def main(argv=None):
     if hasattr(sys.stdout, 'reconfigure'): sys.stdout.reconfigure(encoding='utf-8')
     if hasattr(sys.stderr, 'reconfigure'): sys.stderr.reconfigure(encoding='utf-8')
@@ -152,7 +187,8 @@ def main(argv=None):
         data_dir = (args.data_dir or default_data_dir()).resolve()
         if not args.config.exists():
             with app_lock(data_dir):
-                configuration.make_default(args.config)
+                if not recover_tracked_config(args.config):
+                    configuration.make_default(args.config)
         if args.command == 'init':
             configuration.validate_config(configuration.json_read(args.config))
             print('来源配置：'+str(args.config)); return 0

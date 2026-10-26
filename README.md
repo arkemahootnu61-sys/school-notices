@@ -104,6 +104,8 @@ python notices.py sources list|add|enable|disable|remove|import
 ## 数据与升级
 
 - 通知库 `notices.sqlite3` 在私有目录；旧版本数据库会在一个事务内升级到当前 `user_version`（当前 4），保留通知、指纹、来源状态与运行结果；高于程序支持的版本会明确报错且不修改文件。
+- **从早期版本升级**：1.0.0 之前 `sources.json` 曾被 Git 跟踪，拉取该改动会把它从工作区删除。此时 `init` / `setup.bat` 会先从 Git 历史恢复你原来的配置，再用模板；恢复成功会打印提示。想改用模板请手动删除 `sources.json` 后重新运行 `init`。
+- 已保存的登录会话来自另一所学校（或已删除的来源）时，不属于当前配置域名的 Cookie 会被丢弃而不是报错，登录窗口仍可重新登录。
 - `output/latest.html` 与带时间戳的 HTML/JSON 是**单轮报告**，不是通知库。
 
 ## 测试

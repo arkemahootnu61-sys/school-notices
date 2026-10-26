@@ -1,0 +1,2 @@
+# Windows batch files must keep CRLF: `cmd` mis-parses UTF-8 lines that end in LF.
+*.bat text eol=crlf

@@ -4,7 +4,9 @@ chcp 65001 >nul
 cd /d "%~dp0"
 set PYTHONUTF8=1
 
-rem One-time setup for a fresh download: private virtualenv, dependencies, default sources.
+rem One-time setup: private virtualenv, dependencies, default sources.
+rem Keep this file ASCII-only: cmd.exe miscounts byte offsets in UTF-8 batch files
+rem and would run the tail of a multibyte line as a command.
 if exist ".venv\Scripts\python.exe" goto install
 
 set "PY="
@@ -25,21 +27,21 @@ if errorlevel 1 goto failed
 ".venv\Scripts\python.exe" notices.py init
 if errorlevel 1 goto failed
 echo.
-echo 安装完成。来源取自 sources.example.json，不会覆盖已有的 sources.json。
-echo Chrome 只复用电脑上已安装的版本，不额外下载浏览器。
+echo Setup complete. Sources come from sources.example.json; an existing sources.json is kept.
+echo Chrome is reused when installed; no browser is downloaded.
 pause
 exit /b 0
 
 :nopython
 echo.
-echo 未找到 Python 3.10 或更高版本。
-echo 请从 https://www.python.org/downloads/ 安装，并在安装时勾选 "Add python.exe to PATH"，
-echo 然后重新双击 setup.bat。
+echo Python 3.10 or newer was not found.
+echo Install it from https://www.python.org/downloads/ with "Add python.exe to PATH" enabled,
+echo then run setup.bat again.
 pause
 exit /b 1
 
 :failed
 echo.
-echo 安装失败。请检查 Python 3.10+、网络连接，以及项目目录是否可写。
+echo Setup failed. Check Python 3.10+, the network connection, and that this folder is writable.
 pause
 exit /b 1

@@ -136,6 +136,21 @@ class ConfigTests(unittest.TestCase):
             self.assertEqual(enabled, {f'S{i:02}' for i in range(1,10)} | {'S38','S44'})
             self.assertFalse(any(s['url'].startswith('https://news.xidian.edu.cn/') for s in config['sources']))
 
+    def test_session_domains_never_grant_a_public_suffix(self):
+        from radar.config import session_domains
+        from radar.storage import session_domain_allowed
+        campus = validate_config({'sources': [{'id': 'A', 'url': 'https://xidian.edu.cn/'}]})
+        domains = session_domains(campus)
+        self.assertIn('xidian.edu.cn', domains)
+        self.assertNotIn('edu.cn', domains)
+        self.assertFalse(session_domain_allowed('passport.other.edu.cn', domains))
+        self.assertTrue(session_domain_allowed('ids.xidian.edu.cn', domains))
+        loopback = validate_config({'sources': [{'id': 'B', 'url': 'http://127.0.0.1/'}]})
+        self.assertEqual(session_domains(loopback), ['127.0.0.1'])
+        declared = validate_config({'session_domains': ['School.EDU.cn'],
+                                    'sources': [{'id': 'C', 'url': 'https://notice.ftc.school.edu.cn/'}]})
+        self.assertTrue(session_domain_allowed('ids.school.edu.cn', session_domains(declared)))
+
     def test_bad_config(self):
         for source in ({'id':'bad id','url':'https://example.com'}, {'id':'a','url':'https://news.xidian.edu.cn/'},
                        {'id':'a','url':'https://example.com','seed_urls':['https://other.example']},

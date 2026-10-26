@@ -62,11 +62,28 @@ def _session_domain_allowed(domain, domains):
     return session_domain_allowed(domain, domains)
 
 
+def _valid_cookie(cookie):
+    return (isinstance(cookie, dict)
+            and isinstance(cookie.get('name'), str)
+            and isinstance(cookie.get('value'), str)
+            and isinstance(cookie.get('domain'), str)
+            and isinstance(cookie.get('path'), str))
+
+
+def _valid_origin(origin):
+    return (isinstance(origin, dict) and isinstance(origin.get('origin'), str)
+            and isinstance(origin.get('localStorage'), list)
+            and all(isinstance(entry, dict) and isinstance(entry.get('name'), str)
+                    and isinstance(entry.get('value'), str) for entry in origin['localStorage']))
+
+
 def restore_browser_state(context, state_file: Path, domains=()):
     """The persistent profile owns Web Storage; JSON supplements session cookies.
 
-    `domains` is the configured set of school domains; a snapshot that mentions any
-    other host is rejected instead of being replayed into the dedicated profile.
+    Malformed snapshots are reported and left untouched. Entries for hosts outside
+    `domains` are dropped instead of rejecting the file, so changing the source list
+    cannot lock the person out of collection and of the login window that would
+    refresh the session.
     """
     if not state_file.exists():
         return
@@ -74,26 +91,14 @@ def restore_browser_state(context, state_file: Path, domains=()):
         state = json.loads(state_file.read_text(encoding='utf-8'))
         if not isinstance(state, dict) or not isinstance(state.get('cookies'), list):
             raise ValueError('invalid state')
-        cookies = state['cookies']
-        for cookie in cookies:
-            if (not isinstance(cookie, dict)
-                    or not isinstance(cookie.get('name'), str)
-                    or not isinstance(cookie.get('value'), str)
-                    or not isinstance(cookie.get('domain'), str)
-                    or not isinstance(cookie.get('path'), str)):
-                raise ValueError('invalid cookie')
-            if not _session_domain_allowed(cookie['domain'], domains):
-                raise ValueError('invalid cookie domain')
         if not isinstance(state.get('origins', []), list):
             raise ValueError('invalid origins')
-        for origin in state.get('origins', []):
-            if (not isinstance(origin, dict) or not isinstance(origin.get('origin'), str)
-                    or not isinstance(origin.get('localStorage'), list)):
-                raise ValueError('invalid origin')
-            for entry in origin['localStorage']:
-                if (not isinstance(entry, dict) or not isinstance(entry.get('name'), str)
-                        or not isinstance(entry.get('value'), str)):
-                    raise ValueError('invalid storage entry')
+        if any(not _valid_cookie(cookie) for cookie in state['cookies']):
+            raise ValueError('invalid cookie')
+        if any(not _valid_origin(origin) for origin in state.get('origins', [])):
+            raise ValueError('invalid origin')
+        cookies = [cookie for cookie in state['cookies']
+                   if _session_domain_allowed(cookie['domain'], domains)]
         context.add_cookies(cookies)
     except Exception:
         raise FetchError('专用会话文件无效；请本人重新登录，原文件已保留', code='session_invalid') from None

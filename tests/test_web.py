@@ -569,6 +569,32 @@ class ConsoleTests(unittest.TestCase):
         self.assertEqual(self.request('GET', '/api/sources')[0], 503)
         self.assertEqual(self.request('POST', '/api/collect', {})[0], 503)
 
+    def test_default_login_entry_skips_sources_it_cannot_open(self):
+        atomic_json(self.config, {'sources': [
+            {'id': 'T01', 'name': '本机测试', 'url': self.origin + '/', 'enabled': True},
+            {'id': 'T02', 'name': '学校登录页', 'url': 'https://www.example.edu.cn/', 'enabled': True}]})
+        opened = []
+
+        class Session:
+            def __init__(session, data_dir, **kwargs):
+                pass
+            def open(session, url):
+                opened.append(url)
+            def pump(session, timeout_ms=200):
+                return True
+            def finish(session):
+                pass
+            def cancel(session):
+                pass
+
+        with patch.object(web, 'ManualLoginSession', Session):
+            status, job, _ = self.request('POST', '/api/login', {})
+            self.assertEqual(status, 202, job)
+            self.wait_job(('awaiting_login',))
+            self.assertEqual(opened, ['https://www.example.edu.cn/'])
+            self.request('POST', '/api/cancel', job)
+            self.assertEqual(self.wait_job()['status'], 'cancelled')
+
     def test_login_lifecycle_signals_and_worker_thread(self):
         calls, instances = [], []
         class Session:
