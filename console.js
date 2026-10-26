@@ -4,7 +4,6 @@
   const $ = id => document.getElementById(id);
   const TOKEN_KEY = 'radar-console-token';
   const ACTIVE = new Set(['running', 'awaiting_login']);
-  const FOCUS_SOURCES = new Set(['S01', 'S02', 'S03', 'S04', 'S05', 'S06', 'S07', 'S08', 'S09', 'S38', 'S44']);
   const STATE_LABELS = {seen: '已收录', baseline: '首次收录', new: '新发现', updated: '内容变化'};
   const COVERAGE_LABELS = {checked: '已检查', partial: '部分覆盖', unrecognized: '未识别列表', failed: '失败或受限', not_attempted_budget: '本轮未尝试（预算不足）'};
   const LIMIT_LABELS = {pages_per_seed: '单入口分页上限', source_list_pages: '来源列表页上限', source_details: '来源详情上限', global_pages: '本轮总页数上限', global_details: '本轮总详情上限'};
@@ -205,18 +204,12 @@
       }
       card.append(adaptation);
       if (source.group) card.append(node('p', 'help', source.group));
-      if (!FOCUS_SOURCES.has(source.id)) card.append(node('p', 'help', '非本次重点验收'));
       cards.append(card);
       const option = node('option', '', `${source.id} · ${source.name}`);
       option.value = source.id;
       $('source-filter').append(option);
-      try {
-        const url = new URL(source.url);
-        if (url.protocol === 'https:' && (url.hostname === 'xidian.edu.cn' || url.hostname.endsWith('.xidian.edu.cn'))) {
-          const loginOption = option.cloneNode(true);
-          $('login-source').append(loginOption);
-        }
-      } catch (_) { /* Invalid configured entries are reported by the server. */ }
+      // The server decides which entries may be opened for a login session.
+      if (source.login_allowed) $('login-source').append(option.cloneNode(true));
     }
     $('sources').replaceChildren(cards);
     if ([...$('source-filter').options].some(option => option.value === sourceFilter)) $('source-filter').value = sourceFilter;

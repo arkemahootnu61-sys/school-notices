@@ -13,7 +13,6 @@ __pycache__/
 output/
 *.sqlite3
 *.sqlite3-*
-sources.backup-*.json
 browser-state.json
 browser-profile/
 connection.json
@@ -24,5 +23,8 @@ connection.json
 *.lock
 .playwright-cli/
 node_modules/
+# Your own source configuration; the tracked template is sources.example.json.
+sources.json
+sources.backup-*.json
 # Discovery HTML/network caches are local evidence, not deployment inputs.
 discovery/*.json

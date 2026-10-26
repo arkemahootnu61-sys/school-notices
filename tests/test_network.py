@@ -14,6 +14,7 @@ import requests
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from radar.parsing import AccessIssue, access_check
+from radar.transport import USER_AGENT
 from radar.transport import AutoTransport, FetchError, HttpTransport, Page, Robots, Throttle, USER_AGENT
 
 
@@ -212,8 +213,9 @@ class NetworkTests(unittest.TestCase):
                 transport.close()
 
     def test_robots_merges_agent_groups_and_honors_utf8_bom_and_decimal_delay(self):
-        rules = ('\ufeffUser-agent: XidianNoticeRadar\nCrawl-delay: 0.5\nDisallow: /private/\n'
-                 'Allow: /notice/\n\nUser-agent: XidianNoticeRadar\nDisallow: /notice/internal/\n')
+        agent = USER_AGENT.split('/')[0]
+        rules = (f'\ufeffUser-agent: {agent}\nCrawl-delay: 0.5\nDisallow: /private/\n'
+                 f'Allow: /notice/\n\nUser-agent: {agent}\nDisallow: /notice/internal/\n')
         with local_server((200, 'text/plain; charset=utf-8', rules)) as (_, base):
             transport = HttpTransport(timeout=2, retries=0, delay=0)
             try:

@@ -13,7 +13,9 @@ from .parsing import SELECTOR_FIELDS, allowed_url, normal_url
 from .storage import atomic_json
 
 ROOT = Path(__file__).resolve().parents[1]
-_DEFAULT_ENTRIES = {'S02': 'https://math.xidian.edu.cn/sy.htm'}
+# Social feeds are never notices; further exclusions belong to the configuration,
+# because which sites count as campus news differs by school.
+BUILTIN_EXCLUDED_HOSTS = {'weibo.com', 'www.weibo.com', 'weibo.cn'}
 
 
 def json_read(path):
@@ -23,9 +25,22 @@ def json_read(path):
 def validate_config(config):
     if not isinstance(config, dict) or not isinstance(config.get('sources'), list):
         raise ValueError('配置需要包含 sources 数组')
-    allowed_root = {'schema_version','purpose','content_scope','excluded_content','sources'}
+    allowed_root = {'schema_version','purpose','content_scope','excluded_content','excluded_hosts','session_domains','sources'}
     if set(config) - allowed_root:
         raise ValueError('来源配置含不支持的字段；Cookie、密码、请求头或登录状态不能放在来源清单中')
+    excluded = config.get('excluded_hosts', [])
+    if not isinstance(excluded, list) or any(not isinstance(h, str) or not re.fullmatch(r'[a-zA-Z0-9.-]+', h) for h in excluded):
+        raise ValueError('excluded_hosts 必须是主机名列表，不使用通配符')
+    excluded_hosts = BUILTIN_EXCLUDED_HOSTS | {h.lower().lstrip('.') for h in excluded}
+    config['excluded_hosts'] = sorted(excluded_hosts - BUILTIN_EXCLUDED_HOSTS)
+    if not config['excluded_hosts']:
+        config.pop('excluded_hosts')
+    declared = config.get('session_domains', [])
+    if not isinstance(declared, list) or any(not isinstance(d, str) or not re.fullmatch(r'[a-zA-Z0-9.-]+', d) for d in declared):
+        raise ValueError('session_domains 必须是域名列表，不使用通配符')
+    config['session_domains'] = [d.lower().lstrip('.') for d in declared]
+    if not config['session_domains']:
+        config.pop('session_domains')
     source_fields = {'id','name','group','url','allowed_hosts','seed_urls','enabled','access_status','requires_confirmation',
                      'note','allow_robots_unavailable','allow_http_detail', *SELECTOR_FIELDS}
     ids = set()
@@ -39,8 +54,8 @@ def validate_config(config):
         ids.add(sid)
         source['name'] = str(source.get('name') or sid)[:150]
         source['url'] = normal_url(source['url'])
-        if urlsplit(source['url']).hostname in ('news.xidian.edu.cn', 'weibo.com', 'www.weibo.com', 'weibo.cn'):
-            raise ValueError('本项目不采集新闻网或微博，请删除相应来源')
+        if (urlsplit(source['url']).hostname or '').lower() in excluded_hosts:
+            raise ValueError('该网址在排除范围内（新闻、微博等不作为通知来源），请删除相应来源')
         hosts = source.setdefault('allowed_hosts', [urlsplit(source['url']).hostname])
         if not isinstance(hosts, list) or not hosts or any(not isinstance(h,str) or not re.fullmatch(r'[a-zA-Z0-9.-]+',h) for h in hosts):
             raise ValueError('allowed_hosts 必须是明确的主机名列表，不使用通配符')
@@ -72,27 +87,25 @@ def validate_config(config):
     return config
 
 
+def session_domains(config):
+    """Institution domains whose session may be saved: declared ones plus source parents."""
+    domains = set(config.get('session_domains') or [])
+    for source in config['sources']:
+        for host in source.get('allowed_hosts', []):
+            parts = host.lower().lstrip('.').split('.')
+            domains.add(host.lower().lstrip('.'))
+            if len(parts) > 2:
+                domains.add('.'.join(parts[1:]))
+    return sorted(domains)
+
+
 def make_default(path):
+    """Create a first configuration from the shipped template; never replace one."""
     if path.exists(): return
-    review = json_read(ROOT / 'sources.review.json')
-    sources = []
-    for source in review['sources']:
-        # Prefer observed same-host HTTPS redirects, never an authentication portal.
-        final = source.get('homepage_check', {}).get('final_url', '')
-        url = source['url']
-        if final.startswith('https://') and urlsplit(final).hostname == urlsplit(url).hostname:
-            url = final
-        columns = [c['url'] for c in source['columns'] if c.get('verified') or source['id']=='S38']
-        if url.startswith('https://'):
-            columns = [u.replace('http://'+urlsplit(url).netloc+'/', 'https://'+urlsplit(url).netloc+'/', 1) for u in columns]
-        if source['id'] in _DEFAULT_ENTRIES:
-            url = _DEFAULT_ENTRIES[source['id']]
-            columns = [url]
-        sources.append({'id':source['id'], 'name':source['name'], 'group':source['group'],
-                        'url':url, 'allowed_hosts':[urlsplit(url).hostname], 'seed_urls':columns or [url],
-                        'enabled': bool(source['recommended'] or source['id']=='S38')})
-    config = validate_config({'schema_version':1, 'content_scope':'只收通知，不收新闻、微博、校报或获奖喜报', 'sources':sources})
-    atomic_json(path, config)
+    template = ROOT / 'sources.example.json'
+    if not template.exists():
+        raise ValueError('缺少 sources.example.json，无法生成默认来源配置')
+    atomic_json(path, validate_config(json_read(template)))
 
 
 def save_config(path, config):

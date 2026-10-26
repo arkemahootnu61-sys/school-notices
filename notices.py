@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Xidian notice radar. Run once on demand; never schedules a background task."""
+"""Campus notice radar. Run once on demand; never schedules a background task."""
 from __future__ import annotations
 
 import argparse
@@ -48,10 +48,12 @@ def source_command(args, path, data_dir):
 
 
 def login(args, data_dir):
+    from radar.config import json_read, session_domains, validate_config
     from radar.runner import ManualLoginSession
-    session = ManualLoginSession(data_dir, direct=args.direct)
+    config = validate_config(json_read(args.config))
+    session = ManualLoginSession(data_dir, direct=args.direct, domains=session_domains(config))
     try:
-        session.open(args.url)
+        session.open(args.url or config['sources'][0]['url'])
         print('网络方式：'+('直连（不使用系统代理或 7890）' if args.direct else '使用系统代理（显式选择）'))
         print('请在专用 Chrome 中亲自登录并处理验证码，也可访问需要的其他学校站点。')
         print('请不要发送密码、Cookie 或专用浏览器资料；普通 Chrome 的会话不会自动共享到这里。')
@@ -99,13 +101,14 @@ def add_execution_flags(command):
 
 
 def parser():
-    p = argparse.ArgumentParser(description='西电通知雷达：手动采集一次，或打开本地控制台。')
+    p = argparse.ArgumentParser(description='校园通知雷达：手动采集一次，或打开本地控制台。')
     p.add_argument('--config', type=Path, default=ROOT/'sources.json', help='来源清单 JSON')
     p.add_argument('--data-dir', type=Path, help='私有状态目录；默认在当前用户本机应用数据目录')
     commands = p.add_subparsers(dest='command')
     commands.add_parser('init', help='生成默认来源配置，不覆盖已有配置')
     auth = commands.add_parser('login', help='打开专用 Chrome，让本人手动登录')
-    auth.add_argument('url', nargs='?', default='https://ids.xidian.edu.cn/authserver/login')
+    auth.add_argument('url', nargs='?', default=None,
+                      help='登录入口；默认使用来源配置中的第一个来源网址')
     add_network_flags(auth)
     run = commands.add_parser('run', help='读取一次通知并生成 HTML 增量汇总')
     modes = run.add_mutually_exclusive_group()

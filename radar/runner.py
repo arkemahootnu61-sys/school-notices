@@ -6,10 +6,10 @@ from pathlib import Path
 import threading
 from urllib.parse import urlsplit
 
-from .config import json_read, validate_config
+from .config import json_read, session_domains, validate_config
 from .engine import Collector, Options
 from .parsing import normal_url
-from .storage import Store, app_lock, save_browser_state
+from .storage import Store, app_lock, save_browser_state, session_domain_allowed
 from .transport import AutoTransport, FetchError, chrome_launch_options, restore_browser_state
 
 
@@ -32,7 +32,8 @@ def run_collection(config_path: Path, data_dir: Path, output: Path, options: Opt
         log(f'本次检查 {len(sources)} 个来源。请先连接学校允许的校园网络；本程序不会配置 VPN 或绕过权限。')
         log('网络方式：'+('直连（不使用系统代理或 7890）' if direct else '使用系统代理（显式选择）'))
         log('只读访问，受分页与数量上限限制。可以停止；没有定时任务。')
-        transport = AutoTransport(data_dir, timeout, delay, direct=direct, mode=options.transport_mode)
+        transport = AutoTransport(data_dir, timeout, delay, direct=direct, mode=options.transport_mode,
+                                  session_domains=session_domains(config))
         store = None
         try:
             store = Store(data_dir / 'notices.sqlite3')
@@ -50,6 +51,11 @@ def run_collection(config_path: Path, data_dir: Path, output: Path, options: Opt
                 transport.close()
 
 
+def _login_host_allowed(hostname, domains):
+    """Login stays inside the institution's own domains from this configuration."""
+    return bool(hostname) and session_domain_allowed(hostname, domains)
+
+
 class ManualLoginSession:
     """Own the profile lock and Playwright objects on one task thread.
 
@@ -58,9 +64,10 @@ class ManualLoginSession:
     session cookies and is only written after an explicit successful finish.
     """
 
-    def __init__(self, data_dir: Path, *, direct=True):
+    def __init__(self, data_dir: Path, *, direct=True, domains=()):
         self.data_dir = data_dir
         self.direct = direct
+        self.domains = tuple(domains)
         self._owner = None
         self._lock = None
         self._playwright = None
@@ -77,8 +84,8 @@ class ManualLoginSession:
         url = normal_url(url)
         parts = urlsplit(url)
         hostname = parts.hostname or ''
-        if parts.scheme != 'https' or not (hostname == 'xidian.edu.cn' or hostname.endswith('.xidian.edu.cn')):
-            raise ValueError('登录入口只允许学校的 HTTPS 域名')
+        if parts.scheme != 'https' or not _login_host_allowed(hostname, self.domains):
+            raise ValueError('登录入口只允许本工具来源配置中的学校 HTTPS 域名')
         self._owner = threading.get_ident()
         try:
             from playwright.sync_api import sync_playwright
@@ -91,7 +98,7 @@ class ManualLoginSession:
             self._playwright = sync_playwright().start()
             self._context = self._playwright.chromium.launch_persistent_context(
                 str(self.data_dir / 'browser-profile'), **chrome_launch_options(self.direct))
-            restore_browser_state(self._context, self.data_dir / 'browser-state.json')
+            restore_browser_state(self._context, self.data_dir / 'browser-state.json', self.domains)
             pages = self._context.pages
             page = pages[0] if pages else self._context.new_page()
             # No collection route guard: the person may authenticate in this window.
@@ -136,7 +143,7 @@ class ManualLoginSession:
             if not self.pump(0):
                 raise CancelledError('登录窗口已关闭，会话未保存')
             try:
-                save_browser_state(self._context, self.data_dir / 'browser-state.json')
+                save_browser_state(self._context, self.data_dir / 'browser-state.json', self.domains)
             except Exception:
                 raise FetchError('未能保存会话；旧会话未被替换，请在窗口仍打开时重新完成登录',
                                  code='session_invalid') from None

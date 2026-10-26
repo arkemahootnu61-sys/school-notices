@@ -115,7 +115,7 @@ class StoreTests(unittest.TestCase):
                 return {'cookies':[{'domain':'.xidian.edu.cn','name':'fake','value':'test'},{'domain':'.other.example','name':'private','value':'not-saved'}],
                         'origins':[{'origin':'https://ids.xidian.edu.cn','localStorage':[]},{'origin':'https://other.example','localStorage':[]}]}
         with tempfile.TemporaryDirectory() as directory:
-            path=Path(directory)/'state.json';save_browser_state(FakeContext(),path)
+            path=Path(directory)/'state.json';save_browser_state(FakeContext(),path,{'xidian.edu.cn'})
             state=json.loads(path.read_text(encoding='utf-8'))
             self.assertEqual(len(state['cookies']),1)
             self.assertEqual(len(state['origins']),1)
@@ -141,7 +141,8 @@ class ConfigTests(unittest.TestCase):
                        {'id':'a','url':'https://example.com','seed_urls':['https://other.example']},
                        {'id':'a','url':'https://example.com','allow_robots_unavailable':'false'},
                        {'id':'a','url':'https://example.com','list_selector':'a['}):
-            with self.assertRaises(ValueError):validate_config({'sources':[source]})
+            with self.assertRaises(ValueError):
+                validate_config({'excluded_hosts':['news.xidian.edu.cn'],'sources':[source]})
 
     def test_blank_selectors_preserve_generic_list_and_body_extraction(self):
         source = validate_config({'sources': [{'id':'a','url':'https://example.com/',

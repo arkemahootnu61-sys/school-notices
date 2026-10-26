@@ -1,6 +1,10 @@
 {
   "schema_version": 1,
+  "purpose": "只收通知、公告、公示与报名 / 选拔 / 赛程信息；排除新闻、获奖喜报与个人业务操作",
   "content_scope": "只收通知，不收新闻、微博、校报或获奖喜报",
+  "excluded_hosts": [
+    "news.xidian.edu.cn"
+  ],
   "sources": [
     {
       "id": "S01",
@@ -13,8 +17,7 @@
       "seed_urls": [
         "https://eme.xidian.edu.cn/tz.htm"
       ],
-      "enabled": true,
-      "allow_robots_unavailable": true
+      "enabled": true
     },
     {
       "id": "S02",
@@ -27,8 +30,7 @@
       "seed_urls": [
         "https://math.xidian.edu.cn/sy.htm"
       ],
-      "enabled": true,
-      "allow_robots_unavailable": true
+      "enabled": true
     },
     {
       "id": "S03",
@@ -41,9 +43,7 @@
       "seed_urls": [
         "https://jwc.xidian.edu.cn/tzgg.htm"
       ],
-      "enabled": true,
-      "allow_robots_unavailable": true,
-      "allow_http_detail": true
+      "enabled": true
     },
     {
       "id": "S04",
@@ -56,8 +56,7 @@
       "seed_urls": [
         "https://xgc.xidian.edu.cn/tzgg1.htm"
       ],
-      "enabled": true,
-      "allow_robots_unavailable": true
+      "enabled": true
     },
     {
       "id": "S05",
@@ -70,8 +69,7 @@
       "seed_urls": [
         "https://tw.xidian.edu.cn/"
       ],
-      "enabled": true,
-      "allow_robots_unavailable": true
+      "enabled": true
     },
     {
       "id": "S06",
@@ -85,8 +83,7 @@
         "https://ie.xidian.edu.cn/sczx/ggtz.htm",
         "https://ie.xidian.edu.cn/cgzs/xmzm.htm"
       ],
-      "enabled": true,
-      "allow_robots_unavailable": true
+      "enabled": true
     },
     {
       "id": "S07",
@@ -99,9 +96,7 @@
       "seed_urls": [
         "https://bksy.xidian.edu.cn/tzgg.htm"
       ],
-      "enabled": true,
-      "allow_robots_unavailable": true,
-      "allow_http_detail": true
+      "enabled": true
     },
     {
       "id": "S08",
@@ -114,8 +109,7 @@
       "seed_urls": [
         "https://etc.xidian.edu.cn/index/tzgg.htm"
       ],
-      "enabled": true,
-      "allow_robots_unavailable": true
+      "enabled": true
     },
     {
       "id": "S09",
@@ -130,8 +124,7 @@
         "https://ygb.xidian.edu.cn/gsxx.htm",
         "https://ygb.xidian.edu.cn/hdyg.htm"
       ],
-      "enabled": true,
-      "allow_robots_unavailable": true
+      "enabled": true
     },
     {
       "id": "S10",
@@ -517,8 +510,7 @@
         "https://notice.xidian.edu.cn/2016lanmuye.jsp?urltype=tree.TreeTempUrl&wbtreeid=1227",
         "https://notice.xidian.edu.cn/2016lanmuye.jsp?urltype=tree.TreeTempUrl&wbtreeid=1235"
       ],
-      "enabled": true,
-      "allow_robots_unavailable": true
+      "enabled": true
     },
     {
       "id": "S40",
@@ -583,8 +575,7 @@
       "seed_urls": [
         "https://info.xidian.edu.cn/"
       ],
-      "enabled": true,
-      "allow_robots_unavailable": true
+      "enabled": true
     },
     {
       "id": "S45",

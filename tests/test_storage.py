@@ -179,6 +179,52 @@ class StorageTests(unittest.TestCase):
         finally:
             store.close()
 
+    def test_cleaned_notice_returns_unread_when_its_body_changes(self):
+        store = Store(self.path)
+        try:
+            notice = self.notice()
+            self.assertEqual(store.remember(notice, True), 'new')
+            store.set_notice_flags(notice['key'], read=True)
+            self.assertEqual(store.cleanup_read_notices(), 1)
+            self.assertEqual(store.list_notices(fresh_only=True)['total'], 0)
+            changed = {**notice, 'content_hash': 'changed'}
+            self.assertEqual(store.remember(changed, True), 'updated')
+            self.commit(store, [{**changed, 'state': 'updated'}])
+            item = store.list_notices(fresh_only=True)['items'][0]
+            self.assertEqual((item['state'], item['read']), ('updated', False))
+        finally:
+            store.close()
+
+    def test_later_identical_copy_joins_the_handled_notice(self):
+        store = Store(self.path)
+        try:
+            first = self.notice()
+            store.remember(first, True)
+            store.set_notice_flags(first['key'], favorite=True, read=True)
+            self.assertEqual(store.cleanup_read_notices(), 0)
+            copy = self.notice('https://b.example/info/1/5.htm')
+            self.assertEqual(store.remember(copy, True), 'new')
+            self.assertEqual(store.notice_flags([copy['key']]),
+                             {copy['key']: {'favorite': True, 'read': True}})
+            store.set_notice_flags(copy['key'], favorite=False, read=True)
+            self.assertEqual(store.cleanup_read_notices(), 2)
+            self.assertEqual(store.list_notices(fresh_only=True)['total'], 0)
+        finally:
+            store.close()
+
+    def test_flags_are_shared_by_copies_written_by_older_releases(self):
+        store = Store(self.path)
+        try:
+            first, second = self.notice(), self.notice('https://b.example/info/1/6.htm')
+            for item in (first, second):
+                store.remember(item, True)
+            store.db.execute('UPDATE notices SET read_at=? WHERE key=?', ('2026-10-25', first['key']))
+            store.db.commit()
+            self.assertTrue(all(flag['read'] for flag in store.notice_flags(
+                [first['key'], second['key']]).values()))
+        finally:
+            store.close()
+
     def test_flag_update_covers_merged_copies(self):
         store = Store(self.path)
         try:

@@ -24,6 +24,11 @@ ARTICLE_SELECTORS = ('.v_news_content', '#vsb_content', '#vsb_content_2', '.vsb_
 TITLE_SELECTORS = ('meta[name="ArticleTitle"]', '.arti-title', '.article-title', '.news-title',
                    'h1', 'h2.title', '.title h1', '.title h2', '.title h3', '.title h4', '.title h5')
 INLINE_TAGS = {'a', 'b', 'em', 'font', 'i', 'small', 'span', 'strong', 'sub', 'sup'}
+# `<article>` and `#content` usually wrap the heading as well as the text, so a
+# heading inside them is the article title; other body regions hold text only.
+CHROME_TAGS = {'header', 'footer', 'nav', 'aside'}
+CHROME_MARKS = {'logo', 'banner', 'nav', 'navbar', 'subnav', 'menu', 'top', 'topbar',
+                'header', 'footer', 'sidebar', 'side-bar', 'side', 'related', 'related-news'}
 SELECTOR_FIELDS = ('list_selector', 'detail_link_selector', 'list_date_selector',
                    'next_page_selector', 'title_selector', 'date_selector', 'content_selector')
 SECTION_LABEL = re.compile(r'通知公告|公告通知|通知|公告|公示公告|教学通知|竞赛通知|学生竞赛|科技竞赛|学科竞赛|创新实践系列大赛')
@@ -274,8 +279,24 @@ def extract_listing(content: str, url: str, hosts: set[str], source: dict, *,
                    bool(re.search('暂无相关|暂无信息|暂无内容|没有相关', soup.get_text(' ', strip=True))), trusted)
 
 
+def _site_chrome(node):
+    """True when a heading belongs to the site frame, not to one article."""
+    for parent in node.parents:
+        if getattr(parent, 'name', None) in CHROME_TAGS:
+            return True
+        marks = {parent.get('id') or '', *(parent.get('class') or [])}
+        if any(mark.lower() in CHROME_MARKS for mark in marks if mark):
+            return True
+    return False
+
+
+def _enclosing_body(body):
+    """A body region that also wraps the article heading instead of only its text."""
+    return body.name == 'article' or body.get('id') == 'content'
+
+
 def _find_title(soup, body=None):
-    """Pick the formal heading; headings inside the article body are subheadings."""
+    """Pick the formal heading; headings inside a text-only body are subheadings."""
     candidates, seen = [], set()
     for selector in TITLE_SELECTORS:
         for node in soup.select(selector):
@@ -289,13 +310,15 @@ def _find_title(soup, body=None):
         return None
     if body is None:
         return candidates[0]
-    external = [node for node in candidates if not any(parent is body for parent in node.parents)]
-    if external:
-        candidates = external
+    # Site headers, logos and related blocks never title an article.
+    formal = [node for node in candidates if not _site_chrome(node)] or candidates
     ancestors, node, depth = {}, body, 0
     while node is not None:
         ancestors[id(node)] = depth
         node, depth = node.parent, depth + 1
+    inside = [node for node in formal if any(parent is body for parent in node.parents)]
+    outside = [node for node in formal if not any(parent is body for parent in node.parents)]
+    pool = (inside or outside) if _enclosing_body(body) else (outside or inside)
     def distance(candidate):
         node, steps = candidate, 0
         while node is not None:
@@ -303,7 +326,7 @@ def _find_title(soup, body=None):
                 return (ancestors[id(node)], steps)
             node, steps = node.parent, steps + 1
         return (len(ancestors), steps)
-    return min(candidates, key=distance)
+    return min(pool, key=distance)
 
 
 def _detail_date(soup, title_node, body) -> str | None:
@@ -332,6 +355,10 @@ def _detail_date(soup, title_node, body) -> str | None:
         r'(?<![\u3400-\u9fffA-Za-z])(?:发布时间|发布日期|发表时间|日期)\s*[:：]?\s*'
         r'(20\d{2}\s*[-/.年]\s*\d{1,2}\s*[-/.月]\s*\d{1,2}(?:日)?)(?!\d)')
     dates = set()
+    title_text = title_node.get_text(' ', strip=True) if title_node is not None else ''
+    # Wrappers around the heading would otherwise re-join its text, including an
+    # event date, into the metadata scan.
+    title_ancestors = {id(parent) for parent in title_node.parents} if title_node is not None else set()
     for node in region.descendants:
         if id(node) in excluded or any(id(parent) in excluded for parent in node.parents):
             continue
@@ -351,6 +378,8 @@ def _detail_date(soup, title_node, body) -> str | None:
             text = str(node).strip()
         if len(text) > 250:
             continue
+        if title_text and id(node) in title_ancestors:
+            text = text.replace(title_text, ' ')
         for match in labelled.finditer(text):
             parsed = parse_date(match[1])
             if parsed:

@@ -13,7 +13,7 @@ from protego import Protego
 
 from .parsing import AccessIssue, allowed_url, access_check
 
-USER_AGENT = 'XidianNoticeRadar/1.0 (personal notice reader; manual runs only)'
+USER_AGENT = 'CampusNoticeRadar/1.0 (personal notice reader; manual runs only)'
 MAX_BYTES = 3_000_000
 
 
@@ -57,8 +57,17 @@ def chrome_launch_options(direct=True, headless=False):
             'args': ['--no-proxy-server'] if direct else []}
 
 
-def restore_browser_state(context, state_file: Path):
-    """The persistent profile owns Web Storage; JSON supplements session cookies."""
+def _session_domain_allowed(domain, domains):
+    from .storage import session_domain_allowed
+    return session_domain_allowed(domain, domains)
+
+
+def restore_browser_state(context, state_file: Path, domains=()):
+    """The persistent profile owns Web Storage; JSON supplements session cookies.
+
+    `domains` is the configured set of school domains; a snapshot that mentions any
+    other host is rejected instead of being replayed into the dedicated profile.
+    """
     if not state_file.exists():
         return
     try:
@@ -73,8 +82,7 @@ def restore_browser_state(context, state_file: Path):
                     or not isinstance(cookie.get('domain'), str)
                     or not isinstance(cookie.get('path'), str)):
                 raise ValueError('invalid cookie')
-            domain = cookie['domain'].lstrip('.').lower()
-            if domain != 'xidian.edu.cn' and not domain.endswith('.xidian.edu.cn'):
+            if not _session_domain_allowed(cookie['domain'], domains):
                 raise ValueError('invalid cookie domain')
         if not isinstance(state.get('origins', []), list):
             raise ValueError('invalid origins')
@@ -226,12 +234,14 @@ class HttpTransport:
 
 class BrowserTransport:
     """Dedicated read-only Chrome, with authentication redirects never followed."""
-    def __init__(self, data_dir: Path, timeout=15, delay=1, direct=True, *, throttle=None):
+    def __init__(self, data_dir: Path, timeout=15, delay=1, direct=True, *, throttle=None,
+                 session_domains=()):
         self.context = None
         self.playwright = None
         self.data_dir = Path(data_dir)
         self.timeout = timeout * 1000
         self.throttle = throttle if throttle is not None else Throttle(delay)
+        self.session_domains = tuple(session_domains)
         self.hosts = set()
         self.blocked_methods = 0
         self.calls = 0
@@ -244,7 +254,8 @@ class BrowserTransport:
             self.context = self.playwright.chromium.launch_persistent_context(
                 str(self.data_dir / 'browser-profile'), **chrome_launch_options(direct, headless=True),
                 service_workers='block', user_agent=USER_AGENT)
-            restore_browser_state(self.context, self.data_dir / 'browser-state.json')
+            restore_browser_state(self.context, self.data_dir / 'browser-state.json',
+                                  self.session_domains)
             self.page = self.context.new_page()
             self.context.route('**/*', self._guard)
         except Exception as error:
@@ -326,7 +337,8 @@ class BrowserTransport:
             self.page.wait_for_timeout(500)
             if self._navigation_issue:
                 raise self._navigation_issue
-            final = _redirect(target, self.page.url, self.hosts, raw=raw)
+            final = _redirect(target, self.page.url, self.hosts, raw=raw,
+                              allow_http_detail=allow_http_detail)
             status = response.status if response else 200
             mime = (response.header_value('content-type') or '') if response else ''
             if raw and status in (401, 403, 404, 410):
@@ -374,7 +386,8 @@ class BrowserTransport:
     def close(self):
         from .storage import save_browser_state
         try:
-            save_browser_state(self.context, self.data_dir / 'browser-state.json')
+            save_browser_state(self.context, self.data_dir / 'browser-state.json',
+                               self.session_domains or self.hosts)
         except Exception:
             print('提示：浏览器会话未能更新保存，原会话文件已保留。')
         finally:
@@ -386,10 +399,11 @@ class BrowserTransport:
 
 class AutoTransport:
     """HTTP first, with one Chrome attempt only for the explicit eligible failures."""
-    def __init__(self, data_dir, timeout=15, delay=1, direct=True, *, mode='auto'):
+    def __init__(self, data_dir, timeout=15, delay=1, direct=True, *, mode='auto', session_domains=()):
         if mode not in ('auto', 'http', 'browser'):
             raise ValueError('读取模式必须是 auto/http/browser')
         self.data_dir, self.timeout, self.delay, self.direct = Path(data_dir), timeout, delay, direct
+        self.session_domains = tuple(session_domains)
         self.mode = mode
         self.throttle = Throttle(delay)
         self.http = None if mode == 'browser' else HttpTransport(timeout, delay, direct=direct,
@@ -412,7 +426,8 @@ class AutoTransport:
         if self.browser is None:
             try:
                 self.browser = BrowserTransport(self.data_dir, self.timeout, self.delay, self.direct,
-                                                throttle=self.throttle)
+                                                throttle=self.throttle,
+                                                session_domains=self.session_domains)
             except FetchError as error:
                 if error.code == 'browser_unavailable':
                     self._browser_unavailable = True

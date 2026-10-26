@@ -6,6 +6,7 @@ import os
 from pathlib import Path
 import sqlite3
 from datetime import datetime, timezone
+from urllib.parse import urlsplit
 
 
 def default_data_dir() -> Path:
@@ -20,12 +21,23 @@ def utc_now():
     return datetime.now(timezone.utc).isoformat(timespec='seconds')
 
 
-def save_browser_state(context, path: Path):
-    """Session cookies need an explicit local snapshot; Chrome may discard them on exit."""
-    from urllib.parse import urlsplit
+def session_domain_allowed(domain, domains):
+    """True when a cookie or origin host belongs to one of the configured domains."""
+    domain = domain.lstrip('.').lower()
+    return any(domain == allowed or domain.endswith('.' + allowed) for allowed in domains)
+
+
+def save_browser_state(context, path: Path, domains=()):
+    """Session cookies need an explicit local snapshot; Chrome may discard them on exit.
+
+    Only the configured school domains are written, so unrelated browsing kept in
+    the same profile never reaches the snapshot file.
+    """
     state = context.storage_state()
-    state['cookies'] = [c for c in state.get('cookies', []) if c.get('domain', '').lstrip('.') == 'xidian.edu.cn' or c.get('domain', '').lstrip('.').endswith('.xidian.edu.cn')]
-    state['origins'] = [o for o in state.get('origins', []) if (urlsplit(o.get('origin','')).hostname or '').endswith('.xidian.edu.cn')]
+    state['cookies'] = [c for c in state.get('cookies', [])
+                        if session_domain_allowed(c.get('domain', ''), domains)]
+    state['origins'] = [o for o in state.get('origins', [])
+                        if session_domain_allowed(urlsplit(o.get('origin', '')).hostname or '', domains)]
     atomic_json(path, state)
 
 
@@ -182,11 +194,27 @@ class Store:
             content_hash=excluded.content_hash, last_seen=excluded.last_seen,
             detail_parsed=COALESCE(excluded.detail_parsed,notices.detail_parsed),
             cleaned_at=CASE WHEN notices.content_hash<>excluded.content_hash
-                THEN NULL ELSE notices.cleaned_at END''',
+                THEN NULL ELSE notices.cleaned_at END,
+            read_at=CASE WHEN notices.content_hash<>excluded.content_hash
+                    AND notices.cleaned_at IS NOT NULL
+                THEN NULL ELSE notices.read_at END''',
             (notice['key'], notice['title'], notice['url'], notice['published_date'],
              notice['summary'], notice['content_hash'], now, now,
              int(notice['detail_parsed']) if 'detail_parsed' in notice else None))
+        if row is None:
+            self._join_group_flags(notice['key'], notice['summary'])
         return status
+
+    def _join_group_flags(self, key, summary):
+        """A later copy of an already handled notice must not split its state."""
+        if len(summary) <= 60:
+            return
+        sibling = self.db.execute('''SELECT favorite,read_at,cleaned_at FROM notices
+            WHERE content_hash=(SELECT content_hash FROM notices WHERE key=?)
+              AND key<>? AND length(summary)>60 LIMIT 1''', (key, key)).fetchone()
+        if sibling is not None:
+            self.db.execute('UPDATE notices SET favorite=?,read_at=?,cleaned_at=? WHERE key=?',
+                            (sibling['favorite'], sibling['read_at'], sibling['cleaned_at'], key))
 
     def initialize(self, source_id):
         self.db.execute('INSERT OR IGNORE INTO source_state(source_id,initialized_at) VALUES (?,?)', (source_id, utc_now()))
@@ -300,14 +328,33 @@ class Store:
                              'last_checked_at': row['last_seen']} for row in rows}
 
     def notice_flags(self, keys):
-        """favorite/read for notices whose key is in the given set."""
+        """favorite/read for notices whose key is in the given set.
+
+        Merged copies are one card for the user, so a flag on any copy applies to
+        every view of that notice, including rows written by older releases.
+        """
         if not keys:
             return {}
         placeholders = ','.join('?' for _ in keys)
-        rows = self.db.execute(f'SELECT key, favorite, read_at FROM notices WHERE key IN ({placeholders})',
-                               list(keys))
-        return {row['key']: {'favorite': bool(row['favorite']), 'read': row['read_at'] is not None}
-                for row in rows}
+        rows = self.db.execute(
+            f'SELECT key, content_hash, length(summary) AS size, favorite, read_at '
+            f'FROM notices WHERE key IN ({placeholders})', list(keys)).fetchall()
+        shared = {row['content_hash'] for row in rows if row['size'] > 60}
+        group = {}
+        if shared:
+            for row in self.db.execute(
+                    f'SELECT content_hash, favorite, read_at FROM notices '
+                    f'WHERE content_hash IN ({",".join("?" for _ in shared)}) AND length(summary)>60',
+                    list(shared)):
+                favorite, read = group.get(row['content_hash'], (False, False))
+                group[row['content_hash']] = (favorite or bool(row['favorite']),
+                                              read or row['read_at'] is not None)
+        result = {}
+        for row in rows:
+            matched = row['size'] > 60 and group.get(row['content_hash'])
+            favorite, read = matched or (bool(row['favorite']), row['read_at'] is not None)
+            result[row['key']] = {'favorite': favorite, 'read': read}
+        return result
 
     def _merge_group(self, key):
         """Keys merged into one card by merge_notices (substantial identical bodies)."""
@@ -334,11 +381,24 @@ class Store:
         return {'favorite': bool(row['favorite']), 'read': row['read_at'] is not None}
 
     def cleanup_read_notices(self):
-        """Hide read, non-favorited notices; returns the number cleaned."""
-        cursor = self.db.execute('''UPDATE notices SET cleaned_at=?
-            WHERE read_at IS NOT NULL AND favorite=0 AND cleaned_at IS NULL''', (utc_now(),))
+        """Hide read, non-favorited notices; returns the number of rows cleaned."""
+        # Cleanup follows the merged card, so one copy cannot resurface on its own.
+        groups = {}
+        for row in self.db.execute('''SELECT key,content_hash,length(summary) AS size,
+                favorite,read_at FROM notices WHERE cleaned_at IS NULL'''):
+            group_key = 'hash:' + row['content_hash'] if row['size'] > 60 else 'key:' + row['key']
+            groups.setdefault(group_key, []).append(row)
+        now, cleaned = utc_now(), 0
+        for members in groups.values():
+            if not any(member['read_at'] is not None for member in members):
+                continue
+            if any(member['favorite'] for member in members):
+                continue
+            for member in members:
+                self.db.execute('UPDATE notices SET cleaned_at=? WHERE key=?', (now, member['key']))
+                cleaned += 1
         self.db.commit()
-        return cursor.rowcount
+        return cleaned
 
     def latest_result(self) -> dict | None:
         row = self.db.execute('SELECT result_json FROM runs ORDER BY id DESC LIMIT 1').fetchone()

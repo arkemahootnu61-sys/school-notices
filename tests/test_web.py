@@ -80,7 +80,8 @@ class ConsoleTests(unittest.TestCase):
         self.data, self.output = self.root / 'private', self.root / 'output'
         source = {'id': 'T01', 'name': '测试学院', 'url': self.origin + '/',
                   'allowed_hosts': ['127.0.0.1'], 'seed_urls': [self.origin + '/tzgg.htm'], 'enabled': True}
-        atomic_json(self.config, {'sources': [source, {**source, 'id': 'T02', 'name': '备选学院', 'enabled': False}]})
+        atomic_json(self.config, {'excluded_hosts': ['news.xidian.edu.cn'],
+                                  'sources': [source, {**source, 'id': 'T02', 'name': '备选学院', 'enabled': False}]})
         CountingFixture.version = 1
         CountingFixture.third = CountingFixture.robots_block = CountingFixture.robots_fail = False
         CountingFixture.reads = []
@@ -598,6 +599,10 @@ class ConsoleTests(unittest.TestCase):
         self.data.mkdir(exist_ok=True)
         old_state = self.data / 'browser-state.json'
         atomic_json(old_state, {'old': True})
+        # Login uses the configured institution domains, not this loopback fixture.
+        atomic_json(self.config, {'sources': [
+            {'id': 'T02', 'name': '学校登录页', 'url': 'https://www.example.edu.cn/', 'enabled': True},
+            {'id': 'T01', 'name': '本机测试', 'url': self.origin + '/', 'enabled': True}]})
         with patch.object(web, 'ManualLoginSession', Session):
             # HTTP/non-school configured origins cannot be passed to the visible browser.
             self.assertEqual(self.request('POST', '/api/login', {'source_id': 'T01'})[0], 400)

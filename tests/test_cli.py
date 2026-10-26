@@ -128,7 +128,7 @@ class CliTests(unittest.TestCase):
         self.assertFalse(saved['sources'][0]['enabled'])
 
     def test_add_source_validation_does_not_mutate_input(self):
-        config=validate_config({'sources':[]})
+        config=validate_config({'excluded_hosts':['news.xidian.edu.cn'],'sources':[]})
         for url in ('https://example.edu.cn/?ticket=private-ticket','https://news.xidian.edu.cn/'):
             with self.subTest(url=url):
                 with self.assertRaises(ValueError):
@@ -220,7 +220,7 @@ class CliTests(unittest.TestCase):
              mock.patch('builtins.input',side_effect=AssertionError('runner must not read stdin')):
             def worker():
                 try:
-                    session=ManualLoginSession(self.data)
+                    session=ManualLoginSession(self.data, domains={'xidian.edu.cn'})
                     session.open('https://ids.xidian.edu.cn/authserver/login')
                     self.assertFalse((self.data/'browser-state.json').exists())
                     self.assertTrue(session.pump(500))
@@ -245,7 +245,7 @@ class CliTests(unittest.TestCase):
         for outcome in ('cancel','closed','save_failure'):
             with self.subTest(outcome=outcome),self.manual_browser() as (state,events):
                 path.write_bytes(original)
-                session=ManualLoginSession(self.data)
+                session=ManualLoginSession(self.data, domains={'xidian.edu.cn'})
                 session.open('https://www.xidian.edu.cn/')
                 if outcome=='cancel':
                     session.cancel()
@@ -269,7 +269,7 @@ class CliTests(unittest.TestCase):
         path.write_bytes(b'not-json-private-content')
         with self.manual_browser() as (state,events):
             with self.assertRaises(FetchError) as error:
-                ManualLoginSession(self.data).open('https://www.xidian.edu.cn/')
+                ManualLoginSession(self.data, domains={'xidian.edu.cn'}).open('https://www.xidian.edu.cn/')
             self.assertEqual(error.exception.code,'session_invalid')
             self.assertNotIn('private-content',str(error.exception))
             self.assertTrue(state['closed'])

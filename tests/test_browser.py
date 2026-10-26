@@ -155,7 +155,7 @@ class BrowserSmokeTests(unittest.TestCase):
     def test_visible_render_and_session_cookie_is_consumed_after_reopen(self):
         with tempfile.TemporaryDirectory(prefix='xidian-browser-fixture-') as directory:
             root = Path(directory)
-            transport = BrowserTransport(root, timeout=8, delay=0)
+            transport = BrowserTransport(root, timeout=8, delay=0, session_domains={self.HOST})
             received = []
             try:
                 self.install_fixture(transport, received)
@@ -168,7 +168,7 @@ class BrowserSmokeTests(unittest.TestCase):
                 transport.page.evaluate("localStorage.setItem('radar_fixture_storage', 'profile-value')")
             finally:
                 transport.close()
-            restored = BrowserTransport(root, timeout=8, delay=0)
+            restored = BrowserTransport(root, timeout=8, delay=0, session_domains={self.HOST})
             received = []
             try:
                 self.install_fixture(restored, received)
@@ -218,6 +218,46 @@ class BrowserSmokeTests(unittest.TestCase):
                 self.assertNotIn('<html', page.text)
                 page = transport.fetch(f'https://{self.HOST}/missing-rules', {self.HOST}, raw=True)
                 self.assertEqual((page.status, page.content_type), (410, 'text/plain'))
+            finally:
+                transport.close()
+
+    def test_opted_in_http_detail_is_returned_while_rules_stay_strict(self):
+        with tempfile.TemporaryDirectory(prefix='xidian-browser-downgrade-') as directory:
+            transport = BrowserTransport(Path(directory), timeout=8, delay=0)
+            reached = []
+            destination = f'http://{self.HOST}/info/1/2.htm'
+
+            def fixture(route):
+                reached.append(route.request.url)
+                if route.request.url.startswith('https://'):
+                    route.fulfill(status=200, content_type='text/html', body=(
+                        '<h1>关于报名的通知</h1><script>'
+                        f'setTimeout(() => location.href = "{destination}", 20)'
+                        '</script>'))
+                else:
+                    route.fulfill(status=200, content_type='text/html',
+                                  body='<h1 data-fixture="detail">notice detail</h1>')
+
+            try:
+                transport.context.unroute('**/*', transport._guard)
+                transport.context.route('**/*', fixture)
+                transport.context.route('**/*', transport._guard)
+                # An explicit per-source opt-in must reach the detail page Chrome landed on.
+                page = transport.fetch(f'https://{self.HOST}/detail', {self.HOST},
+                                       allow_http_detail=True)
+                self.assertEqual(page.url, destination)
+                self.assertIn('data-fixture="detail"', page.text)
+                # Without the opt-in the same navigation is still refused.
+                reached.clear()
+                with self.assertRaises(FetchError) as denied:
+                    transport.fetch(f'https://{self.HOST}/detail', {self.HOST})
+                self.assertEqual(denied.exception.code, 'unsafe_redirect')
+                self.assertFalse(any(url.startswith('http://') for url in reached))
+                # robots.txt never inherits the permission, even when it is requested.
+                with self.assertRaises(FetchError) as rules:
+                    transport.fetch(f'https://{self.HOST}/robots.txt', {self.HOST},
+                                    raw=True, allow_http_detail=True)
+                self.assertEqual(rules.exception.code, 'unsafe_redirect')
             finally:
                 transport.close()
 

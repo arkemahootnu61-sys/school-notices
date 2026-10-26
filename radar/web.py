@@ -22,10 +22,11 @@ import time
 from urllib.parse import parse_qs, urlsplit
 import webbrowser
 
-from .config import add_source, json_read, save_config, update_source_rules, update_source_urls, validate_config
+from .config import (add_source, json_read, save_config, session_domains, update_source_rules,
+                     update_source_urls, validate_config)
 from .engine import Options
 from .runner import ManualLoginSession, run_collection
-from .storage import Store, app_lock, atomic_json
+from .storage import Store, app_lock, atomic_json, session_domain_allowed as _session_domain_allowed
 from .transport import FetchError
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -97,8 +98,11 @@ class ConsoleController:
             config = validate_config(json.loads(raw.decode('utf-8-sig')))
         except (OSError, ValueError, TypeError, KeyError):
             raise APIError(503, 'config_unavailable', '无法读取来源配置，请检查本地文件后重试') from None
+        domains = session_domains(config)
         effective = [{**source, 'enabled': source.get('enabled', True),
-                      'allow_robots_unavailable': source.get('allow_robots_unavailable', False)}
+                      'allow_robots_unavailable': source.get('allow_robots_unavailable', False),
+                      'login_allowed': urlsplit(source['url']).scheme == 'https'
+                                       and _session_domain_allowed(urlsplit(source['url']).hostname or '', domains)}
                      for source in config['sources']]
         return {'revision': hashlib.sha256(raw).hexdigest(), 'sources': effective}, config
 
@@ -255,6 +259,13 @@ class ConsoleController:
             removed = store.cleanup_read_notices()
         return {'removed': removed}
 
+    def _login_domains(self):
+        """Session domains of the current configuration, or none when it is unreadable."""
+        try:
+            return session_domains(self.sources()[1])
+        except APIError:
+            return ()
+
     def _log(self, text):
         with self.lock:
             self.job['logs'].append(_safe_message(text))
@@ -279,7 +290,7 @@ class ConsoleController:
             _fields(body, {'source_id'})
             if 'source_id' in body and not isinstance(body['source_id'], str):
                 raise APIError(400, 'invalid_parameter', 'source_id 必须为文本')
-            argument = 'https://ids.xidian.edu.cn/authserver/login'
+            argument = None
         with self.lock:
             self._idle()
             # Reject an already-running CLI before accepting a background task.
@@ -288,11 +299,17 @@ class ConsoleController:
                 _, config = self.sources()
                 if kind == 'collect' and not any(source.get('enabled', True) for source in config['sources']):
                     raise APIError(400, 'no_sources', '没有启用的来源，请先保存来源选择')
-                if kind == 'login' and 'source_id' in body:
-                    source = next((source for source in config['sources'] if source['id'] == body['source_id']), None)
+                if kind == 'login':
+                    known = set(session_domains(config))
+                    if 'source_id' in body:
+                        source = next((source for source in config['sources']
+                                       if source['id'] == body['source_id']), None)
+                    else:
+                        source = next((source for source in config['sources']
+                                       if source.get('enabled', True)), None)
                     parts = urlsplit(source['url']) if source else None
                     host = parts.hostname if parts else ''
-                    if not parts or parts.scheme != 'https' or not (host == 'xidian.edu.cn' or host.endswith('.xidian.edu.cn')):
+                    if not parts or parts.scheme != 'https' or not _session_domain_allowed(host, known):
                         raise APIError(400, 'invalid_source', '学校登录只允许当前配置中的学校 HTTPS 来源')
                     argument = source['url']
             self.cancel_event, self.finish_event = threading.Event(), threading.Event()
@@ -313,7 +330,8 @@ class ConsoleController:
                     log=self._log, progress=self._progress, cancel_event=cancel)
                 summary = _summary(result)
             else:
-                session = ManualLoginSession(self.data_dir, direct=self.direct)
+                session = ManualLoginSession(self.data_dir, direct=self.direct,
+                                             domains=self._login_domains())
                 session.open(argument)
                 with self.lock:
                     self.job['status'] = 'awaiting_login'
