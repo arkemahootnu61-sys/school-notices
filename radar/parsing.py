@@ -20,6 +20,9 @@ ACTION_PATH = re.compile(r'(?:^|[/_.?=&-])(logout|signout|delete|remove|unsubscr
 SENSITIVE_KEY = re.compile(r'^(?:ticket|token|access_token|id_token|password|passwd|sessionid|jsessionid|samlresponse|authorization|secret|code|auth|cookie|sid)$', re.I)
 DATE = re.compile(r'(?<!\d)(20\d{2})\s*[-/.年]\s*(\d{1,2})\s*[-/.月]\s*(\d{1,2})(?:日)?(?!\d)')
 ARTICLE_SELECTORS = ('.v_news_content', '#vsb_content', '#vsb_content_2', '.vsb_content', '.TRS_Editor', '.article-content', '.news-content', '#article_content', '#content', 'article')
+# Campus templates put the title in varied headings: `<h2 class="title">`, `.title h4`, etc.
+TITLE_SELECTORS = ('meta[name="ArticleTitle"]', '.arti-title', '.article-title', '.news-title',
+                   'h1', 'h2.title', '.title h1', '.title h2', '.title h3', '.title h4', '.title h5')
 SELECTOR_FIELDS = ('list_selector', 'detail_link_selector', 'list_date_selector',
                    'next_page_selector', 'title_selector', 'date_selector', 'content_selector')
 SECTION_LABEL = re.compile(r'通知公告|公告通知|通知|公告|公示公告|教学通知|竞赛通知|学生竞赛|科技竞赛|学科竞赛|创新实践系列大赛')
@@ -83,6 +86,10 @@ def allowed_url(value: str, hosts: set[str], base: str = '') -> str:
 
 def clean_title(text: str) -> str:
     text = re.sub(r'\s+', ' ', text).strip()
+    # Broken heading markup (e.g. <h2>text</h1>) lets the metadata paragraph become
+    # part of the title; cut it at the first labelled metadata field.
+    text = re.split(r'\s*(?:文章来源|信息来源|发布日期|发布时间|发表时间|浏览次数|点击次数|点击数|访问量)\s*[:：]',
+                    text, maxsplit=1)[0].strip()
     text = re.sub(r'\s*20\d{2}[-/.]\d{1,2}[-/.]\d{1,2}\s*$', '', text).strip()
     # Campus templates often concatenate title attributes, image alt text and visible text.
     for _ in range(3):
@@ -270,20 +277,29 @@ def _detail_date(soup, title_node, body) -> str | None:
     if body is None:
         return None
     if title_node is None or title_node.name == 'meta':
-        title_node = soup.select_one('h1, .arti-title, .article-title, .news-title, .title h2')
-    if title_node is None:
-        return None
-    # A document-wide common ancestor is not evidence of a single article.
-    region = body if any(node is title_node for node in body.descendants) else next(
-        (parent for parent in body.parents
-         if any(node is title_node for node in parent.descendants)), None)
+        for selector in TITLE_SELECTORS:
+            title_node = soup.select_one(selector)
+            if title_node:
+                break
+    # A document-wide common ancestor is not evidence of a single article. When no
+    # title element exists, fall back to the body's nearest ancestor.
+    if title_node is not None:
+        region = body if any(node is title_node for node in body.descendants) else next(
+            (parent for parent in body.parents
+             if any(node is title_node for node in parent.descendants)), None)
+    else:
+        region = next(body.parents, None)
     if region is None or region.name in ('[document]', 'html', 'body'):
         return None
-    excluded = {id(title_node)}
+    # Scripts are common inside the metadata paragraph (click counters) and their
+    # text would otherwise poison `get_text`; strip them before scanning.
+    for tag in region.select('script, style, noscript'):
+        tag.decompose()
+    excluded = set()
     if region is not body:
         excluded.add(id(body))
     excluded.update(id(node) for node in region.select(
-        'aside, nav, footer, form, script, style, .sidebar, .side-bar, .related, .related-news'))
+        'aside, nav, footer, form, .sidebar, .side-bar, .related, .related-news'))
     labelled = re.compile(
         r'(?<![\u3400-\u9fffA-Za-z])(?:发布时间|发布日期|发表时间|日期)\s*[:：]?\s*'
         r'(20\d{2}\s*[-/.年]\s*\d{1,2}\s*[-/.月]\s*\d{1,2}(?:日)?)(?!\d)')
@@ -311,7 +327,7 @@ def extract_detail(content: str, url: str, candidate: Candidate, source: dict) -
     soup = soup_page(content)
     title_node = soup.select_one(source['title_selector']) if source.get('title_selector') else None
     if title_node is None:
-        for selector in ('meta[name="ArticleTitle"]', '.arti-title', '.article-title', '.news-title', 'h1', '.title h2'):
+        for selector in TITLE_SELECTORS:
             title_node = soup.select_one(selector)
             if title_node: break
     raw_title = (title_node.get('content') or title_node.get_text(' ', strip=True)) if title_node else candidate.title

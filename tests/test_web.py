@@ -406,6 +406,26 @@ class ConsoleTests(unittest.TestCase):
         self.assertEqual(self.request('POST', '/api/notices/cleanup', {}, auth=False)[0], 403)
         self.assertEqual(self.request('GET', '/api/notices?fresh=2')[0], 400)
 
+    def test_favorites_view_ignores_date_range_and_survives_read(self):
+        self.collect()
+        key = self.request('GET', '/api/notices')[1]['items'][0]['key']
+        self.request('PUT', '/api/notice', {'key': key, 'favorite': True})
+        # 把发布日期改到很早：近期视图按范围排除，收藏不受日期范围影响。
+        store = Store(self.data / 'notices.sqlite3')
+        try:
+            store.db.execute("UPDATE notices SET published_date='2014-01-02'")
+            store.db.commit()
+        finally:
+            store.close()
+        self.assertEqual(self.request('GET', '/api/notices?days=30')[1]['total'], 0)
+        self.assertEqual(self.request('GET', '/api/notices?view=favorites&days=30')[1]['total'], 1)
+        # 已读不影响收藏。
+        self.request('PUT', '/api/notice', {'key': key, 'read': True})
+        self.assertEqual(self.request('GET', '/api/notices?view=favorites')[1]['total'], 1)
+        # 取消收藏后移出收藏视图。
+        self.request('PUT', '/api/notice', {'key': key, 'favorite': False})
+        self.assertEqual(self.request('GET', '/api/notices?view=favorites')[1]['total'], 0)
+
     def test_custom_site_rules_collect_real_pages_and_reject_invalid_updates(self):
         revision = self.request('GET', '/api/sources')[1]['revision']
         rules = {'seed_urls': [self.origin+'/board'], 'list_selector': '.bulletins',

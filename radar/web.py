@@ -171,8 +171,8 @@ class ConsoleController:
             raise APIError(400, 'invalid_parameter', '查询参数不正确')
         values = {key: value[0] for key, value in query.items()}
         view = values.get('view', 'recent')
-        if view not in {'recent', 'changes'}:
-            raise APIError(400, 'invalid_parameter', 'view 必须为 recent 或 changes')
+        if view not in {'recent', 'changes', 'favorites'}:
+            raise APIError(400, 'invalid_parameter', 'view 必须为 recent、changes 或 favorites')
         if values.get('fresh', '0') not in {'0', '1'}:
             raise APIError(400, 'invalid_parameter', 'fresh 必须为 0 或 1')
         numbers = {}
@@ -193,6 +193,10 @@ class ConsoleController:
             if view == 'recent':
                 result = store.list_notices(cutoff=cutoff, source_id=source_id, query=text, offset=offset,
                                             limit=limit, fresh_only=values.get('fresh') == '1')
+            elif view == 'favorites':
+                # Favorites are a personal shortlist; the day range must not hide them.
+                result = store.list_notices(cutoff=None, source_id=source_id, query=text, offset=offset,
+                                            limit=limit, favorite_only=True)
             else:
                 latest = store.latest_result()
                 if latest is None:

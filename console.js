@@ -254,15 +254,15 @@
     element.append(undo);
     undoTimer = setTimeout(() => { if (element.contains(undo)) message('notices-message'); }, 6000);
   }
-  function dismissCard(card, item) {
+  function dismissCard(card, item, undo = true) {
     card.classList.add('notice-card-dismissed');
     card.setAttribute('aria-hidden', 'true');
     setTimeout(() => {
       card.remove();
       // 划走最后一张时自动补上下一页，省得手动翻页。
-      if ($('view').value === 'recent' && !$('notices').childElementCount && connected && !closed) loadNotices();
+      if (['recent', 'favorites'].includes($('view').value) && !$('notices').childElementCount && connected && !closed) loadNotices();
     }, 220);
-    offerUndo(item);
+    if (undo) offerUndo(item);
   }
   function noticeFlagButton(card, item, kind) {
     const button = node('button', 'button small notice-flag');
@@ -288,7 +288,9 @@
         item[kind] = data[kind];
         if (kind === 'favorite') card.dataset.favorite = String(Boolean(data.favorite));
         render();
-        if (kind === 'read' && data.read) dismissCard(card, item);
+        // 收藏视图里取消收藏后移出列表；已读只在“近期”视图划走，收藏中仍保留。
+        if (kind === 'favorite' && !data.favorite && $('view').value === 'favorites') dismissCard(card, item, false);
+        if (kind === 'read' && data.read && $('view').value !== 'favorites') dismissCard(card, item);
       } catch (error) {
         message('notices-message', `${error.message}`, 'error');
       } finally {
@@ -354,14 +356,17 @@
       $('notices').dataset.offset = String(offset);
       $('notices').dataset.view = $('view').value;
       $('empty-notices').hidden = data.items.length > 0;
+      const view = $('view').value;
       const filtered = $('search').value.trim() || $('source-filter').value;
-      $('empty-notices').textContent = data.recorded === false ? data.message || '最近一次运行未记录变化明细，不能判断为没有更新。请切换“近期通知”查看已存通知。' : filtered ? '没有符合当前筛选的通知，可调整关键词、来源或日期范围。' : $('view').value === 'changes' ? '最近一次已提交采集没有发现 / 变化条目。请结合上方覆盖结论判断，不代表所有来源都没有更新。' : latest ? ($('view').value === 'recent' ? '当前时间范围没有未读的新通知。已读与以往已收录的通知默认隐藏，收藏的仍会显示；可扩大日期范围或点击“清理已读”。' : '当前时间范围没有已收录通知。可扩大日期范围；失败或受限不代表没有通知。') : '尚未采集通知。选择来源后点击“开始采集”。';
-      $('notice-count').textContent = `共 ${total} 条 · ${$('view').value === 'recent' ? '未读 / 新发现通知（已读与以往已收录的默认隐藏，收藏始终显示）' : '最近一次已提交采集的变化'}`;
+      $('empty-notices').textContent = data.recorded === false ? data.message || '最近一次运行未记录变化明细，不能判断为没有更新。请切换“近期通知”查看已存通知。' : filtered ? '没有符合当前筛选的通知，可调整关键词、来源或日期范围。' : view === 'favorites' ? '还没有收藏的通知。在通知卡片上点“☆ 收藏”即可加入这里，收藏不受日期范围影响。' : view === 'changes' ? '最近一次已提交采集没有发现 / 变化条目。请结合上方覆盖结论判断，不代表所有来源都没有更新。' : latest ? (view === 'recent' ? '当前时间范围没有未读的新通知。已读与以往已收录的通知默认隐藏，收藏的仍会显示；可扩大日期范围或点击“清理已读”。' : '当前时间范围没有已收录通知。可扩大日期范围；失败或受限不代表没有通知。') : '尚未采集通知。选择来源后点击“开始采集”。';
+      $('notice-count').textContent = `共 ${total} 条 · ${view === 'recent' ? '未读 / 新发现通知（已读与以往已收录的默认隐藏，收藏始终显示）' : view === 'favorites' ? '收藏的通知' : '最近一次已提交采集的变化'}`;
       const rangeText = Number($('days').value) ? `最近 ${$('days').value} 天` : '不限日期';
-      $('notice-count').textContent += ` · ${rangeText}（按发布日期，含日期未知项）`;
+      $('notice-count').textContent += view === 'favorites'
+        ? ' · 不受日期范围限制'
+        : ` · ${rangeText}（按发布日期，含日期未知项）`;
       $('page-label').textContent = total ? `${offset + 1}–${Math.min(offset + limit, total)} / ${total} · 每页 50 条` : '每页 50 条';
       message('notices-message', data.recorded === false ? data.message || '本次变化明细未记录；这不代表没有更新。' :
-        latest && latest.days !== Number($('days').value) ?
+        view !== 'favorites' && latest && latest.days !== Number($('days').value) ?
           `当前浏览：${rangeText}；上次采集：${latest.days ? `最近 ${latest.days} 天` : '不限日期'}。此处切换立即筛选已存通知，扩大范围后请开始采集以补充尚未读取的历史。` : '', 'warning');
     } catch (error) {
       if (sequence === noticeSequence && !closed) message('notices-message', `${error.message} 未替换上次成功显示的通知。`, 'error');
