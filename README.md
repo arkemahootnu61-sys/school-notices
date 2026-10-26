@@ -122,6 +122,7 @@ RUN_BROWSER_TESTS=1 .venv/bin/python -m unittest discover -s tests -v
 
 ```
 notices.py            CLI：serve / run / login / sources / init
+LICENSE               MIT 许可
 check_python.py       setup 时检查 Python 版本
 index.html console.js console.css   本地控制台（由本地服务提供）
 radar/                配置、解析、传输、存储、采集引擎、任务、报告
@@ -139,3 +140,12 @@ output/               单轮报告（不入库）
 - 动态渲染页面需显式使用 Chrome 模式，仍受只读与域名边界限制。
 - 需要 POST 查询、验证码或统一认证的列表页不受支持。
 - 附件正文不下载；报告只覆盖本轮成功读取的范围，不能证明穷尽全站。
+
+## 许可
+
+MIT License，见 [LICENSE](LICENSE)。可自由使用、修改与再分发（含商业用途），需保留版权与许可声明；软件按“现状”提供，不附带任何担保。
+
+运行时依赖（requests、beautifulsoup4、Playwright、Protego、soupsieve，见 `requirements.txt`）各自遵循其上游许可证，未随本项目再分发。
+
+使用时请自行确认目标网站的 robots.txt、访问条款与学校规定；本项目不授予你访问任何网站或数据的权利。
+
