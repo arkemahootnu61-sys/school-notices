@@ -42,7 +42,7 @@ class StorageTests(unittest.TestCase):
         for _ in range(2):
             store = Store(self.path)
             try:
-                self.assertEqual(store.db.execute('PRAGMA user_version').fetchone()[0], 2)
+                self.assertEqual(store.db.execute('PRAGMA user_version').fetchone()[0], 3)
                 item = store.list_notices()['items'][0]
                 self.assertEqual((item['first_seen'],item['last_seen'],item['content_hash']), ('first','last','same'))
                 self.assertEqual(item['sources'], [])
@@ -60,7 +60,7 @@ class StorageTests(unittest.TestCase):
         finally: store.close()
 
     def test_future_version_leaves_bytes_unchanged(self):
-        db = sqlite3.connect(self.path); db.execute('PRAGMA user_version=3'); db.close()
+        db = sqlite3.connect(self.path); db.execute('PRAGMA user_version=4'); db.close()
         before = self.path.read_bytes()
         with self.assertRaises(ValueError): Store(self.path)
         self.assertEqual(self.path.read_bytes(), before)
@@ -71,6 +71,8 @@ class StorageTests(unittest.TestCase):
         store.remember(notice, False)
         self.commit(store)
         store.db.execute('DROP TABLE list_checkpoints')
+        store.db.execute('ALTER TABLE notices DROP COLUMN read_at')
+        store.db.execute('ALTER TABLE notices DROP COLUMN favorite')
         store.db.execute('PRAGMA user_version=1')
         store.db.commit()
         store.close()

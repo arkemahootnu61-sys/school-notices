@@ -111,13 +111,13 @@ class Store:
         self.db.execute('PRAGMA busy_timeout=2000')
         try:
             version = self.db.execute('PRAGMA user_version').fetchone()[0]
-            if version > 2:
+            if version > 3:
                 raise ValueError('通知数据库版本高于本程序支持的版本，未修改文件')
-            if version < 2:
+            if version < 3:
                 # Every schema step and version stamp commit together, including legacy v0.
                 self.db.execute('BEGIN IMMEDIATE')
                 version = self.db.execute('PRAGMA user_version').fetchone()[0]
-                if version > 2:
+                if version > 3:
                     raise ValueError('通知数据库版本高于本程序支持的版本，未修改文件')
                 if version == 0:
                     self.db.execute('''CREATE TABLE IF NOT EXISTS notices (
@@ -148,6 +148,10 @@ class Store:
                         scope_key TEXT NOT NULL, section TEXT NOT NULL, next_url TEXT NOT NULL,
                         trusted INTEGER NOT NULL, PRIMARY KEY (scope_key, section))''')
                     self.db.execute('PRAGMA user_version = 2')
+                if version < 3:
+                    self.db.execute('ALTER TABLE notices ADD COLUMN read_at TEXT')
+                    self.db.execute('ALTER TABLE notices ADD COLUMN favorite INTEGER NOT NULL DEFAULT 0')
+                    self.db.execute('PRAGMA user_version = 3')
                 self.db.commit()
         except BaseException:
             self.db.rollback()
@@ -240,7 +244,8 @@ class Store:
                 if item['detail_parsed'] is not None:
                     item['detail_parsed'] = bool(item['detail_parsed'])
                 item.update(sources=[], source_attribution='unknown', alternative_urls=[],
-                            last_checked_at=item['last_seen'], state='seen')
+                            last_checked_at=item['last_seen'], state='seen',
+                            favorite=bool(row['favorite']), read=row['read_at'] is not None)
                 notices[key] = item
             if row['source_id'] and not any(s['id'] == row['source_id'] for s in notices[key]['sources']):
                 notices[key]['sources'].append({'id': row['source_id'], 'name': row['source_name']})
@@ -273,6 +278,34 @@ class Store:
                                list(urls))
         return {row['url']: {'first_seen': row['first_seen'], 'last_seen': row['last_seen'],
                              'last_checked_at': row['last_seen']} for row in rows}
+
+    def notice_flags(self, keys):
+        """favorite/read for notices whose key is in the given set."""
+        if not keys:
+            return {}
+        placeholders = ','.join('?' for _ in keys)
+        rows = self.db.execute(f'SELECT key, favorite, read_at FROM notices WHERE key IN ({placeholders})',
+                               list(keys))
+        return {row['key']: {'favorite': bool(row['favorite']), 'read': row['read_at'] is not None}
+                for row in rows}
+
+    def set_notice_flags(self, key, *, favorite=None, read=None):
+        """Set favorite and/or read on a notice; returns the resulting flags."""
+        if favorite is not None:
+            self.db.execute('UPDATE notices SET favorite=? WHERE key=?', (1 if favorite else 0, key))
+        if read is not None:
+            self.db.execute('UPDATE notices SET read_at=? WHERE key=?', (utc_now() if read else None, key))
+        self.db.commit()
+        row = self.db.execute('SELECT favorite, read_at FROM notices WHERE key=?', (key,)).fetchone()
+        if row is None:
+            return {'favorite': False, 'read': False}
+        return {'favorite': bool(row['favorite']), 'read': row['read_at'] is not None}
+
+    def cleanup_read_notices(self):
+        """Delete read, non-favorited notices; returns the number removed."""
+        cursor = self.db.execute('DELETE FROM notices WHERE read_at IS NOT NULL AND favorite = 0')
+        self.db.commit()
+        return cursor.rowcount
 
     def latest_result(self) -> dict | None:
         row = self.db.execute('SELECT result_json FROM runs ORDER BY id DESC LIMIT 1').fetchone()

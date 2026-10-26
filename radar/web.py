@@ -198,13 +198,17 @@ class ConsoleController:
                 items = [item for item in latest.get('items', []) if item.get('state') in {'baseline', 'new', 'updated'}]
                 if items:
                     # Result items preserve this run's states; SQLite supplies the
-                    # durable timestamps for the notices referenced by this run.
+                    # durable timestamps and user flags for the notices referenced by this run.
                     by_url = store.notice_timestamps([item['url'] for item in items])
                     for item in items:
                         stored = by_url.get(item['url'], {})
                         for field in ('first_seen', 'last_seen', 'last_checked_at'):
                             if field in stored:
                                 item[field] = stored[field]
+                    flags = store.notice_flags([item['key'] for item in items])
+                    for item in items:
+                        item['favorite'] = flags.get(item.get('key'), {}).get('favorite', False)
+                        item['read'] = flags.get(item.get('key'), {}).get('read', False)
                 items = [item for item in items if
                          (not cutoff or not item.get('published_date') or item['published_date'] >= cutoff) and
                          (not source_id or any(source['id'] == source_id for source in item.get('sources', []))) and
@@ -215,6 +219,26 @@ class ConsoleController:
                 items.sort(key=lambda item: item.get('published_date') or '', reverse=True)
                 result = {'items': items[offset:offset + limit], 'total': len(items), 'recorded': True}
         return {**result, 'offset': offset, 'limit': limit}
+
+    def set_notice_flags(self, body):
+        _fields(body, {'key', 'favorite', 'read'}, {'key'})
+        key = body['key']
+        if not isinstance(key, str) or not key:
+            raise APIError(400, 'invalid_parameter', 'key 必须为通知编号文本')
+        favorite, read = body.get('favorite'), body.get('read')
+        if favorite is not None and not isinstance(favorite, bool):
+            raise APIError(400, 'invalid_parameter', 'favorite 必须为布尔值')
+        if read is not None and not isinstance(read, bool):
+            raise APIError(400, 'invalid_parameter', 'read 必须为布尔值')
+        with self.store() as store:
+            flags = store.set_notice_flags(key, favorite=favorite, read=read)
+        return {'key': key, **flags}
+
+    def cleanup_notices(self, body):
+        _fields(body, set())
+        with self.store() as store:
+            removed = store.cleanup_read_notices()
+        return {'removed': removed}
 
     def _log(self, text):
         with self.lock:
@@ -477,6 +501,10 @@ class ConsoleHandler(BaseHTTPRequestHandler):
                 self._send(202, controller.signal(body, finish=True))
             elif route == ('POST', '/api/cancel'):
                 self._send(202, controller.signal(body))
+            elif route == ('PUT', '/api/notice'):
+                self._send(200, controller.set_notice_flags(body))
+            elif route == ('POST', '/api/notices/cleanup'):
+                self._send(200, controller.cleanup_notices(body))
             elif route == ('POST', '/api/shutdown'):
                 self._send(200, controller.request_shutdown(body))
                 threading.Thread(target=self.server.shutdown, daemon=True).start()

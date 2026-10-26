@@ -12,6 +12,8 @@ from bs4 import BeautifulSoup
 NOTICE = re.compile(r'通知|公告|公示|报名|招募|征集|选拔|申报|赛程|考试安排|培训安排|活动预告|讲座预告|招生简章|招聘|补选|补考|选课|竞赛安排')
 EXPLICIT = re.compile(r'通知|公告|公示')
 NEWS = re.compile(r'喜报|获佳绩|斩获|圆满|成功举办|顺利举行|荣获|获.{0,18}[一二三特]等奖|获奖喜报|新闻报道|纪实|侧记')
+# 教学培训/公开课/教学示范/教学研讨等教师教研活动不是“通知”，即使出现在通知公告栏目也排除。
+TEACHING_ACTIVITY = re.compile(r'^【\s*(?:教学培训|教学示范|公开课|人工智能赋能|教学研讨|教学沙龙)\s*】')
 LIST_PATH = re.compile(r'tzgg|ggtz|/tz\.(?:htm|html)|jxtz|xsgz.*/tz|/jsl\.|/kjjs\.|/xkjs\.|/xsjs\.|cxsjxlds|gsxx|gsgg|hdyg|/tzgg\d*\.')
 ARTICLE_PATH = re.compile(r'/info/\d+/\d+\.(?:htm|html)|/news/view/|/\d{4}/\d{2}/\d{2}/|/\d{5,}\.(?:htm|html|shtml)')
 ACTION_PATH = re.compile(r'(?:^|[/_.?=&-])(logout|signout|delete|remove|unsubscribe|setlang|caslogout|submit|save|apply)(?:$|[/_.?=&-])', re.I)
@@ -104,6 +106,7 @@ def parse_date(text: str) -> str | None:
 
 def notice_title(title: str, trusted_list: bool = False) -> bool:
     # An award-result announcement is a notice; a celebratory award report is not.
+    if TEACHING_ACTIVITY.search(title): return False
     if EXPLICIT.search(title): return True
     if NEWS.search(title): return False
     return bool(NOTICE.search(title) or trusted_list)

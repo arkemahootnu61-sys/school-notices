@@ -11,12 +11,7 @@
         "eme.xidian.edu.cn"
       ],
       "seed_urls": [
-        "https://eme.xidian.edu.cn/tz.htm",
-        "https://eme.xidian.edu.cn/xsgz/jygl.htm",
-        "https://eme.xidian.edu.cn/xsgz/xshd.htm",
-        "https://eme.xidian.edu.cn/rcpy/bkjx.htm",
-        "https://eme.xidian.edu.cn/rcpy/yjspy.htm",
-        "https://eme.xidian.edu.cn/xsbg.htm"
+        "https://eme.xidian.edu.cn/tz.htm"
       ],
       "enabled": true,
       "allow_robots_unavailable": true
@@ -117,8 +112,7 @@
         "etc.xidian.edu.cn"
       ],
       "seed_urls": [
-        "https://etc.xidian.edu.cn/index/tzgg.htm",
-        "https://etc.xidian.edu.cn/kjcx/jsl.htm"
+        "https://etc.xidian.edu.cn/index/tzgg.htm"
       ],
       "enabled": true,
       "allow_robots_unavailable": true
@@ -134,8 +128,7 @@
       "seed_urls": [
         "https://ygb.xidian.edu.cn/tzgg.htm",
         "https://ygb.xidian.edu.cn/gsxx.htm",
-        "https://ygb.xidian.edu.cn/hdyg.htm",
-        "https://ygb.xidian.edu.cn/ytzm1/cxsjxlds.htm"
+        "https://ygb.xidian.edu.cn/hdyg.htm"
       ],
       "enabled": true,
       "allow_robots_unavailable": true

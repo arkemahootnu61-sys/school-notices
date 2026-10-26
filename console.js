@@ -74,6 +74,7 @@
     $('cancel').disabled = unavailable || !active();
     $('shutdown').disabled = unavailable || active();
     $('refresh').disabled = unavailable;
+    $('cleanup-read').disabled = unavailable || active();
     $('save-sources').disabled = unavailable || active() || !dirty || selected.size === 0;
     $('reload-sources').disabled = unavailable || active();
     $('add-source').disabled = unavailable || active() || dirty || !revision;
@@ -230,10 +231,43 @@
     if (dirty) return;
     renderSources(data);
   }
+  function noticeFlagButton(card, item, kind) {
+    const button = node('button', 'button small notice-flag');
+    button.type = 'button';
+    button.dataset.kind = kind;
+    const labels = kind === 'favorite'
+      ? {on: '★ 已收藏', off: '☆ 收藏'}
+      : {on: '✓ 已读', off: '标记已读'};
+    const render = () => {
+      const active = Boolean(item[kind]);
+      button.textContent = active ? labels.on : labels.off;
+      button.dataset.active = String(active);
+      button.setAttribute('aria-pressed', String(active));
+    };
+    render();
+    button.addEventListener('click', async () => {
+      if (!connected || closed) return;
+      button.disabled = true;
+      try {
+        const body = {key: item.key};
+        body[kind] = !item[kind];
+        const data = await api('/api/notice', {method: 'PUT', body});
+        item[kind] = data[kind];
+        if (kind === 'favorite') card.dataset.favorite = String(Boolean(data.favorite));
+        render();
+      } catch (error) {
+        message('notices-message', `${error.message}`, 'error');
+      } finally {
+        button.disabled = false;
+      }
+    });
+    return button;
+  }
   function noticeCard(item) {
     const card = node('article', 'notice-card');
     card.dataset.key = item.key || '';
     card.dataset.state = item.state || 'seen';
+    card.dataset.favorite = String(Boolean(item.favorite));
     const meta = node('div', 'notice-meta');
     const tag = node('span', 'tag', STATE_LABELS[item.state] || '已收录');
     tag.dataset.state = item.state || 'seen';
@@ -245,7 +279,9 @@
     card.append(node('p', 'help', attribution));
     if (item.detail_parsed === false) card.append(node('p', 'help', '正文未完整识别，已保留标题与日期。'));
     const footer = node('div', 'notice-footer');
-    footer.append(node('p', '', `上次成功读取：${timeText(item.last_checked_at || item.last_seen)}`));
+    const actions = node('div', 'notice-actions');
+    actions.append(noticeFlagButton(card, item, 'favorite'), noticeFlagButton(card, item, 'read'));
+    footer.append(actions, node('p', '', `上次成功读取：${timeText(item.last_checked_at || item.last_seen)}`));
     const alternatives = (item.alternative_urls || []).filter(url => url !== item.url);
     if (alternatives.length) {
       const links = node('div');
@@ -487,8 +523,20 @@
     clearTimeout(searchTimer);
     resetNotices();
   });
-  $('previous').addEventListener('click', () => { offset = Math.max(0, offset - limit); loadNotices(); });
-  $('next').addEventListener('click', () => { offset += limit; loadNotices(); });
+  function goToPage(nextOffset) {
+    offset = nextOffset;
+    loadNotices().then(() => $('notices-heading').scrollIntoView({block: 'start'}));
+  }
+  $('previous').addEventListener('click', () => goToPage(Math.max(0, offset - limit)));
+  $('next').addEventListener('click', () => goToPage(offset + limit));
+  $('cleanup-read').addEventListener('click', () => {
+    if (!window.confirm('将删除所有“已读且未收藏”的通知，收藏的通知会保留。此操作不可撤销，确定继续？')) return;
+    action(async () => {
+      const data = await api('/api/notices/cleanup', {method: 'POST', body: {}});
+      message('notices-message', data.removed ? `已清理 ${data.removed} 条已读且未收藏的通知。` : '没有可清理的已读通知；已收藏的通知会保留。', 'success');
+      await loadNotices();
+    }, 'notices-message');
+  });
 
   async function initialize() {
     updateControls();
