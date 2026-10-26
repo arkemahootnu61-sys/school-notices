@@ -1,6 +1,7 @@
 """Notice-only HTML extraction. No scripts, forms or attachment downloads."""
 from __future__ import annotations
 
+import difflib
 import hashlib
 import re
 from dataclasses import dataclass
@@ -27,8 +28,8 @@ INLINE_TAGS = {'a', 'b', 'em', 'font', 'i', 'small', 'span', 'strong', 'sub', 's
 # `<article>` and `#content` usually wrap the heading as well as the text, so a
 # heading inside them is the article title; other body regions hold text only.
 CHROME_TAGS = {'header', 'footer', 'nav', 'aside'}
-CHROME_MARKS = {'logo', 'banner', 'nav', 'navbar', 'subnav', 'menu', 'top', 'topbar',
-                'header', 'footer', 'sidebar', 'side-bar', 'side', 'related', 'related-news'}
+CHROME_MARKS = {'logo', 'banner', 'nav', 'navbar', 'subnav', 'menu', 'topbar',
+                'header', 'footer', 'sidebar', 'side-bar', 'related', 'related-news'}
 SELECTOR_FIELDS = ('list_selector', 'detail_link_selector', 'list_date_selector',
                    'next_page_selector', 'title_selector', 'date_selector', 'content_selector')
 SECTION_LABEL = re.compile(r'通知公告|公告通知|通知|公告|公示公告|教学通知|竞赛通知|学生竞赛|科技竞赛|学科竞赛|创新实践系列大赛')
@@ -302,8 +303,33 @@ def _enclosing_body(body):
     return body.name == 'article'
 
 
-def _find_title(soup, body=None):
-    """Pick the formal heading; headings inside a text-only body are subheadings."""
+def _title_key(text):
+    """Comparable form of a title: punctuation and spacing dropped, CJK kept."""
+    return re.sub(r'[\s\W_]+', '', text).casefold()
+
+
+def _title_affinity(node, hint):
+    """How well a heading matches the title the listing already showed us."""
+    if not hint:
+        return 0.0
+    left, right = _title_key(hint), _title_key(clean_title(node.get_text(' ', strip=True)))
+    if not left or not right:
+        return 0.0
+    if left == right:
+        return 1.0
+    if left in right or right in left:
+        return 0.9
+    return difflib.SequenceMatcher(None, left, right).ratio()
+
+
+def _find_title(soup, body=None, hint=''):
+    """Pick the formal heading; headings inside a text-only body are subheadings.
+
+    Structure narrows the candidates (site frame out, body-relative position in) and
+    `hint`, the title the listing already showed, breaks ties. That keeps templates
+    with breadcrumbs, kickers or several headings from storing the wrong title
+    without needing a per-site rule.
+    """
     candidates, seen = [], set()
     for selector in TITLE_SELECTORS:
         for node in soup.select(selector):
@@ -333,14 +359,21 @@ def _find_title(soup, body=None):
                 return (ancestors[id(node)], steps)
             node, steps = node.parent, steps + 1
         return (len(ancestors), steps)
-    return min(pool, key=distance)
+    shared = body.parent if body.parent is not None else body
+    def rank(candidate):
+        depth_value, steps = distance(candidate)
+        # A heading in the body's own container is article content; nearer wins next.
+        return (_title_affinity(candidate, hint),
+                any(parent is shared for parent in candidate.parents),
+                -depth_value, -steps)
+    return max(pool, key=rank)
 
 
-def _detail_date(soup, title_node, body) -> str | None:
+def _detail_date(soup, title_node, body, hint='') -> str | None:
     if body is None:
         return None
     if title_node is None or title_node.name == 'meta':
-        title_node = _find_title(soup, body)
+        title_node = _find_title(soup, body, hint)
     # A document-wide common ancestor is not evidence of a single article.
     if title_node is None:
         return None
@@ -404,7 +437,7 @@ def extract_detail(content: str, url: str, candidate: Candidate, source: dict) -
     title_node = soup.select_one(source['title_selector']) if source.get('title_selector') else None
     if title_node is None:
         # Visible heading first; the metadata title is a text-only fallback.
-        title_node = _find_title(soup, body) or soup.select_one('meta[name="ArticleTitle"]')
+        title_node = _find_title(soup, body, candidate.title) or soup.select_one('meta[name="ArticleTitle"]')
     raw_title = (title_node.get('content') or title_node.get_text(' ', strip=True)) if title_node else candidate.title
     title = clean_title(raw_title)
     if NEWS.search(title) and not EXPLICIT.search(title):
@@ -422,7 +455,7 @@ def extract_detail(content: str, url: str, candidate: Candidate, source: dict) -
         if tag: published = parse_date(tag.get('content', ''))
         if published: break
     if not published:
-        published = _detail_date(soup, title_node, body)
+        published = _detail_date(soup, title_node, body, candidate.title)
     published = published or candidate.date
     text = ''
     if body:

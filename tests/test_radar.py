@@ -151,6 +151,26 @@ class ConfigTests(unittest.TestCase):
                                     'sources': [{'id': 'C', 'url': 'https://notice.ftc.school.edu.cn/'}]})
         self.assertTrue(session_domain_allowed('ids.school.edu.cn', session_domains(declared)))
 
+    def test_deep_source_host_covers_the_campus_sso(self):
+        from radar.config import session_domains
+        from radar.storage import session_domain_allowed
+        deep = validate_config({'sources': [{'id': 'D', 'url': 'https://notice.ftc.school.edu.cn/'}]})
+        domains = session_domains(deep)
+        self.assertIn('school.edu.cn', domains)
+        self.assertTrue(session_domain_allowed('ids.school.edu.cn', domains))
+        self.assertFalse(session_domain_allowed('passport.other.edu.cn', domains))
+
+    def test_registrable_domain_falls_back_without_suffix_data(self):
+        from radar import config as configuration
+        original = configuration._public_suffix_sld
+        configuration._public_suffix_sld = None
+        try:
+            self.assertEqual(configuration.registrable_domain('notice.ftc.school.edu.cn'), 'school.edu.cn')
+            self.assertEqual(configuration.registrable_domain('math.xidian.edu.cn'), 'xidian.edu.cn')
+            self.assertEqual(configuration.registrable_domain('cpipc.acge.org.cn'), 'acge.org.cn')
+        finally:
+            configuration._public_suffix_sld = original
+
     def test_bad_config(self):
         for source in ({'id':'bad id','url':'https://example.com'}, {'id':'a','url':'https://news.xidian.edu.cn/'},
                        {'id':'a','url':'https://example.com','seed_urls':['https://other.example']},

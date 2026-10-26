@@ -17,7 +17,12 @@ ROOT = Path(__file__).resolve().parents[1]
 # Social feeds are never notices; further exclusions belong to the configuration,
 # because which sites count as campus news differs by school.
 BUILTIN_EXCLUDED_HOSTS = {'weibo.com', 'www.weibo.com', 'weibo.cn'}
-# Second-level public suffixes; never granted as a session domain on their own.
+# Optional public-suffix data; the built-in set below is used when it is absent.
+try:
+    from publicsuffix2 import get_sld as _public_suffix_sld
+except ImportError:  # pragma: no cover - exercised by the fallback test
+    _public_suffix_sld = None
+# Fallback second-level public suffixes; never granted as a session domain alone.
 PUBLIC_SUFFIXES = frozenset({'edu.cn', 'gov.cn', 'com.cn', 'net.cn', 'org.cn', 'ac.cn',
                              'edu.hk', 'edu.tw', 'edu.mo', 'ac.jp', 'co.jp', 'ac.uk', 'co.uk',
                              'edu.au', 'com.au', 'edu.sg', 'com.sg', 'edu.my', 'ac.in', 'co.in'})
@@ -100,13 +105,34 @@ def _ip_host(host):
         return False
 
 
+def registrable_domain(host):
+    """Registrable domain of a host: `notice.ftc.school.edu.cn` -> `school.edu.cn`.
+
+    Uses the public suffix list when `publicsuffix2` is installed and falls back to
+    the built-in suffix set otherwise, so a missing optional dependency never
+    broadens or narrows the session scope by accident.
+    """
+    if _public_suffix_sld is not None:
+        try:
+            value = _public_suffix_sld(host)
+        except Exception:
+            value = None
+        if value:
+            return value
+    labels = host.split('.')
+    for index in range(1, len(labels)):
+        if '.'.join(labels[index:]) in PUBLIC_SUFFIXES:
+            return '.'.join(labels[index - 1:])
+    return '.'.join(labels[-2:]) if len(labels) > 1 else host
+
+
 def session_domains(config):
     """Institution domains whose session may be saved.
 
-    Declared domains come first; sources contribute their own hosts plus one parent
-    level, but never a public suffix and never part of an IP address. Deeper SSO
-    hosts (e.g. `ids.` beside `notice.xx.school.edu.cn`) must be declared explicitly
-    with `session_domains`.
+    Sources contribute their own hosts plus their registrable domain, so a campus
+    SSO host (`ids.school.edu.cn`) is covered by a source on any sibling subdomain,
+    while public suffixes such as `edu.cn` and parts of IP addresses never are.
+    `session_domains` can still declare extra domains explicitly.
     """
     domains = {str(domain).lower().lstrip('.') for domain in (config.get('session_domains') or [])}
     domains.discard('')
@@ -116,13 +142,8 @@ def session_domains(config):
             if not host:
                 continue
             domains.add(host)
-            if _ip_host(host):
-                continue
-            labels = host.split('.')
-            if len(labels) > 2:
-                parent = '.'.join(labels[1:])
-                if parent not in PUBLIC_SUFFIXES:
-                    domains.add(parent)
+            if not _ip_host(host):
+                domains.add(registrable_domain(host))
     return sorted(domains)
 
 

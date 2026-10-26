@@ -282,6 +282,26 @@ class DetailDateBoundaryTests(unittest.TestCase):
         self.assertEqual(detail['title'], '关于报名的通知')
         self.assertEqual(detail['published_date'], '2026-10-25')
 
+    def test_listing_title_breaks_the_tie_between_headings(self):
+        detail = self.detail('''<div class="article"><h1>当前位置：首页 &gt; 通知公告</h1>
+          <div class="head"><h2 class="title">关于报名的通知</h2></div>
+          <p>发布时间：2026-10-25</p><div class="v_news_content">报名详情</div></div>''')
+        self.assertEqual(detail['title'], '关于报名的通知')
+        self.assertEqual(detail['published_date'], '2026-10-25')
+
+    def test_newsy_kicker_does_not_hide_the_notice_title(self):
+        detail = self.detail('''<div class="article"><div class="kicker">
+          <h1>学院成功举办交流活动</h1></div>
+          <h2 class="title">关于报名的通知</h2>
+          <div class="v_news_content">报名详情</div></div>''')
+        self.assertEqual(detail['title'], '关于报名的通知')
+
+    def test_detail_heading_wins_over_a_different_listing_title(self):
+        detail = self.detail('''<div class="article"><h2 class="title">关于举办数学建模竞赛的通知（第二轮）</h2>
+          <p>发布时间：2026-10-25</p><div class="v_news_content">竞赛详情</div></div>''',
+                             '2026-10-20')
+        self.assertEqual(detail['title'], '关于举办数学建模竞赛的通知（第二轮）')
+
 
 class AccessCodeTests(unittest.TestCase):
     def test_access_classification_exposes_stable_codes(self):

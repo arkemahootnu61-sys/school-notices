@@ -3,3 +3,4 @@ beautifulsoup4>=4.12,<5
 playwright>=1.50,<2
 protego>=0.6,<0.7
 soupsieve>=2.5,<3
+publicsuffix2>=2.20191221,<3

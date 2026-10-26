@@ -57,7 +57,7 @@ python3 -m venv .venv
 | `allow_http_detail` | 默认 `false`。允许该来源的详情页从 HTTPS 降级到同域 HTTP |
 | `list_selector` 等 | 可选 CSS 适配：列表容器、详情链接、条目日期、下一页、标题、日期、正文 |
 
-`session_domains`（可选，根级）声明允许保存登录会话的域名；不写时从各来源 `allowed_hosts` 推导其机构域名。登录窗口和会话快照都只接受这些域名。
+`session_domains`（可选，根级）补充允许保存登录会话的域名。不写时按各来源 `allowed_hosts` 自动推导：来源主机本身 + 它的**可注册域名**（借助 `publicsuffix2` 的公共后缀数据，例如 `notice.ftc.school.edu.cn` → `school.edu.cn`），因此 `ids.school.edu.cn` 这类 SSO 主机也在范围内，而 `edu.cn` 等公共后缀和 IP 的片段永远不会被放行。缺少该依赖时退回内置后缀表，并可用本字段显式补充。登录窗口和会话快照都只接受这些域名。
 
 `excluded_hosts`（可选，根级）声明永远不作为来源的域名（例如本校新闻网）。微博始终内置排除。模板里预置了示例学校的新闻网，换学校时按需修改。
 
@@ -136,7 +136,7 @@ output/               单轮报告（不入库）
 
 ## 已知限制
 
-- 不同学校、不同模板的页面差异很大；通用识别之外仍可能需要 CSS 适配。
+- 标题识别是启发式：结构规则收缩候选（站点框架、正文容器内外），再用列表已显示的标题做相似度打分。多数模板无需额外规则，但异常排版仍可能需要 CSS 适配（`title_selector`）。
 - 动态渲染页面需显式使用 Chrome 模式，仍受只读与域名边界限制。
 - 需要 POST 查询、验证码或统一认证的列表页不受支持。
 - 附件正文不下载；报告只覆盖本轮成功读取的范围，不能证明穷尽全站。
@@ -145,7 +145,7 @@ output/               单轮报告（不入库）
 
 MIT License，见 [LICENSE](LICENSE)。可自由使用、修改与再分发（含商业用途），需保留版权与许可声明；软件按“现状”提供，不附带任何担保。
 
-运行时依赖（requests、beautifulsoup4、Playwright、Protego、soupsieve，见 `requirements.txt`）各自遵循其上游许可证，未随本项目再分发。
+运行时依赖（requests、beautifulsoup4、Playwright、Protego、soupsieve、publicsuffix2，见 `requirements.txt`）各自遵循其上游许可证，未随本项目再分发。
 
 使用时请自行确认目标网站的 robots.txt、访问条款与学校规定；本项目不授予你访问任何网站或数据的权利。
 
