@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>西电 · 通知来源筛选</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23153a50'/%3E%3Cpath d='M18 16h28v32H18zM24 25h16M24 32h16M24 39h10' fill='none' stroke='%23d3e8df' stroke-width='3'/%3E%3C/svg%3E">
+<style>
+:root{font-family:Inter,"Segoe UI","Microsoft YaHei",sans-serif;color:#1e3346;background:#f2f5f8;font-synthesis:none}*{box-sizing:border-box}body{margin:0}button,input,select{font:inherit}button,a,input,summary,select{-webkit-tap-highlight-color:transparent}button{cursor:pointer}a{color:#1f648d;overflow-wrap:anywhere}button:focus-visible,a:focus-visible,input:focus-visible,summary:focus-visible,select:focus-visible{outline:3px solid #d19c46;outline-offset:3px}header{background:#153a50;color:#fff;padding:38px max(5vw,20px)}.brand{font-size:11px;letter-spacing:3px;color:#a2d2d5}h1{font-size:clamp(24px,4vw,36px);margin:10px 0 12px;letter-spacing:1px}header p{color:#c3d6e0;line-height:1.9;max-width:850px;font-size:14px;margin:0}.stats{display:flex;gap:28px;flex-wrap:wrap;margin-top:23px}.stat b{font-size:26px;display:block}.stat span{font-size:11px;color:#bcd0d9}.wrap{max-width:1280px;margin:auto;padding:26px 24px 100px}.warning{border-left:3px solid #c99242;background:#fff9ed;padding:16px 20px;font-size:13px;line-height:1.9;color:#705321;margin-bottom:20px}.warning p{margin:0 0 5px}.toolbar{position:sticky;top:0;z-index:5;background:#f2f5f8ed;backdrop-filter:blur(12px);padding:14px 0;display:flex;gap:10px;flex-wrap:wrap}.toolbar input,.toolbar select,.add input{padding:11px 12px;border:1px solid #ced8e0;border-radius:7px;background:white;color:#243b4f}.toolbar input{flex:1;min-width:180px}.toolbar select{max-width:225px}.button{background:white;color:#29485d;border:1px solid #cad7df;border-radius:7px;padding:10px 14px;font-size:12px}.primary{background:#176b72;color:white;border-color:#176b72}.count{font-size:12px;color:#647c8d;padding:6px 0 18px;line-height:1.7}.grid{display:grid;grid-template-columns:1fr 1fr;gap:15px}.card{background:white;border:1px solid #dce4eb;border-radius:10px;padding:20px;box-shadow:0 2px 6px #163a5004}.card.selected{border-color:#70a6a9}.card-head{display:flex;align-items:flex-start;gap:11px}.card-head input{width:18px;height:18px;accent-color:#176b72;flex-shrink:0;margin:3px 0 0;cursor:pointer}.card-head label{cursor:pointer;flex:1;font-weight:600;font-size:15px;line-height:1.6}.id{font-size:11px;color:#607d8e;font-weight:400;margin-right:7px} .group{font-size:10px;letter-spacing:.5px;color:#637f91;margin:7px 0 7px}.status{display:inline-block;padding:3px 7px;background:#e9f4f0;color:#35745f;font-size:10px;border-radius:4px;font-weight:400;white-space:nowrap}.status.warning-status{background:#fff1d8;color:#93661c}.url{font-family:Consolas,monospace;font-size:11px;line-height:1.8;text-decoration:none}.note{color:#667c8b;font-size:12px;line-height:1.85;margin:10px 0 0}.card details{border-top:1px solid #edf1f5;margin-top:13px;padding-top:11px}summary{cursor:pointer;font-size:11px;color:#356882;padding:4px 0;line-height:1.6}.items{list-style:none;padding:0;margin:8px 0}.items li{font-size:12px;line-height:1.8;margin:7px 0}.items a{text-decoration:none}.items a:hover{text-decoration:underline}.items small{font-size:10px;color:#8798a1;margin-left:7px}.details-label{font-size:11px;color:#8193a0;margin:16px 0 7px}.samples li{padding-left:12px;border-left:2px solid #e0eaed}.sample-caption{font-size:10px;color:#8095a3;line-height:1.8}.provenance{font-size:10px;color:#93a2ac;margin:12px 0 0}.bottom{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid #d6e1e8;box-shadow:0 -5px 25px #153a5009;z-index:10}.bottom-inner{max-width:1232px;padding:14px 24px;display:flex;justify-content:space-between;align-items:center;gap:15px;margin:auto}.bottom-label{font-size:13px}.bottom-label small{display:block;color:#8093a0;font-size:10px;margin-top:4px}.bottom .button{font-size:13px;padding:12px 18px}.add{background:#e8eef3;border-radius:10px;padding:20px;margin-top:25px}.add h2{font-size:15px;margin:0 0 12px}.add form{display:flex;gap:10px;flex-wrap:wrap}.add input{flex:1;min-width:160px;font-size:12px}.help{font-size:12px;color:#728693;line-height:1.9}.empty{font-size:14px;color:#688090;padding:40px;text-align:center;grid-column:1/-1}#message{font-size:12px;color:#176b72;margin-top:12px;min-height:18px}footer{font-size:11px;color:#8496a0;margin-top:24px;line-height:1.9}@media(max-width:760px){header{padding:28px 22px}.wrap{padding:18px 15px 120px}.grid{grid-template-columns:1fr}.card{padding:17px}.stats{gap:22px}.stat b{font-size:22px}.toolbar{gap:7px}.toolbar select{max-width:100%;flex:1}.toolbar .button{flex:1}.card-head{flex-wrap:wrap}.card-head label{min-width:170px}.status{margin-left:29px}.bottom-inner{padding:12px 17px}.bottom-label{font-size:12px}.bottom-label small{max-width:180px;line-height:1.6}.bottom .button{font-size:11px;padding:12px}.warning{padding:12px 15px}.url{font-size:10px}}
+</style>
+</head>
+<body>
+<header><div class="brand">XIDIAN / NOTICE RADAR · 历史勘察工具</div><h1>历史来源勘察与研究清单。</h1><p>此页不是日常控制台，推荐值和样例只反映当时的勘察。日常请双击 run.bat，在本地控制台保存来源、手动采集和浏览近期通知。此处保留的勾选、导出仅供研究；不会覆盖控制台的当前配置。</p><div class="stats" id="stats"></div></header>
+<div class="wrap">
+<div class="warning"><p><strong>本轮没有登录，也没有抓取个人资料。</strong> 这是来源勘察，不是“所有最新通知”的正式汇总。样例只从列表标题初筛，未逐条确认日期和正文，可能有置顶或旧通知。</p><p><strong>校园网络限制：</strong>学校通知门户明确要求校外通过学校 aTrust 零信任访问。仅保存 Cookie 不一定能解决，后续需要在学校允许的网络环境下运行。校团委等连接异常的入口已保留为待核实项。</p></div>
+<div class="toolbar"><input id="search" type="search" placeholder="搜索学院、部门、关键词或网址…" aria-label="搜索候选来源"><select id="group" aria-label="按分组筛选"><option value="">全部分组</option></select><button class="button" id="recommended" type="button">仅选推荐来源</button><button class="button" id="clear" type="button">全部取消</button></div>
+<div class="count" id="visible-count" role="status" aria-live="polite"></div><div class="grid" id="cards"></div>
+<section class="add"><h2>还有遗漏？手动补一个入口。</h2><form id="add-form"><input id="add-name" required maxlength="80" placeholder="名称，例如：某学院通知" aria-label="新来源名称"><input id="add-url" type="url" required placeholder="https://…" aria-label="新来源网址"><button class="button primary" type="submit">加入候选</button></form><p class="help">手动网址只加入本机清单，不会立即请求网页。请勿粘贴含密码、登录票据或一次性验证码的链接。登录凭据不放在来源清单中。</p><div id="message" role="status" aria-live="polite"></div></section>
+<footer>发现依据：<a href="https://www.xidian.edu.cn/jgsz.htm" target="_blank" rel="noopener noreferrer">西电官网机构设置</a>、各部门官网及其友情链接。HTTP 200 不代表通知可读，系统提示页已单独标识。<br>此页仅在本机保存选择；“导出”不会上传任何信息。原始核查结果与 Markdown 清单位于 school-notices 文件夹。</footer>
+</div>
+<div class="bottom"><div class="bottom-inner"><div class="bottom-label" id="selection-count"></div><button id="export" class="button primary" type="button">导出保留清单 ↓</button></div></div>
+<script id="report-data" type="application/json">__REPORT_DATA__</script>
+<script>
+'use strict';
+const report=JSON.parse(document.getElementById('report-data').textContent);
+const storageKey='xidian-notice-source-review-v1';
+let sources=report.sources.slice();let selected=new Set(sources.filter(s=>s.recommended).map(s=>s.id));
+try{const saved=JSON.parse(localStorage.getItem(storageKey));if(saved){sources.push(...(saved.manual||[]));selected=new Set(saved.selected||[]);}}catch{}
+const $=id=>document.getElementById(id);
+function node(tag,text,cls){const el=document.createElement(tag);if(text!==undefined)el.textContent=text;if(cls)el.className=cls;return el;}
+function link(text,url){const el=node('a',text);el.href=url;el.target='_blank';el.rel='noopener noreferrer';return el;}
+function save(){try{localStorage.setItem(storageKey,JSON.stringify({selected:[...selected],manual:sources.filter(s=>s.manual)}));}catch{}updateCount();}
+function updateCount(){const count=sources.filter(s=>selected.has(s.id)).length;const label=$('selection-count');label.replaceChildren(node('span','已保留 '+count+' 个来源'),node('small','只保存入口与筛选范围，不包含任何登录凭据。'));$('export').disabled=count===0;}
+function updateGroups(){const current=$('group').value;$('group').replaceChildren(new Option('全部分组',''));for(const group of new Set(sources.map(s=>s.group)))$('group').add(new Option(group,group));$('group').value=current;}
+function render(){
+ const query=$('search').value.trim().toLowerCase(),group=$('group').value;
+ const visible=sources.filter(s=>(!group||s.group===group)&&(!query||JSON.stringify([s.name,s.url,s.note,s.columns]).toLowerCase().includes(query)));
+ $('visible-count').textContent='当前显示 '+visible.length+' / '+sources.length+' 个候选来源。勾选整站表示保留其已发现的通知入口，不表示收集该站的新闻或全部个人业务页面。';
+ const cards=$('cards');cards.replaceChildren();
+ for(const s of visible){
+  const card=node('article',undefined,'card'+(selected.has(s.id)?' selected':''));
+  const head=node('div',undefined,'card-head'),checkbox=node('input');checkbox.type='checkbox';checkbox.id='source-'+s.id;checkbox.checked=selected.has(s.id);
+  const label=node('label');label.htmlFor=checkbox.id;label.append(node('span',s.id,'id'),document.createTextNode(s.name));
+  checkbox.addEventListener('change',()=>{if(checkbox.checked)selected.add(s.id);else selected.delete(s.id);card.classList.toggle('selected',checkbox.checked);save();});
+  head.append(checkbox,label,node('span',s.access,'status'+(/受限|异常|登录|未核实/.test(s.access)?' warning-status':'')));
+  card.append(head,node('p',s.group,'group'));const home=link(s.url,s.url);home.className='url';card.append(home,node('p',s.note,'note'));
+  const details=node('details'),summary=node('summary','查看 '+s.columns.length+' 个栏目 · '+s.samples.length+' 条标题样例');details.append(summary);
+  if(s.columns.length){const list=node('ul',undefined,'items');for(const col of s.columns){const li=node('li');li.append(link(col.name,col.url),node('small',col.verified?'已核实':'受限 / 待确认'));list.append(li);}details.append(list);}
+  else details.append(node('p','尚未定位独立通知栏目，或本次只能核实首页；后续需要适配，不能当作已完整覆盖。','sample-caption'));
+  if(s.samples.length){details.append(node('p','列表标题样例 · 不代表新增判定','details-label'));const list=node('ul',undefined,'items samples');for(const sample of s.samples){const li=node('li');li.append(link(sample.title,sample.url));list.append(li);}details.append(list);}
+  const evidence=node('p',undefined,'provenance');evidence.append(document.createTextNode('发现依据：'),link('官方链接所在页',s.discovered_from));details.append(evidence);card.append(details);cards.append(card);
+ }
+ if(!visible.length)cards.append(node('p','没有匹配的来源，试试其他关键词。','empty'));
+ updateCount();
+}
+for(const [value,label] of [[report.stats.sources,'候选入口（含校外补充）'],[report.stats.columns,'具体栏目'],[report.stats.verified_columns,'可公开读取的栏目'],[report.stats.sample_links,'通知标题候选样例']]){const item=node('div',undefined,'stat');item.append(node('b',String(value)),node('span',label));$('stats').append(item);}
+$('search').addEventListener('input',render);$('group').addEventListener('change',render);
+$('recommended').addEventListener('click',()=>{selected=new Set(sources.filter(s=>s.recommended).map(s=>s.id));save();render();});
+$('clear').addEventListener('click',()=>{selected.clear();save();render();});
+$('add-form').addEventListener('submit',event=>{
+ event.preventDefault();let url;try{url=new URL($('add-url').value.trim());}catch{$('message').textContent='请输入完整网址。';return;}
+ if(!['https:','http:'].includes(url.protocol)||url.username||url.password||[...url.searchParams.keys()].some(key=>/token|ticket|password|secret|session|code|auth|access_token|saml/i.test(key))){$('message').textContent='请使用不含登录票据或密码的普通 HTTP(S) 网址。';return;}
+ if(sources.some(s=>s.url===url.href)){$('message').textContent='这个网址已经在清单里。';return;}
+ const id='M'+String(sources.filter(s=>s.manual).length+1).padStart(2,'0');
+ sources.push({id,name:$('add-name').value.trim(),group:'手动添加',url:url.href,discovered_from:url.href,access:'手动添加，未核实',note:'用户手动加入；后续仅采集通知，访问权限和栏目尚待确认。',columns:[],samples:[],manual:true,recommended:false});
+ selected.add(id);save();updateGroups();$('search').value='';$('group').value='手动添加';render();$('add-form').reset();$('message').textContent='已加入并保留 '+id+'，没有请求该网址。';
+});
+$('export').addEventListener('click',()=>{
+ const items=sources.filter(s=>selected.has(s.id));
+ const config={schema_version:1,purpose:'manual_notice_collection',content_scope:report.stats.content_scope,excluded_content:['新闻','校报','微博','宣传报道','获奖喜报','活动回顾','个人业务记录'],sources:items.map(s=>({id:s.id,name:s.name,url:s.url,group:s.group,enabled:true,allowed_hosts:[new URL(s.url).hostname],seed_urls:s.columns.filter(c=>c.verified).map(c=>c.url).concat(s.columns.some(c=>c.verified)?[]:[s.url]),access_status:s.access,requires_confirmation:/受限|异常|登录|未核实/.test(s.access)}))};
+ const blob=new Blob([JSON.stringify(config,null,2)],{type:'application/json;charset=utf-8'}),url=URL.createObjectURL(blob),anchor=node('a');anchor.href=url;anchor.download='xidian-selected-sources.json';document.body.append(anchor);anchor.click();anchor.remove();setTimeout(()=>URL.revokeObjectURL(url),1500);
+ $('message').textContent='已导出 '+items.length+' 个来源。双击项目里的 import-sources.bat 选择导出文件，再运行 run.bat。不要附带登录凭据。';
+});
+updateGroups();render();
+</script>
+</body></html>

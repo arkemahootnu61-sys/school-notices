@@ -1,0 +1,28 @@
+# Future login/session material must stay local.
+.private/
+profiles/
+auth/
+*storage-state*.json
+*auth-state*.json
+cookies*.json
+.env
+.env.*
+__pycache__/
+*.pyc
+.venv/
+output/
+*.sqlite3
+*.sqlite3-*
+sources.backup-*.json
+browser-state.json
+browser-profile/
+connection.json
+*.db
+*.sqlite
+*.sqlite-*
+*.log
+*.lock
+.playwright-cli/
+node_modules/
+# Discovery HTML/network caches are local evidence, not deployment inputs.
+discovery/*.json

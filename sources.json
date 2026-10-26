@@ -1,0 +1,634 @@
+{
+  "schema_version": 1,
+  "content_scope": "只收通知，不收新闻、微博、校报或获奖喜报",
+  "sources": [
+    {
+      "id": "S01",
+      "name": "机电工程学院",
+      "group": "重点关注",
+      "url": "https://eme.xidian.edu.cn/",
+      "allowed_hosts": [
+        "eme.xidian.edu.cn"
+      ],
+      "seed_urls": [
+        "https://eme.xidian.edu.cn/tz.htm",
+        "https://eme.xidian.edu.cn/xsgz/jygl.htm",
+        "https://eme.xidian.edu.cn/xsgz/xshd.htm",
+        "https://eme.xidian.edu.cn/rcpy/bkjx.htm",
+        "https://eme.xidian.edu.cn/rcpy/yjspy.htm",
+        "https://eme.xidian.edu.cn/xsbg.htm"
+      ],
+      "enabled": true,
+      "allow_robots_unavailable": true
+    },
+    {
+      "id": "S02",
+      "name": "数学与统计学院",
+      "group": "重点关注",
+      "url": "https://math.xidian.edu.cn/sy.htm",
+      "allowed_hosts": [
+        "math.xidian.edu.cn"
+      ],
+      "seed_urls": [
+        "https://math.xidian.edu.cn/sy.htm"
+      ],
+      "enabled": true,
+      "allow_robots_unavailable": true
+    },
+    {
+      "id": "S03",
+      "name": "教务处",
+      "group": "重点关注",
+      "url": "https://jwc.xidian.edu.cn/",
+      "allowed_hosts": [
+        "jwc.xidian.edu.cn"
+      ],
+      "seed_urls": [
+        "https://jwc.xidian.edu.cn/tzgg.htm"
+      ],
+      "enabled": true,
+      "allow_robots_unavailable": true
+    },
+    {
+      "id": "S04",
+      "name": "党委学生工作部 / 学生工作处",
+      "group": "重点关注",
+      "url": "https://xgc.xidian.edu.cn/",
+      "allowed_hosts": [
+        "xgc.xidian.edu.cn"
+      ],
+      "seed_urls": [
+        "https://xgc.xidian.edu.cn/tzgg1.htm"
+      ],
+      "enabled": true,
+      "allow_robots_unavailable": true
+    },
+    {
+      "id": "S05",
+      "name": "团委",
+      "group": "重点关注",
+      "url": "https://tw.xidian.edu.cn/",
+      "allowed_hosts": [
+        "tw.xidian.edu.cn"
+      ],
+      "seed_urls": [
+        "https://tw.xidian.edu.cn/"
+      ],
+      "enabled": true,
+      "allow_robots_unavailable": true
+    },
+    {
+      "id": "S06",
+      "name": "创新创业学院",
+      "group": "重点关注",
+      "url": "https://ie.xidian.edu.cn/",
+      "allowed_hosts": [
+        "ie.xidian.edu.cn"
+      ],
+      "seed_urls": [
+        "https://ie.xidian.edu.cn/sczx/ggtz.htm",
+        "https://ie.xidian.edu.cn/cgzs/xmzm.htm"
+      ],
+      "enabled": true,
+      "allow_robots_unavailable": true
+    },
+    {
+      "id": "S07",
+      "name": "本科生院",
+      "group": "重点关注",
+      "url": "https://bksy.xidian.edu.cn/",
+      "allowed_hosts": [
+        "bksy.xidian.edu.cn"
+      ],
+      "seed_urls": [
+        "https://bksy.xidian.edu.cn/tzgg.htm"
+      ],
+      "enabled": true,
+      "allow_robots_unavailable": true
+    },
+    {
+      "id": "S08",
+      "name": "工程训练中心",
+      "group": "重点关注",
+      "url": "https://etc.xidian.edu.cn/",
+      "allowed_hosts": [
+        "etc.xidian.edu.cn"
+      ],
+      "seed_urls": [
+        "https://etc.xidian.edu.cn/index/tzgg.htm",
+        "https://etc.xidian.edu.cn/kjcx/jsl.htm"
+      ],
+      "enabled": true,
+      "allow_robots_unavailable": true
+    },
+    {
+      "id": "S09",
+      "name": "党委研究生工作部",
+      "group": "学业与校园服务",
+      "url": "https://ygb.xidian.edu.cn/",
+      "allowed_hosts": [
+        "ygb.xidian.edu.cn"
+      ],
+      "seed_urls": [
+        "https://ygb.xidian.edu.cn/tzgg.htm",
+        "https://ygb.xidian.edu.cn/gsxx.htm",
+        "https://ygb.xidian.edu.cn/hdyg.htm",
+        "https://ygb.xidian.edu.cn/ytzm1/cxsjxlds.htm"
+      ],
+      "enabled": true,
+      "allow_robots_unavailable": true
+    },
+    {
+      "id": "S10",
+      "name": "研究生院",
+      "group": "学业与校园服务",
+      "url": "https://gr.xidian.edu.cn/",
+      "allowed_hosts": [
+        "gr.xidian.edu.cn"
+      ],
+      "seed_urls": [
+        "https://gr.xidian.edu.cn/xwsy/tzgg.htm"
+      ],
+      "enabled": false
+    },
+    {
+      "id": "S11",
+      "name": "就业信息网",
+      "group": "学业与校园服务",
+      "url": "https://job.xidian.edu.cn/",
+      "allowed_hosts": [
+        "job.xidian.edu.cn"
+      ],
+      "seed_urls": [
+        "https://job.xidian.edu.cn/news/index/tag/tzgg"
+      ],
+      "enabled": false
+    },
+    {
+      "id": "S12",
+      "name": "图书馆",
+      "group": "学业与校园服务",
+      "url": "https://lib.xidian.edu.cn/",
+      "allowed_hosts": [
+        "lib.xidian.edu.cn"
+      ],
+      "seed_urls": [
+        "https://lib.xidian.edu.cn/"
+      ],
+      "enabled": false
+    },
+    {
+      "id": "S13",
+      "name": "体育部",
+      "group": "学业与校园服务",
+      "url": "https://tyb.xidian.edu.cn/",
+      "allowed_hosts": [
+        "tyb.xidian.edu.cn"
+      ],
+      "seed_urls": [
+        "https://tyb.xidian.edu.cn/ydjs/xnjs.htm"
+      ],
+      "enabled": false
+    },
+    {
+      "id": "S14",
+      "name": "心理健康教育中心",
+      "group": "学业与校园服务",
+      "url": "https://xl.xidian.edu.cn/",
+      "allowed_hosts": [
+        "xl.xidian.edu.cn"
+      ],
+      "seed_urls": [
+        "https://xl.xidian.edu.cn/tzgg.htm"
+      ],
+      "enabled": false
+    },
+    {
+      "id": "S15",
+      "name": "后勤保障部",
+      "group": "学业与校园服务",
+      "url": "https://hqbzb.xidian.edu.cn/",
+      "allowed_hosts": [
+        "hqbzb.xidian.edu.cn"
+      ],
+      "seed_urls": [
+        "https://hqbzb.xidian.edu.cn/tzgg.htm"
+      ],
+      "enabled": false
+    },
+    {
+      "id": "S16",
+      "name": "党委安全保卫部/保卫处",
+      "group": "学业与校园服务",
+      "url": "https://bwc.xidian.edu.cn/",
+      "allowed_hosts": [
+        "bwc.xidian.edu.cn"
+      ],
+      "seed_urls": [
+        "https://bwc.xidian.edu.cn/"
+      ],
+      "enabled": false
+    },
+    {
+      "id": "S17",
+      "name": "信息网络技术中心",
+      "group": "学业与校园服务",
+      "url": "https://xxzx.xidian.edu.cn/",
+      "allowed_hosts": [
+        "xxzx.xidian.edu.cn"
+      ],
+      "seed_urls": [
+        "https://xxzx.xidian.edu.cn/zxdt/xwgg.htm"
+      ],
+      "enabled": false
+    },
+    {
+      "id": "S18",
+      "name": "国际合作与交流处 / 港澳台事务办公室",
+      "group": "学业与校园服务",
+      "url": "https://oice.xidian.edu.cn/",
+      "allowed_hosts": [
+        "oice.xidian.edu.cn"
+      ],
+      "seed_urls": [
+        "https://oice.xidian.edu.cn/gjjyyfwzx/tzggykszx.htm"
+      ],
+      "enabled": false
+    },
+    {
+      "id": "S19",
+      "name": "本科生招生",
+      "group": "学业与校园服务",
+      "url": "https://zsb.xidian.edu.cn/",
+      "allowed_hosts": [
+        "zsb.xidian.edu.cn"
+      ],
+      "seed_urls": [
+        "https://zsb.xidian.edu.cn/"
+      ],
+      "enabled": false
+    },
+    {
+      "id": "S20",
+      "name": "校医院",
+      "group": "学业与校园服务",
+      "url": "https://xyy.xidian.edu.cn/",
+      "allowed_hosts": [
+        "xyy.xidian.edu.cn"
+      ],
+      "seed_urls": [
+        "https://xyy.xidian.edu.cn/ywgk/tzgg.htm"
+      ],
+      "enabled": false
+    },
+    {
+      "id": "S21",
+      "name": "通信工程学院",
+      "group": "其他学院与竞赛线索",
+      "url": "https://ste.xidian.edu.cn/",
+      "allowed_hosts": [
+        "ste.xidian.edu.cn"
+      ],
+      "seed_urls": [
+        "https://ste.xidian.edu.cn/"
+      ],
+      "enabled": false
+    },
+    {
+      "id": "S22",
+      "name": "电子工程学院",
+      "group": "其他学院与竞赛线索",
+      "url": "https://see.xidian.edu.cn/",
+      "allowed_hosts": [
+        "see.xidian.edu.cn"
+      ],
+      "seed_urls": [
+        "https://see.xidian.edu.cn/tzgg.htm",
+        "https://see.xidian.edu.cn/bks.htm"
+      ],
+      "enabled": false
+    },
+    {
+      "id": "S23",
+      "name": "计算机科学与技术学院",
+      "group": "其他学院与竞赛线索",
+      "url": "https://cs.xidian.edu.cn/",
+      "allowed_hosts": [
+        "cs.xidian.edu.cn"
+      ],
+      "seed_urls": [
+        "https://cs.xidian.edu.cn/xsgz1/tzgg.htm",
+        "https://cs.xidian.edu.cn/bkjy/kjjs.htm",
+        "https://cs.xidian.edu.cn/bkjy/jxtz.htm"
+      ],
+      "enabled": false
+    },
+    {
+      "id": "S24",
+      "name": "光电工程学院",
+      "group": "其他学院与竞赛线索",
+      "url": "https://soe.xidian.edu.cn/",
+      "allowed_hosts": [
+        "soe.xidian.edu.cn"
+      ],
+      "seed_urls": [
+        "https://soe.xidian.edu.cn/"
+      ],
+      "enabled": false
+    },
+    {
+      "id": "S25",
+      "name": "物理学院",
+      "group": "其他学院与竞赛线索",
+      "url": "https://phy.xidian.edu.cn/",
+      "allowed_hosts": [
+        "phy.xidian.edu.cn"
+      ],
+      "seed_urls": [
+        "https://phy.xidian.edu.cn/tzgg.htm"
+      ],
+      "enabled": false
+    },
+    {
+      "id": "S26",
+      "name": "经济与管理学院",
+      "group": "其他学院与竞赛线索",
+      "url": "https://sem.xidian.edu.cn/",
+      "allowed_hosts": [
+        "sem.xidian.edu.cn"
+      ],
+      "seed_urls": [
+        "https://sem.xidian.edu.cn/tzgg.htm",
+        "https://sem.xidian.edu.cn/xxgs.htm"
+      ],
+      "enabled": false
+    },
+    {
+      "id": "S27",
+      "name": "人文学院",
+      "group": "其他学院与竞赛线索",
+      "url": "https://rwxy.xidian.edu.cn/",
+      "allowed_hosts": [
+        "rwxy.xidian.edu.cn"
+      ],
+      "seed_urls": [
+        "https://rwxy.xidian.edu.cn/"
+      ],
+      "enabled": false
+    },
+    {
+      "id": "S28",
+      "name": "语言智能学部",
+      "group": "其他学院与竞赛线索",
+      "url": "https://sfl.xidian.edu.cn/",
+      "allowed_hosts": [
+        "sfl.xidian.edu.cn"
+      ],
+      "seed_urls": [
+        "https://sfl.xidian.edu.cn/"
+      ],
+      "enabled": false
+    },
+    {
+      "id": "S29",
+      "name": "集成电路学部 / 微电子学院",
+      "group": "其他学院与竞赛线索",
+      "url": "https://sme.xidian.edu.cn/index.html",
+      "allowed_hosts": [
+        "sme.xidian.edu.cn"
+      ],
+      "seed_urls": [
+        "https://sme.xidian.edu.cn/plus/list.php?tid=6"
+      ],
+      "enabled": false
+    },
+    {
+      "id": "S30",
+      "name": "生命科学技术学院",
+      "group": "其他学院与竞赛线索",
+      "url": "https://life.xidian.edu.cn/",
+      "allowed_hosts": [
+        "life.xidian.edu.cn"
+      ],
+      "seed_urls": [
+        "https://life.xidian.edu.cn/tzgg.htm"
+      ],
+      "enabled": false
+    },
+    {
+      "id": "S31",
+      "name": "空间科学与技术学院",
+      "group": "其他学院与竞赛线索",
+      "url": "https://sast.xidian.edu.cn/",
+      "allowed_hosts": [
+        "sast.xidian.edu.cn"
+      ],
+      "seed_urls": [
+        "https://sast.xidian.edu.cn/xszj/tzgg.htm",
+        "https://sast.xidian.edu.cn/bkjy/xsjs.htm"
+      ],
+      "enabled": false
+    },
+    {
+      "id": "S32",
+      "name": "先进材料与纳米科技学院",
+      "group": "其他学院与竞赛线索",
+      "url": "https://amn.xidian.edu.cn/",
+      "allowed_hosts": [
+        "amn.xidian.edu.cn"
+      ],
+      "seed_urls": [
+        "https://amn.xidian.edu.cn/"
+      ],
+      "enabled": false
+    },
+    {
+      "id": "S33",
+      "name": "网络与信息安全学院（目录标为网络安全与密码学部）",
+      "group": "其他学院与竞赛线索",
+      "url": "https://ce.xidian.edu.cn/",
+      "allowed_hosts": [
+        "ce.xidian.edu.cn"
+      ],
+      "seed_urls": [
+        "https://ce.xidian.edu.cn/sy/xsgz/tzgg.htm",
+        "https://ce.xidian.edu.cn/sy/bkjy/jxtz.htm"
+      ],
+      "enabled": false
+    },
+    {
+      "id": "S34",
+      "name": "人工智能学院",
+      "group": "其他学院与竞赛线索",
+      "url": "https://sai.xidian.edu.cn/",
+      "allowed_hosts": [
+        "sai.xidian.edu.cn"
+      ],
+      "seed_urls": [
+        "https://sai.xidian.edu.cn/tzgg.htm",
+        "https://sai.xidian.edu.cn/bkjx1/xkjs.htm"
+      ],
+      "enabled": false
+    },
+    {
+      "id": "S35",
+      "name": "信息力学与感知工程学院",
+      "group": "其他学院与竞赛线索",
+      "url": "https://imse.xidian.edu.cn/",
+      "allowed_hosts": [
+        "imse.xidian.edu.cn"
+      ],
+      "seed_urls": [
+        "https://imse.xidian.edu.cn/"
+      ],
+      "enabled": false
+    },
+    {
+      "id": "S36",
+      "name": "国家卓越工程师学院",
+      "group": "其他学院与竞赛线索",
+      "url": "https://ncee.xidian.edu.cn/",
+      "allowed_hosts": [
+        "ncee.xidian.edu.cn"
+      ],
+      "seed_urls": [
+        "https://ncee.xidian.edu.cn/xwdt/tzgg.htm"
+      ],
+      "enabled": false
+    },
+    {
+      "id": "S37",
+      "name": "数学与交叉科学研究院",
+      "group": "其他学院与竞赛线索",
+      "url": "https://imis.xidian.edu.cn/",
+      "allowed_hosts": [
+        "imis.xidian.edu.cn"
+      ],
+      "seed_urls": [
+        "https://imis.xidian.edu.cn/index/tzgg.htm",
+        "https://imis.xidian.edu.cn/xshd1/xlbg.htm"
+      ],
+      "enabled": false
+    },
+    {
+      "id": "S38",
+      "name": "学校通知公告门户",
+      "group": "重点关注",
+      "url": "https://notice.xidian.edu.cn/",
+      "allowed_hosts": [
+        "notice.xidian.edu.cn"
+      ],
+      "seed_urls": [
+        "https://notice.xidian.edu.cn/2016lanmuye.jsp?urltype=tree.TreeTempUrl&wbtreeid=1227",
+        "https://notice.xidian.edu.cn/2016lanmuye.jsp?urltype=tree.TreeTempUrl&wbtreeid=1235"
+      ],
+      "enabled": true,
+      "allow_robots_unavailable": true
+    },
+    {
+      "id": "S40",
+      "name": "创新创业训练计划平台",
+      "group": "竞赛与项目补充",
+      "url": "http://cxcycs.xidian.edu.cn/",
+      "allowed_hosts": [
+        "cxcycs.xidian.edu.cn"
+      ],
+      "seed_urls": [
+        "http://cxcycs.xidian.edu.cn/"
+      ],
+      "enabled": false
+    },
+    {
+      "id": "S41",
+      "name": "西电 ACM 竞赛网",
+      "group": "竞赛与项目补充",
+      "url": "https://acm.xidian.edu.cn/",
+      "allowed_hosts": [
+        "acm.xidian.edu.cn"
+      ],
+      "seed_urls": [
+        "https://acm.xidian.edu.cn/"
+      ],
+      "enabled": false
+    },
+    {
+      "id": "S42",
+      "name": "全国大学生数学建模竞赛（校外官网）",
+      "group": "校外赛事补充",
+      "url": "https://www.mcm.edu.cn/",
+      "allowed_hosts": [
+        "www.mcm.edu.cn"
+      ],
+      "seed_urls": [
+        "https://www.mcm.edu.cn/"
+      ],
+      "enabled": false
+    },
+    {
+      "id": "S43",
+      "name": "中国研究生数学建模竞赛（校外官网）",
+      "group": "校外赛事补充",
+      "url": "https://cpipc.acge.org.cn/cw/hp/4",
+      "allowed_hosts": [
+        "cpipc.acge.org.cn"
+      ],
+      "seed_urls": [
+        "https://cpipc.acge.org.cn/cw/hp/4"
+      ],
+      "enabled": false
+    },
+    {
+      "id": "S44",
+      "name": "综合信息网",
+      "group": "重点关注",
+      "url": "https://info.xidian.edu.cn/",
+      "allowed_hosts": [
+        "info.xidian.edu.cn"
+      ],
+      "seed_urls": [
+        "https://info.xidian.edu.cn/"
+      ],
+      "enabled": true,
+      "allow_robots_unavailable": true
+    },
+    {
+      "id": "S45",
+      "name": "一网通办",
+      "group": "需另行确认的登录入口",
+      "url": "https://ywtb.xidian.edu.cn/",
+      "allowed_hosts": [
+        "ywtb.xidian.edu.cn"
+      ],
+      "seed_urls": [
+        "https://ywtb.xidian.edu.cn/"
+      ],
+      "enabled": false
+    },
+    {
+      "id": "S46",
+      "name": "教务系统",
+      "group": "需另行确认的登录入口",
+      "url": "https://ehall.xidian.edu.cn/new/index_xd.html",
+      "allowed_hosts": [
+        "ehall.xidian.edu.cn"
+      ],
+      "seed_urls": [
+        "https://ehall.xidian.edu.cn/new/index_xd.html"
+      ],
+      "enabled": false
+    },
+    {
+      "id": "S47",
+      "name": "学工系统",
+      "group": "需另行确认的登录入口",
+      "url": "https://xgxt.xidian.edu.cn/",
+      "allowed_hosts": [
+        "xgxt.xidian.edu.cn"
+      ],
+      "seed_urls": [
+        "https://xgxt.xidian.edu.cn/"
+      ],
+      "enabled": false
+    }
+  ]
+}

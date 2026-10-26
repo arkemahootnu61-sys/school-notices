@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="referrer" content="no-referrer">
+  <title>西电 · 通知雷达</title>
+  <link rel="icon" href="/favicon.ico">
+  <link rel="stylesheet" href="console.css">
+  <script src="console.js" defer></script>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <div class="brand">XIDIAN / NOTICE RADAR</div>
+    <h1>关心的通知，一处查看。</h1>
+    <p>手动采集已选来源，保留近期成功收录的通知。失败不等于没有更新；来源覆盖情况会逐项列出。</p>
+    <div class="actions">
+      <label class="mode-label" for="mode">读取模式<select id="mode"><option value="auto">自动（HTTP / 专用 Chrome 后备）</option><option value="http">仅 HTTP</option><option value="browser">仅专用 Chrome</option></select></label>
+      <label class="days-label" for="days">采集 / 浏览范围<select id="days"><option value="7">最近 7 天（一周）</option><option value="15">最近 15 天（半个月）</option><option value="30" selected>最近 30 天</option><option value="90">最近 90 天</option><option value="0">不限日期</option></select></label>
+      <button id="collect" class="button primary" type="button" disabled>开始采集</button>
+      <button id="login" class="button" type="button" disabled>学校登录</button>
+      <button id="cancel" class="button" type="button" disabled>停止</button>
+      <button id="shutdown" class="button quiet" type="button" disabled>关闭控制台</button>
+    </div>
+    <p class="service-note">仅在你点击时采集，无定时任务。上方时间范围用于本轮采集和近期通知浏览，日期未知项单独保留。关闭标签页不会停止服务；离开时请点击“关闭控制台”。</p>
+  </div>
+</header>
+<main class="wrap">
+  <div id="connection-message" class="notice" role="alert" hidden></div>
+  <div id="action-message" class="notice" role="status" aria-live="polite" hidden></div>
+  <section class="panel" aria-labelledby="run-heading">
+    <div class="section-heading"><h2 id="run-heading">采集与覆盖</h2><button id="refresh" class="button small" type="button" disabled>刷新本地数据</button></div>
+    <div id="run-summary" class="notice neutral" role="status">正在连接本地控制台…</div>
+    <div id="job" data-status="idle" data-type="" data-id="" aria-live="polite">
+      <p id="job-status">当前无任务</p>
+      <progress id="job-progress" max="1" value="0" aria-label="来源完成进度"></progress>
+      <p id="progress-text" class="help"></p>
+    </div>
+    <div id="login-panel" class="inset" hidden>
+      <p>在专用 Chrome 中由本人登录，并访问目标站点。完成后点击保存；保存成功仅表示会话已保存，不保证全部站点认证成功。</p>
+      <button id="login-finish" class="button primary" type="button" disabled>我已完成登录，保存并关闭</button>
+    </div>
+    <label class="login-target" for="login-source">登录目标<select id="login-source"><option value="">统一身份认证入口</option></select></label>
+    <p id="session-status" class="help"></p>
+    <details id="coverage-details"><summary>查看各来源覆盖与原因</summary><div id="coverage" class="coverage-grid"></div></details>
+    <details><summary>最近任务消息（最多 100 条）</summary><ol id="job-logs" class="logs"></ol></details>
+  </section>
+  <section class="panel" aria-labelledby="notices-heading">
+    <div class="section-heading"><h2 id="notices-heading">通知汇总</h2><span class="help">“已收录”不代表你已读</span></div>
+    <div class="filters">
+      <label for="view">查看<select id="view"><option value="recent">近期通知</option><option value="changes">本次发现 / 变化</option></select></label>
+      <label class="search-label" for="search">搜索<input id="search" type="search" placeholder="标题、摘要或来源" autocomplete="off"></label>
+      <label for="source-filter">来源<select id="source-filter"><option value="">全部已存来源</option></select></label>
+    </div>
+    <p class="help">日期未知的通知仍保留。关闭来源只影响后续采集，不删除历史；本次变化是最近一次已提交采集的增量，不是全部通知。</p>
+    <div id="notices-message" class="notice" role="alert" hidden></div>
+    <p id="notice-count" class="count" role="status" aria-live="polite"></p>
+    <div id="notices" class="notice-grid" data-total="0" data-offset="0" data-loading="false" aria-busy="false"></div>
+    <div id="empty-notices" class="empty" hidden></div>
+    <nav class="pagination" aria-label="通知分页"><button id="previous" class="button" type="button" disabled>上一页</button><span id="page-label">每页 50 条</span><button id="next" class="button" type="button" disabled>下一页</button></nav>
+  </section>
+  <section class="panel" aria-labelledby="sources-heading">
+    <div class="section-heading"><h2 id="sources-heading">来源设置</h2><button id="reload-sources" class="button small" type="button" disabled>重新载入磁盘配置</button></div>
+    <p class="help">可修改网站或通知栏目网址，再点“保存来源”。规则许可默认关闭；只有本人明确开启，才在规则连接失败 / 超时 / 空响应时继续公开通知采集，并标注“规则未核实”。明确禁止、401/403、登录和验证码仍拦截。修改网址会关闭原许可，需重新确认；历史通知不删除。</p>
+    <div id="sources-message" class="notice" role="status" aria-live="polite" hidden></div>
+    <div class="selection-bar"><span id="selection-count"></span><button id="save-sources" class="button primary" type="button" disabled>保存来源</button></div>
+    <div id="sources" class="source-grid"></div>
+    <div class="inset add-source">
+      <h3>手动添加普通入口</h3>
+      <form id="add-form">
+        <label for="add-name">名称<input id="add-name" required maxlength="80" placeholder="例如：某学院通知"></label>
+        <label for="add-url">网址<input id="add-url" type="url" required placeholder="https://…"></label>
+        <button id="add-source" class="button" type="submit" disabled>添加并保存</button>
+      </form>
+      <p class="help">仅保存入口，不立即请求网站。不要粘贴含密码、登录票据、一次性验证码的链接，不接收 Cookie 或请求头。请先保存未保存的勾选。</p>
+    </div>
+  </section>
+</main>
+<footer class="wrap">校园网 / aTrust 限制需要本人连接学校授权网络，登录按钮不能修复网络准入。仅使用独立专用浏览器会话，不读取日常 Chrome 资料。</footer>
+</body>
+</html>

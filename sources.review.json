@@ -1,0 +1,2428 @@
+{
+  "stats": {
+    "sources": 46,
+    "school_sources": 44,
+    "columns": 51,
+    "verified_columns": 49,
+    "unique_pages_checked": 104,
+    "sample_links": 164,
+    "recommended_sources": 10,
+    "excluded_sources": [
+      "S39 西电新闻网"
+    ],
+    "content_scope": "通知、公告、公示、报名/选拔/赛程信息；不收新闻、校报、微博或获奖报道",
+    "checked_at_utc": "2026-10-24T13:13:30.100286+00:00"
+  },
+  "sources": [
+    {
+      "id": "S01",
+      "name": "机电工程学院",
+      "group": "重点关注",
+      "url": "https://eme.xidian.edu.cn/",
+      "directory_url": "http://eme.xidian.edu.cn/",
+      "discovered_from": "https://www.xidian.edu.cn/jgsz.htm",
+      "homepage_check": {
+        "status": 200,
+        "final_url": "https://eme.xidian.edu.cn/",
+        "title": "西安电子科技大学机电工程学院",
+        "checked_at": "2026-10-24T13:03:52.424066+00:00"
+      },
+      "access": "已读取公开栏目",
+      "note": "重点：学院通知、教育管理、学生活动、本科教学、研究生培养、学术报告。部分子栏目未识别出文章链接，需后续适配，不能当作没有更新。",
+      "content_scope": "只收通知、公告、公示与可行动的报名/选拔/赛程信息；排除新闻、宣传、微博、校报及获奖报道",
+      "recommended": true,
+      "columns": [
+        {
+          "source_id": "S01",
+          "name": "学院通知",
+          "url": "https://eme.xidian.edu.cn/tz.htm",
+          "discovered_from": "https://eme.xidian.edu.cn/",
+          "verified": true,
+          "title": "通知-西安电子科技大学机电工程学院",
+          "status": 200,
+          "error": null,
+          "access_hint": "",
+          "checked_at": "2026-10-24T13:07:11.493750+00:00"
+        },
+        {
+          "source_id": "S01",
+          "name": "教育管理",
+          "url": "https://eme.xidian.edu.cn/xsgz/jygl.htm",
+          "discovered_from": "https://eme.xidian.edu.cn/",
+          "verified": true,
+          "title": "教育管理-西安电子科技大学机电工程学院",
+          "status": 200,
+          "error": null,
+          "access_hint": "",
+          "checked_at": "2026-10-24T13:07:11.494751+00:00"
+        },
+        {
+          "source_id": "S01",
+          "name": "学生活动",
+          "url": "https://eme.xidian.edu.cn/xsgz/xshd.htm",
+          "discovered_from": "https://eme.xidian.edu.cn/",
+          "verified": true,
+          "title": "学生活动-西安电子科技大学机电工程学院",
+          "status": 200,
+          "error": null,
+          "access_hint": "",
+          "checked_at": "2026-10-24T13:07:11.495752+00:00"
+        },
+        {
+          "source_id": "S01",
+          "name": "本科教学",
+          "url": "https://eme.xidian.edu.cn/rcpy/bkjx.htm",
+          "discovered_from": "https://eme.xidian.edu.cn/",
+          "verified": true,
+          "title": "本科教学-西安电子科技大学机电工程学院",
+          "status": 200,
+          "error": null,
+          "access_hint": "",
+          "checked_at": "2026-10-24T13:07:11.540171+00:00"
+        },
+        {
+          "source_id": "S01",
+          "name": "研究生培养",
+          "url": "https://eme.xidian.edu.cn/rcpy/yjspy.htm",
+          "discovered_from": "https://eme.xidian.edu.cn/",
+          "verified": true,
+          "title": "研究生培养-西安电子科技大学机电工程学院",
+          "status": 200,
+          "error": null,
+          "access_hint": "",
+          "checked_at": "2026-10-24T13:07:13.127325+00:00"
+        },
+        {
+          "source_id": "S01",
+          "name": "学术报告",
+          "url": "https://eme.xidian.edu.cn/xsbg.htm",
+          "discovered_from": "https://eme.xidian.edu.cn/",
+          "verified": true,
+          "title": "学术报告-西安电子科技大学机电工程学院",
+          "status": 200,
+          "error": null,
+          "access_hint": "",
+          "checked_at": "2026-10-24T13:07:15.181771+00:00"
+        }
+      ],
+      "samples": [
+        {
+          "title": "西安电子科技大学机电工程学院/国家级科技创新基地2026年度教师岗位招聘公告 西安电子科技大学机电工程学院/国家级科技创新基地2026年度教师岗位招聘公告2026-01-06",
+          "url": "https://eme.xidian.edu.cn/info/1012/14226.htm",
+          "listed_on": "https://eme.xidian.edu.cn/tz.htm"
+        },
+        {
+          "title": "科研协作项目公示信息 科研协作项目公示信息2026-10-21",
+          "url": "https://eme.xidian.edu.cn/info/1012/16656.htm",
+          "listed_on": "https://eme.xidian.edu.cn/tz.htm"
+        },
+        {
+          "title": "科研协作项目公示信息 科研协作项目公示信息2026-10-20",
+          "url": "https://eme.xidian.edu.cn/info/1012/16646.htm",
+          "listed_on": "https://eme.xidian.edu.cn/tz.htm"
+        },
+        {
+          "title": "科研协作项目公示信息261019 科研协作项目公示信息2610192026-10-19",
+          "url": "https://eme.xidian.edu.cn/info/1012/16596.htm",
+          "listed_on": "https://eme.xidian.edu.cn/tz.htm"
+        },
+        {
+          "title": "科研协作项目公示信息 科研协作项目公示信息2026-10-16",
+          "url": "https://eme.xidian.edu.cn/info/1012/16566.htm",
+          "listed_on": "https://eme.xidian.edu.cn/tz.htm"
+        }
+      ]
+    },
+    {
+      "id": "S02",
+      "name": "数学与统计学院",
+      "group": "重点关注",
+      "url": "https://math.xidian.edu.cn/",
+      "directory_url": "http://math.xidian.edu.cn/",
+      "discovered_from": "https://www.xidian.edu.cn/jgsz.htm",
+      "homepage_check": {
+        "status": 200,
+        "final_url": "https://math.xidian.edu.cn/",
+        "title": "西安电子科技大学数学与统计学院",
+        "checked_at": "2026-10-24T13:03:52.424066+00:00"
+      },
+      "access": "已读取公开栏目",
+      "note": "重点：学院通知、公示、学工动态、教学动态和学术报告。主页的“教学竞赛”偏教师教学，不作为学生竞赛首选。",
+      "content_scope": "只收通知、公告、公示与可行动的报名/选拔/赛程信息；排除新闻、宣传、微博、校报及获奖报道",
+      "recommended": true,
+      "columns": [
+        {
+          "source_id": "S02",
+          "name": "通知公告",
+          "url": "https://math.xidian.edu.cn/xwgg/tzgg.htm",
+          "discovered_from": "https://math.xidian.edu.cn/",
+          "verified": true,
+          "title": "通知公告-西安电子科技大学数学与统计学院",
+          "status": 200,
+          "error": null,
+          "access_hint": "",
+          "checked_at": "2026-10-24T13:07:15.728861+00:00"
+        },
+        {
+          "source_id": "S02",
+          "name": "公示公告",
+          "url": "https://math.xidian.edu.cn/xwgg/gsgg.htm",
+          "discovered_from": "https://math.xidian.edu.cn/",
+          "verified": true,
+          "title": "公示公告-西安电子科技大学数学与统计学院",
+          "status": 200,
+          "error": null,
+          "access_hint": "",
+          "checked_at": "2026-10-24T13:07:16.772455+00:00"
+        },
+        {
+          "source_id": "S02",
+          "name": "学生工作",
+          "url": "https://math.xidian.edu.cn/xsgz/xgdt.htm",
+          "discovered_from": "https://math.xidian.edu.cn/",
+          "verified": true,
+          "title": "学工动态-西安电子科技大学数学与统计学院",
+          "status": 200,
+          "error": null,
+          "access_hint": "",
+          "checked_at": "2026-10-24T13:07:17.035004+00:00"
+        },
+        {
+          "source_id": "S02",
+          "name": "本科教学",
+          "url": "https://math.xidian.edu.cn/bkjx/jxdt.htm",
+          "discovered_from": "https://math.xidian.edu.cn/",
+          "verified": true,
+          "title": "教学动态-西安电子科技大学数学与统计学院",
+          "status": 200,
+          "error": null,
+          "access_hint": "",
+          "checked_at": "2026-10-24T13:07:17.756589+00:00"
+        },
+        {
+          "source_id": "S02",
+          "name": "学术报告",
+          "url": "https://math.xidian.edu.cn/xsbg.htm",
+          "discovered_from": "https://math.xidian.edu.cn/",
+          "verified": true,
+          "title": "学术报告-西安电子科技大学数学与统计学院",
+          "status": 200,
+          "error": null,
+          "access_hint": "",
+          "checked_at": "2026-10-24T13:07:18.488595+00:00"
+        }
+      ],
+      "samples": [
+        {
+          "title": "数学与统计学院关于开展2026级实验班选拔面试的通知 07 2026-09 数学与统计学院关于开展2026级实验班选拔面试的通知 数学与统计学院关于开展2026级实验班选拔面试的通知",
+          "url": "https://math.xidian.edu.cn/info/1020/23682.htm",
+          "listed_on": "https://math.xidian.edu.cn/xwgg/tzgg.htm"
+        },
+        {
+          "title": "数学与统计学院2027年推免生预报名工作安排 17 2026-07 数学与统计学院2027年推免生预报名工作安排 为做好我校推免生接收工作，根据相关文件要求，结合我院具体情况，对2027年推免生预报名工作安排如下：一、接收基本要求1.中华人民共和国公民；2.拥护中国共产党的领导，品德良好，遵纪守法；3.身体健康状况符合国家规定的体检要求；4.获得本科就读高校",
+          "url": "https://math.xidian.edu.cn/info/1020/23532.htm",
+          "listed_on": "https://math.xidian.edu.cn/xwgg/tzgg.htm"
+        },
+        {
+          "title": "关于做好2025级数学类学生专业分流​工作的通知 29 2026-06 关于做好2025级数学类学生专业分流​工作的通知 根据《西安电子科技大学大类招生学生分流转专业实施办法(试行)》(西电教〔2021〕20号)文件精神及学院有关安排，现将2025级数学类专业分流工作安排通知如下：分流对象2025级数学大类录取且未确定过专业的学生。（已选拔进入实验班的学生、",
+          "url": "https://math.xidian.edu.cn/info/1020/23432.htm",
+          "listed_on": "https://math.xidian.edu.cn/xwgg/tzgg.htm"
+        },
+        {
+          "title": "关于做好2024级与2025级信息数学拔尖班学生普通分流工作的通知 29 2026-06 关于做好2024级与2025级信息数学拔尖班学生普通分流工作的通知 为深化教育教学改革，强化学生学习内生动力，保障人才培养质量，根据《西安电子科技大学实验班分流与补录实施办法》（本字〔2025〕161 号），现将开展我院2024级与2025级信息数学拔尖班分流与补录工作",
+          "url": "https://math.xidian.edu.cn/info/1020/23422.htm",
+          "listed_on": "https://math.xidian.edu.cn/xwgg/tzgg.htm"
+        },
+        {
+          "title": "关于做好2023级信息数学拔尖班预推免分流工作的通知 29 2026-06 关于做好2023级信息数学拔尖班预推免分流工作的通知 为进一步深化教学改革，促进拔尖创新人才培养，按照学习成绩、综合素养和学术潜质并重的原则，现将开展2023级信息数学拔尖班学生分流工作，具体安排如下：一、分流原则1. 坚持公平、公正、公开的原则。2. 突出科研创新能力和综合素养考核",
+          "url": "https://math.xidian.edu.cn/info/1020/23412.htm",
+          "listed_on": "https://math.xidian.edu.cn/xwgg/tzgg.htm"
+        }
+      ]
+    },
+    {
+      "id": "S03",
+      "name": "教务处",
+      "group": "重点关注",
+      "url": "https://jwc.xidian.edu.cn/",
+      "directory_url": "http://jwc.xidian.edu.cn/",
+      "discovered_from": "https://www.xidian.edu.cn/jgsz.htm",
+      "homepage_check": {
+        "status": 200,
+        "final_url": "https://jwc.xidian.edu.cn/",
+        "title": "西安电子科技大学 教务处",
+        "checked_at": "2026-10-24T13:03:52.425065+00:00"
+      },
+      "access": "已读取公开栏目",
+      "note": "选课、考试、学籍、转专业、毕业设计等；部分通知面向教师，可后续加筛选。",
+      "content_scope": "只收通知、公告、公示与可行动的报名/选拔/赛程信息；排除新闻、宣传、微博、校报及获奖报道",
+      "recommended": true,
+      "columns": [
+        {
+          "source_id": "S03",
+          "name": "通知公告",
+          "url": "https://jwc.xidian.edu.cn/tzgg.htm",
+          "discovered_from": "https://jwc.xidian.edu.cn/",
+          "verified": true,
+          "title": "通知公告-西安电子科技大学 教务处",
+          "status": 200,
+          "error": null,
+          "access_hint": "",
+          "checked_at": "2026-10-24T13:07:18.615419+00:00"
+        }
+      ],
+      "samples": [
+        {
+          "title": "关于组织开展2026年校级高等教育（本科）教学成果奖申报工作的通知 关于组织开展2026年校级高等教育（本科）教学成果奖申报工作的通知 2026-10-13",
+          "url": "https://jwc.xidian.edu.cn/info/1012/23523.htm",
+          "listed_on": "https://jwc.xidian.edu.cn/tzgg.htm"
+        },
+        {
+          "title": "关于2026-2027学年第一学期 2026级学生转专业先修课程选课的通知 关于2026-2027学年第一学期 2026级学生转专业先修课程选课的通知2026-10-12",
+          "url": "https://jwc.xidian.edu.cn/2j-ce-nry.jsp?urltype=news.NewsContentUrl&wbtreeid=1012&wbnewsid=23513",
+          "listed_on": "https://jwc.xidian.edu.cn/tzgg.htm"
+        },
+        {
+          "title": "关于2026年度西安电子科技大学 学生体质健康测试安排的通知 关于2026年度西安电子科技大学 学生体质健康测试安排的通知2026-10-12",
+          "url": "https://jwc.xidian.edu.cn/info/1012/23503.htm",
+          "listed_on": "https://jwc.xidian.edu.cn/tzgg.htm"
+        },
+        {
+          "title": "关于开展2026~2027学年本科生学籍电子注册的通知 关于开展2026~2027学年本科生学籍电子注册的通知2026-10-10",
+          "url": "https://jwc.xidian.edu.cn/info/1012/23493.htm",
+          "listed_on": "https://jwc.xidian.edu.cn/tzgg.htm"
+        },
+        {
+          "title": "关于认真做好2026～2027学年第一学期期中考试工作的通知 关于认真做好2026～2027学年第一学期期中考试工作的通知2026-10-08",
+          "url": "https://jwc.xidian.edu.cn/info/1012/23453.htm",
+          "listed_on": "https://jwc.xidian.edu.cn/tzgg.htm"
+        }
+      ]
+    },
+    {
+      "id": "S04",
+      "name": "党委学生工作部 / 学生工作处",
+      "group": "重点关注",
+      "url": "https://xgc.xidian.edu.cn/",
+      "directory_url": "http://xgc.xidian.edu.cn/",
+      "discovered_from": "https://www.xidian.edu.cn/jgsz.htm",
+      "homepage_check": {
+        "status": 200,
+        "final_url": "https://xgc.xidian.edu.cn/",
+        "title": "西安电子科技大学-党委学生工作部/学生工作处",
+        "checked_at": "2026-10-24T13:03:52.456580+00:00"
+      },
+      "access": "已读取公开栏目",
+      "note": "奖助学金、评优、学生教育管理；这不是学生会的网站。",
+      "content_scope": "只收通知、公告、公示与可行动的报名/选拔/赛程信息；排除新闻、宣传、微博、校报及获奖报道",
+      "recommended": true,
+      "columns": [
+        {
+          "source_id": "S04",
+          "name": "通知公告",
+          "url": "https://xgc.xidian.edu.cn/tzgg1.htm",
+          "discovered_from": "https://xgc.xidian.edu.cn/",
+          "verified": true,
+          "title": "通知公告- 西安电子科技大学-党委学生工作部/学生工作处",
+          "status": 200,
+          "error": null,
+          "access_hint": "",
+          "checked_at": "2026-10-24T13:07:22.755215+00:00"
+        }
+      ],
+      "samples": [
+        {
+          "title": "关于对2026年度港澳及华侨学生奖学金、台湾学生奖学金拟推荐学生名单进行公示的通知",
+          "url": "https://xgc.xidian.edu.cn/info/1033/14474.htm",
+          "listed_on": "https://xgc.xidian.edu.cn/tzgg1.htm"
+        },
+        {
+          "title": "关于开展2026年本科生国家助学金评定工作的通知",
+          "url": "https://xgc.xidian.edu.cn/info/1033/14464.htm",
+          "listed_on": "https://xgc.xidian.edu.cn/tzgg1.htm"
+        },
+        {
+          "title": "关于对2025~2026学年本科生奖学金及荣誉称号拟获奖学生名单进行公示的通知",
+          "url": "https://xgc.xidian.edu.cn/info/1033/14444.htm",
+          "listed_on": "https://xgc.xidian.edu.cn/tzgg1.htm"
+        },
+        {
+          "title": "关于开展2026年度港澳及华侨学生奖学金、台湾学生奖学金评审工作的通知",
+          "url": "https://xgc.xidian.edu.cn/info/1033/14454.htm",
+          "listed_on": "https://xgc.xidian.edu.cn/tzgg1.htm"
+        },
+        {
+          "title": "关于报送2026年度服兵役学生国家教育资助申请材料的通知",
+          "url": "https://xgc.xidian.edu.cn/info/1033/14434.htm",
+          "listed_on": "https://xgc.xidian.edu.cn/tzgg1.htm"
+        }
+      ]
+    },
+    {
+      "id": "S05",
+      "name": "团委",
+      "group": "重点关注",
+      "url": "https://tw.xidian.edu.cn/",
+      "directory_url": "http://tw.xidian.edu.cn/",
+      "discovered_from": "https://www.xidian.edu.cn/jgsz.htm",
+      "homepage_check": {
+        "error": "URLError: <urlopen error [WinError 10054] 远程主机强迫关闭了一个现有的连接。>",
+        "checked_at": "2026-10-24T13:03:54.417232+00:00"
+      },
+      "access": "连接异常，待复核",
+      "note": "官网机构目录确认存在；本次 HTTPS 连接被重置、HTTP 返回 502，暂未核实栏目。不能据此断定网站失效。",
+      "content_scope": "只收通知、公告、公示与可行动的报名/选拔/赛程信息；排除新闻、宣传、微博、校报及获奖报道",
+      "recommended": true,
+      "columns": [],
+      "samples": []
+    },
+    {
+      "id": "S06",
+      "name": "创新创业学院",
+      "group": "重点关注",
+      "url": "https://ie.xidian.edu.cn/",
+      "directory_url": "http://ie.xidian.edu.cn/",
+      "discovered_from": "https://www.xidian.edu.cn/jgsz.htm",
+      "homepage_check": {
+        "status": 200,
+        "final_url": "https://ie.xidian.edu.cn/",
+        "title": "西安电子科技大学创新创业学院",
+        "checked_at": "2026-10-24T13:03:54.489460+00:00"
+      },
+      "access": "已读取公开栏目",
+      "note": "竞赛与创新创业通知的重要来源；仅保留公告通知和项目招募，不采集基地介绍、获奖喜报或活动报道。",
+      "content_scope": "只收通知、公告、公示与可行动的报名/选拔/赛程信息；排除新闻、宣传、微博、校报及获奖报道",
+      "recommended": true,
+      "columns": [
+        {
+          "source_id": "S06",
+          "name": "双创资讯",
+          "url": "https://ie.xidian.edu.cn/sczx/ggtz.htm",
+          "discovered_from": "https://ie.xidian.edu.cn/",
+          "verified": true,
+          "title": "公告通知-西安电子科技大学创新创业学院",
+          "status": 200,
+          "error": null,
+          "access_hint": "",
+          "checked_at": "2026-10-24T13:07:23.400412+00:00"
+        },
+        {
+          "source_id": "S06",
+          "name": "项目招募",
+          "url": "https://ie.xidian.edu.cn/cgzs/xmzm.htm",
+          "discovered_from": "https://ie.xidian.edu.cn/",
+          "verified": true,
+          "title": "项目招募-西安电子科技大学创新创业学院",
+          "status": 200,
+          "error": null,
+          "access_hint": "",
+          "checked_at": "2026-10-24T13:07:26.148204+00:00"
+        }
+      ],
+      "samples": [
+        {
+          "title": "关于2026“外研社·国才杯”“理解当代中国”全国大学生外语能力大赛英语组笔译校赛获奖名单的公示关于2026“外研社·国才杯”“理解当代中国”全国大学生外语能力大赛英语组笔译校赛获奖名单的公示2026-10-16",
+          "url": "https://ie.xidian.edu.cn/info/1006/6074.htm",
+          "listed_on": "https://ie.xidian.edu.cn/sczx/ggtz.htm"
+        },
+        {
+          "title": "关于组织开展2026中国大学生英语辩论赛（CUDC）校内选拔赛的通知关于组织开展2026中国大学生英语辩论赛（CUDC）校内选拔赛的通知2026-10-15",
+          "url": "https://ie.xidian.edu.cn/info/1006/6064.htm",
+          "listed_on": "https://ie.xidian.edu.cn/sczx/ggtz.htm"
+        },
+        {
+          "title": "关于举办大学生物理学术竞赛西电校赛的通知关于举办大学生物理学术竞赛西电校赛的通知2026-10-15",
+          "url": "https://ie.xidian.edu.cn/info/1006/6054.htm",
+          "listed_on": "https://ie.xidian.edu.cn/sczx/ggtz.htm"
+        },
+        {
+          "title": "关于面向全校征集2027年度校级大学生创新训练计划命题的通知关于面向全校征集2027年度校级大学生创新训练计划命题的通知2026-10-12",
+          "url": "https://ie.xidian.edu.cn/info/1006/6034.htm",
+          "listed_on": "https://ie.xidian.edu.cn/sczx/ggtz.htm"
+        },
+        {
+          "title": "关于2026“外研社·国才杯”“理解当代中国”全国大学生外语能力大赛英语组演讲赛项校级选拔赛获奖名单的公示关于2026“外研社·国才杯”“理解当代中国”全国大学生外语能力大赛英语组演讲赛项校级选拔赛获奖名单的公示2026-09-30",
+          "url": "https://ie.xidian.edu.cn/info/1006/6024.htm",
+          "listed_on": "https://ie.xidian.edu.cn/sczx/ggtz.htm"
+        }
+      ]
+    },
+    {
+      "id": "S07",
+      "name": "本科生院",
+      "group": "重点关注",
+      "url": "https://bksy.xidian.edu.cn/",
+      "directory_url": "http://bksy.xidian.edu.cn/",
+      "discovered_from": "https://www.xidian.edu.cn/jgsz.htm",
+      "homepage_check": {
+        "status": 200,
+        "final_url": "https://bksy.xidian.edu.cn/",
+        "title": "本科生院 西安电子科技大学",
+        "checked_at": "2026-10-24T13:03:54.972674+00:00"
+      },
+      "access": "已读取公开栏目",
+      "note": "本科生相关综合通知。",
+      "content_scope": "只收通知、公告、公示与可行动的报名/选拔/赛程信息；排除新闻、宣传、微博、校报及获奖报道",
+      "recommended": true,
+      "columns": [
+        {
+          "source_id": "S07",
+          "name": "通知公告",
+          "url": "https://bksy.xidian.edu.cn/tzgg.htm",
+          "discovered_from": "https://bksy.xidian.edu.cn/",
+          "verified": true,
+          "title": "通知公告-本科生院 西安电子科技大学",
+          "status": 200,
+          "error": null,
+          "access_hint": "公开页面可读取；通知详情与附件权限需分别确认",
+          "checked_at": "2026-10-24T13:13:28.762054+00:00"
+        }
+      ],
+      "samples": [
+        {
+          "title": "本科生院关于2026～2028年度专业技术职务分级申报材...",
+          "url": "https://bksy.xidian.edu.cn/info/1003/33702.htm",
+          "listed_on": "https://bksy.xidian.edu.cn/tzgg.htm"
+        },
+        {
+          "title": "关于开展2026年本科生国家助学金评定工作的通知",
+          "url": "https://bksy.xidian.edu.cn/info/1003/36322.htm",
+          "listed_on": "https://bksy.xidian.edu.cn/tzgg.htm"
+        },
+        {
+          "title": "关于举办大学生物理学术竞赛西电校赛的通知",
+          "url": "https://bksy.xidian.edu.cn/info/1003/36272.htm",
+          "listed_on": "https://bksy.xidian.edu.cn/tzgg.htm"
+        },
+        {
+          "title": "关于面向全校征集2027年度校级大学生创新训练计划命...",
+          "url": "https://bksy.xidian.edu.cn/info/1003/36132.htm",
+          "listed_on": "https://bksy.xidian.edu.cn/tzgg.htm"
+        },
+        {
+          "title": "关于开展2026~2027学年本科生学籍电子注册的通知",
+          "url": "https://bksy.xidian.edu.cn/info/1003/36102.htm",
+          "listed_on": "https://bksy.xidian.edu.cn/tzgg.htm"
+        }
+      ]
+    },
+    {
+      "id": "S08",
+      "name": "工程训练中心",
+      "group": "重点关注",
+      "url": "https://etc.xidian.edu.cn/",
+      "directory_url": "https://etc.xidian.edu.cn/index.htm",
+      "discovered_from": "https://www.xidian.edu.cn/jgsz.htm",
+      "homepage_check": {
+        "status": 200,
+        "final_url": "https://etc.xidian.edu.cn/",
+        "title": "西安电子科技大学工程实训中心",
+        "checked_at": "2026-10-24T13:03:55.713295+00:00"
+      },
+      "access": "已读取公开栏目",
+      "note": "工程训练、创新实践、竞赛类通知。",
+      "content_scope": "只收通知、公告、公示与可行动的报名/选拔/赛程信息；排除新闻、宣传、微博、校报及获奖报道",
+      "recommended": true,
+      "columns": [
+        {
+          "source_id": "S08",
+          "name": "通知公告",
+          "url": "https://etc.xidian.edu.cn/index/tzgg.htm",
+          "discovered_from": "https://etc.xidian.edu.cn/",
+          "verified": true,
+          "title": "通知公告-西安电子科技大学工程实训中心",
+          "status": 200,
+          "error": null,
+          "access_hint": "",
+          "checked_at": "2026-10-24T13:07:27.493673+00:00"
+        },
+        {
+          "source_id": "S08",
+          "name": "科技创新",
+          "url": "https://etc.xidian.edu.cn/kjcx/jsl.htm",
+          "discovered_from": "https://etc.xidian.edu.cn/",
+          "verified": true,
+          "title": "竞赛类-西安电子科技大学工程实训中心",
+          "status": 200,
+          "error": null,
+          "access_hint": "",
+          "checked_at": "2026-10-24T13:07:27.884991+00:00"
+        }
+      ],
+      "samples": [
+        {
+          "title": "2025年中国大学生工程实践与创新能力大赛报名通知 2025年中国大学生工程实践与创新能力大赛报名通知",
+          "url": "https://etc.xidian.edu.cn/info/1047/2162.htm",
+          "listed_on": "https://etc.xidian.edu.cn/index/tzgg.htm"
+        },
+        {
+          "title": "关于举办新质生产力与数智工程创新育人体系研讨会的通知",
+          "url": "https://etc.xidian.edu.cn/info/1047/2150.htm",
+          "listed_on": "https://etc.xidian.edu.cn/index/tzgg.htm"
+        },
+        {
+          "title": "中国机器人及人工智能大赛赛前专家指导活动通知",
+          "url": "https://etc.xidian.edu.cn/info/1047/2130.htm",
+          "listed_on": "https://etc.xidian.edu.cn/index/tzgg.htm"
+        },
+        {
+          "title": "关于西安电子科技大学第十一届全国大学生机械创新设计大赛校内选拔赛在工程训练中心举办的通知关于西安电子科技大学第十一届全国大学生机械创新设计大赛校内选拔赛在工程训练中心举...",
+          "url": "https://etc.xidian.edu.cn/info/1047/2120.htm",
+          "listed_on": "https://etc.xidian.edu.cn/index/tzgg.htm"
+        },
+        {
+          "title": "2024年工程训练中心寒假放假及工作安排的通知",
+          "url": "https://etc.xidian.edu.cn/info/1047/2106.htm",
+          "listed_on": "https://etc.xidian.edu.cn/index/tzgg.htm"
+        }
+      ]
+    },
+    {
+      "id": "S09",
+      "name": "党委研究生工作部",
+      "group": "学业与校园服务",
+      "url": "https://ygb.xidian.edu.cn/",
+      "directory_url": "https://ygb.xidian.edu.cn/",
+      "discovered_from": "https://www.xidian.edu.cn/jgsz.htm",
+      "homepage_check": {
+        "status": 200,
+        "final_url": "https://ygb.xidian.edu.cn/",
+        "title": "西安电子科技大学-党委研究生工作部",
+        "checked_at": "2026-10-24T13:03:57.168282+00:00"
+      },
+      "access": "已读取公开栏目",
+      "note": "研究生通知、公示、活动预告与创新实践系列大赛；本科生可只保留竞赛部分。",
+      "content_scope": "只收通知、公告、公示与可行动的报名/选拔/赛程信息；排除新闻、宣传、微博、校报及获奖报道",
+      "recommended": true,
+      "columns": [
+        {
+          "source_id": "S09",
+          "name": "通知公告",
+          "url": "https://ygb.xidian.edu.cn/tzgg.htm",
+          "discovered_from": "https://ygb.xidian.edu.cn/",
+          "verified": true,
+          "title": "通知公告-西安电子科技大学-党委研究生工作部",
+          "status": 200,
+          "error": null,
+          "access_hint": "",
+          "checked_at": "2026-10-24T13:07:28.591146+00:00"
+        },
+        {
+          "source_id": "S09",
+          "name": "公示信息",
+          "url": "https://ygb.xidian.edu.cn/gsxx.htm",
+          "discovered_from": "https://ygb.xidian.edu.cn/",
+          "verified": true,
+          "title": "公示信息-西安电子科技大学-党委研究生工作部",
+          "status": 200,
+          "error": null,
+          "access_hint": "",
+          "checked_at": "2026-10-24T13:07:28.846296+00:00"
+        },
+        {
+          "source_id": "S09",
+          "name": "活动预告",
+          "url": "https://ygb.xidian.edu.cn/hdyg.htm",
+          "discovered_from": "https://ygb.xidian.edu.cn/",
+          "verified": true,
+          "title": "活动预告-西安电子科技大学-党委研究生工作部",
+          "status": 200,
+          "error": null,
+          "access_hint": "",
+          "checked_at": "2026-10-24T13:07:29.375348+00:00"
+        },
+        {
+          "source_id": "S09",
+          "name": "创新实践系列大赛",
+          "url": "https://ygb.xidian.edu.cn/ytzm1/cxsjxlds.htm",
+          "discovered_from": "https://ygb.xidian.edu.cn/",
+          "verified": true,
+          "title": "创新实践系列大赛-西安电子科技大学-党委研究生工作部",
+          "status": 200,
+          "error": null,
+          "access_hint": "",
+          "checked_at": "2026-10-24T13:07:29.882489+00:00"
+        }
+      ],
+      "samples": [
+        {
+          "title": "关于开展2025～2026学年研究生评优工作的通知",
+          "url": "https://ygb.xidian.edu.cn/info/1036/13743.htm",
+          "listed_on": "https://ygb.xidian.edu.cn/tzgg.htm"
+        },
+        {
+          "title": "关于申请2026~2027学年“特困研究生专项资助”的通知",
+          "url": "https://ygb.xidian.edu.cn/info/1036/13563.htm",
+          "listed_on": "https://ygb.xidian.edu.cn/tzgg.htm"
+        },
+        {
+          "title": "关于开展2026～2027学年（秋季）研究生学业奖学金评定工作的通知",
+          "url": "https://ygb.xidian.edu.cn/info/1036/13553.htm",
+          "listed_on": "https://ygb.xidian.edu.cn/tzgg.htm"
+        },
+        {
+          "title": "关于开展2026年研究生国家奖学金评审工作的通知",
+          "url": "https://ygb.xidian.edu.cn/info/1036/13543.htm",
+          "listed_on": "https://ygb.xidian.edu.cn/tzgg.htm"
+        },
+        {
+          "title": "关于开展2025～2026学年研究生学年总评工作的通知",
+          "url": "https://ygb.xidian.edu.cn/info/1036/13523.htm",
+          "listed_on": "https://ygb.xidian.edu.cn/tzgg.htm"
+        }
+      ]
+    },
+    {
+      "id": "S10",
+      "name": "研究生院",
+      "group": "学业与校园服务",
+      "url": "https://gr.xidian.edu.cn/",
+      "directory_url": "http://gr.xidian.edu.cn/",
+      "discovered_from": "https://www.xidian.edu.cn/jgsz.htm",
+      "homepage_check": {
+        "status": 200,
+        "final_url": "https://gr.xidian.edu.cn/",
+        "title": "研究生院-西安电子科技大学",
+        "checked_at": "2026-10-24T13:03:57.328496+00:00"
+      },
+      "access": "已读取公开栏目",
+      "note": "研究生培养、学位、招生等；不需要时可以删除。",
+      "content_scope": "只收通知、公告、公示与可行动的报名/选拔/赛程信息；排除新闻、宣传、微博、校报及获奖报道",
+      "recommended": false,
+      "columns": [
+        {
+          "source_id": "S10",
+          "name": "通知公告",
+          "url": "https://gr.xidian.edu.cn/xwsy/tzgg.htm",
+          "discovered_from": "https://gr.xidian.edu.cn/",
+          "verified": true,
+          "title": "通知公告-研究生院-西安电子科技大学",
+          "status": 200,
+          "error": null,
+          "access_hint": "",
+          "checked_at": "2026-10-24T13:07:30.021045+00:00"
+        }
+      ],
+      "samples": [
+        {
+          "title": "关于申报2026年秋季优秀博士学位论文资助基金的通知",
+          "url": "https://gr.xidian.edu.cn/info/1044/20724.htm",
+          "listed_on": "https://gr.xidian.edu.cn/xwsy/tzgg.htm"
+        },
+        {
+          "title": "关于对2026年9月申请授位研究生学位论文进行抽查评估的通知",
+          "url": "https://gr.xidian.edu.cn/info/1044/20484.htm",
+          "listed_on": "https://gr.xidian.edu.cn/xwsy/tzgg.htm"
+        },
+        {
+          "title": "关于开展2026年度中国人工智能学会博士学位论文激励计划推荐工作的通知",
+          "url": "https://gr.xidian.edu.cn/info/1044/20354.htm",
+          "listed_on": "https://gr.xidian.edu.cn/xwsy/tzgg.htm"
+        },
+        {
+          "title": "关于开展2026年度中国通信学会博士硕士学位论文激励计划推荐工作的通知",
+          "url": "https://gr.xidian.edu.cn/info/1044/20194.htm",
+          "listed_on": "https://gr.xidian.edu.cn/xwsy/tzgg.htm"
+        },
+        {
+          "title": "关于开展2026年度中国指挥与控制学会博士学位论文激励计划推荐工作的通知",
+          "url": "https://gr.xidian.edu.cn/info/1044/20094.htm",
+          "listed_on": "https://gr.xidian.edu.cn/xwsy/tzgg.htm"
+        }
+      ]
+    },
+    {
+      "id": "S11",
+      "name": "就业信息网",
+      "group": "学业与校园服务",
+      "url": "https://job.xidian.edu.cn/",
+      "directory_url": "https://job.xidian.edu.cn/",
+      "discovered_from": "https://www.xidian.edu.cn/jgsz.htm",
+      "homepage_check": {
+        "status": 200,
+        "final_url": "https://job.xidian.edu.cn/",
+        "title": "西安电子科技大学就业信息网",
+        "checked_at": "2026-10-24T13:03:59.348540+00:00"
+      },
+      "access": "已读取公开栏目",
+      "note": "官方目录发现，本次已检查首页；后续仅取通知公告，不采集新闻、宣传或活动回顾。是否保留由用户按需要决定。",
+      "content_scope": "只收通知、公告、公示与可行动的报名/选拔/赛程信息；排除新闻、宣传、微博、校报及获奖报道",
+      "recommended": false,
+      "columns": [
+        {
+          "source_id": "S11",
+          "name": "通知公告",
+          "url": "http://job.xidian.edu.cn/news/index/tag/tzgg",
+          "discovered_from": "https://job.xidian.edu.cn/",
+          "verified": true,
+          "title": "通知公告 - 西安电子科技大学",
+          "status": 200,
+          "error": null,
+          "access_hint": "",
+          "checked_at": "2026-10-24T13:07:30.129394+00:00"
+        }
+      ],
+      "samples": [
+        {
+          "title": "招聘指南",
+          "url": "https://job.xidian.edu.cn/news/view/tag/zpsc",
+          "listed_on": "http://job.xidian.edu.cn/news/index/tag/tzgg"
+        },
+        {
+          "title": "2026-10-21【邀请函】信息通讯与互联网行业2026年秋季招聘会暨西安电子科技大学秋季双选会",
+          "url": "http://job.xidian.edu.cn/news/view/aid/338434/tag/tzgg",
+          "listed_on": "https://job.xidian.edu.cn/"
+        },
+        {
+          "title": "2026-10-15【选调生招录】江西省2027年度面向西安电子科技大学选调应届优秀大学毕业生公告",
+          "url": "http://job.xidian.edu.cn/news/view/aid/338433/tag/tzgg",
+          "listed_on": "https://job.xidian.edu.cn/"
+        },
+        {
+          "title": "2026-10-09【选调生招录】2027年度浙江省党政机关选调应届优秀大学毕业生公告",
+          "url": "http://job.xidian.edu.cn/news/view/aid/338431/tag/tzgg",
+          "listed_on": "https://job.xidian.edu.cn/"
+        },
+        {
+          "title": "2026-10-08【选调生招录】山东省2027年度选拔录用选调生公告",
+          "url": "http://job.xidian.edu.cn/news/view/aid/338430/tag/tzgg",
+          "listed_on": "https://job.xidian.edu.cn/"
+        }
+      ]
+    },
+    {
+      "id": "S12",
+      "name": "图书馆",
+      "group": "学业与校园服务",
+      "url": "https://lib.xidian.edu.cn/",
+      "directory_url": "http://lib.xidian.edu.cn/",
+      "discovered_from": "https://www.xidian.edu.cn/jgsz.htm",
+      "homepage_check": {
+        "status": 200,
+        "final_url": "https://lib.xidian.edu.cn/",
+        "title": "西安电子科技大学图书馆",
+        "checked_at": "2026-10-24T13:03:59.442791+00:00"
+      },
+      "access": "已读取首页",
+      "note": "官方目录发现，本次已检查首页；后续仅取通知公告，不采集新闻、宣传或活动回顾。是否保留由用户按需要决定。",
+      "content_scope": "只收通知、公告、公示与可行动的报名/选拔/赛程信息；排除新闻、宣传、微博、校报及获奖报道",
+      "recommended": false,
+      "columns": [],
+      "samples": []
+    },
+    {
+      "id": "S13",
+      "name": "体育部",
+      "group": "学业与校园服务",
+      "url": "https://tyb.xidian.edu.cn/",
+      "directory_url": "http://tyb.xidian.edu.cn/",
+      "discovered_from": "https://www.xidian.edu.cn/jgsz.htm",
+      "homepage_check": {
+        "status": 200,
+        "final_url": "https://tyb.xidian.edu.cn/",
+        "title": "西安电子科技大学体育部",
+        "checked_at": "2026-10-24T13:04:00.321111+00:00"
+      },
+      "access": "已读取公开栏目",
+      "note": "官方目录发现，本次已检查首页；后续仅取通知公告，不采集新闻、宣传或活动回顾。是否保留由用户按需要决定。",
+      "content_scope": "只收通知、公告、公示与可行动的报名/选拔/赛程信息；排除新闻、宣传、微博、校报及获奖报道",
+      "recommended": false,
+      "columns": [
+        {
+          "source_id": "S13",
+          "name": "校内竞赛",
+          "url": "https://tyb.xidian.edu.cn/ydjs/xnjs.htm",
+          "discovered_from": "https://tyb.xidian.edu.cn/",
+          "verified": true,
+          "title": "校内竞赛-西安电子科技大学体育部",
+          "status": 200,
+          "error": null,
+          "access_hint": "",
+          "checked_at": "2026-10-24T13:07:31.678169+00:00"
+        }
+      ],
+      "samples": [
+        {
+          "title": "2004年陕西省高校体育竞赛活动安排的通知2004年陕西省高校体育竞赛活动安排的通知2009-02-02",
+          "url": "https://tyb.xidian.edu.cn/info/1028/1112.htm",
+          "listed_on": "https://tyb.xidian.edu.cn/ydjs/xnjs.htm"
+        },
+        {
+          "title": "喜报｜体育部侯鹏老师主编《游泳（第二版）》荣获学校第二十一届优秀教材二等奖 10 21 喜报｜体育部侯鹏老师主编《游泳（第二版）》荣... （通讯员 董颖初）近日，西安电子科技大学第二十一届校级优秀教材评选结果正式公示，由体育部侯鹏副教授担任主编... 查看更多+",
+          "url": "https://tyb.xidian.edu.cn/info/1021/7692.htm",
+          "listed_on": "https://tyb.xidian.edu.cn/"
+        },
+        {
+          "title": "西安电子科技大学体育部2025年教师招聘公告 18 2025-06 西安电子科技大学体育部2025年教师招聘公告",
+          "url": "https://tyb.xidian.edu.cn/info/1022/6012.htm",
+          "listed_on": "https://tyb.xidian.edu.cn/"
+        },
+        {
+          "title": "马拉松比赛本学期乐跑减免学生名单公示 20 2026-10 马拉松比赛本学期乐跑减免学生名单公示",
+          "url": "https://tyb.xidian.edu.cn/info/1022/7672.htm",
+          "listed_on": "https://tyb.xidian.edu.cn/"
+        },
+        {
+          "title": "2026 年学校党委第二轮巡察第二巡察组 巡察体育部党总支的公告 14 2026-10 2026 年学校党委第二轮巡察第二巡察组 巡察体育部党总支...",
+          "url": "https://tyb.xidian.edu.cn/info/1022/7642.htm",
+          "listed_on": "https://tyb.xidian.edu.cn/"
+        }
+      ]
+    },
+    {
+      "id": "S14",
+      "name": "心理健康教育中心",
+      "group": "学业与校园服务",
+      "url": "https://xl.xidian.edu.cn/",
+      "directory_url": "http://xl.xidian.edu.cn/",
+      "discovered_from": "https://www.xidian.edu.cn/jgsz.htm",
+      "homepage_check": {
+        "status": 200,
+        "final_url": "https://xl.xidian.edu.cn/",
+        "title": "西安电子科技大学心灵驿站",
+        "checked_at": "2026-10-24T13:04:01.112541+00:00"
+      },
+      "access": "已读取公开栏目",
+      "note": "官方目录发现，本次已检查首页；后续仅取通知公告，不采集新闻、宣传或活动回顾。是否保留由用户按需要决定。",
+      "content_scope": "只收通知、公告、公示与可行动的报名/选拔/赛程信息；排除新闻、宣传、微博、校报及获奖报道",
+      "recommended": false,
+      "columns": [
+        {
+          "source_id": "S14",
+          "name": "通知公告",
+          "url": "https://xl.xidian.edu.cn/tzgg.htm",
+          "discovered_from": "https://xl.xidian.edu.cn/",
+          "verified": true,
+          "title": "通知公告-西安电子科技大学心灵驿站",
+          "status": 200,
+          "error": null,
+          "access_hint": "",
+          "checked_at": "2026-10-24T13:07:32.780977+00:00"
+        }
+      ],
+      "samples": [
+        {
+          "title": "西安电子科技大学心理健康教育中心2026年夏季学期专职心理健康教师招聘公告西安电子科技大学心理健康教育中心2026年夏季学期专职心理健康教师招聘...2026-07-10",
+          "url": "https://xl.xidian.edu.cn/info/1047/3359.htm",
+          "listed_on": "https://xl.xidian.edu.cn/tzgg.htm"
+        },
+        {
+          "title": "西安电子科技大学心理健康教育中心 专职心理健康教师招聘公告西安电子科技大学心理健康教育中心 专职心理健康教师招聘公告2025-09-02",
+          "url": "https://xl.xidian.edu.cn/info/1047/2579.htm",
+          "listed_on": "https://xl.xidian.edu.cn/tzgg.htm"
+        },
+        {
+          "title": "【活动预告】“慧心筑基・携手同行”心理网格员能力提升专题培训 【活动预告】“慧心筑基・携手同行”心理网格员能力提升专题培训2026-10-16",
+          "url": "https://xl.xidian.edu.cn/info/1042/3499.htm",
+          "listed_on": "https://xl.xidian.edu.cn/"
+        }
+      ]
+    },
+    {
+      "id": "S15",
+      "name": "后勤保障部",
+      "group": "学业与校园服务",
+      "url": "https://hqbzb.xidian.edu.cn/",
+      "directory_url": "http://hqbzb.xidian.edu.cn/",
+      "discovered_from": "https://www.xidian.edu.cn/jgsz.htm",
+      "homepage_check": {
+        "status": 200,
+        "final_url": "https://hqbzb.xidian.edu.cn/",
+        "title": "西电后勤党委/后勤保障部",
+        "checked_at": "2026-10-24T13:04:01.547190+00:00"
+      },
+      "access": "已读取公开栏目",
+      "note": "官方目录发现，本次已检查首页；后续仅取通知公告，不采集新闻、宣传或活动回顾。是否保留由用户按需要决定。",
+      "content_scope": "只收通知、公告、公示与可行动的报名/选拔/赛程信息；排除新闻、宣传、微博、校报及获奖报道",
+      "recommended": false,
+      "columns": [
+        {
+          "source_id": "S15",
+          "name": "通知公告 通知公告",
+          "url": "https://hqbzb.xidian.edu.cn/tzgg.htm",
+          "discovered_from": "https://hqbzb.xidian.edu.cn/",
+          "verified": true,
+          "title": "通知公告-西电后勤党委/后勤保障部",
+          "status": 200,
+          "error": null,
+          "access_hint": "",
+          "checked_at": "2026-10-24T13:07:33.290163+00:00"
+        }
+      ],
+      "samples": [
+        {
+          "title": "关于长安、雁塔校区部分道路临时交通管制的公告 关于长安、雁塔校区部分道路临时交通管制的公告 2026.08.03",
+          "url": "https://hqbzb.xidian.edu.cn/info/1029/8276.htm",
+          "listed_on": "https://hqbzb.xidian.edu.cn/tzgg.htm"
+        },
+        {
+          "title": "关于长安校区公共教学楼夏季空调使用(试行)的通知 关于长安校区公共教学楼夏季空调使用(试行)的通知 2026.05.11",
+          "url": "https://hqbzb.xidian.edu.cn/info/1029/8016.htm",
+          "listed_on": "https://hqbzb.xidian.edu.cn/tzgg.htm"
+        },
+        {
+          "title": "西安电子科技大学校园碳排放核算报告（2024 年度)公示 西安电子科技大学校园碳排放核算报告（2024 年度)公示 2026.04.15",
+          "url": "https://hqbzb.xidian.edu.cn/info/1029/7876.htm",
+          "listed_on": "https://hqbzb.xidian.edu.cn/tzgg.htm"
+        },
+        {
+          "title": "关于调整南校区教室自习室暑期开放安排的通知 关于调整南校区教室自习室暑期开放安排的通知 2025.07.14",
+          "url": "https://hqbzb.xidian.edu.cn/info/1029/6806.htm",
+          "listed_on": "https://hqbzb.xidian.edu.cn/tzgg.htm"
+        },
+        {
+          "title": "关于临时调整部分通勤班车运行线路的通知 关于临时调整部分通勤班车运行线路的通知 2025.07.01",
+          "url": "https://hqbzb.xidian.edu.cn/info/1029/6686.htm",
+          "listed_on": "https://hqbzb.xidian.edu.cn/tzgg.htm"
+        }
+      ]
+    },
+    {
+      "id": "S16",
+      "name": "党委安全保卫部/保卫处",
+      "group": "学业与校园服务",
+      "url": "https://bwc.xidian.edu.cn/",
+      "directory_url": "http://bwc.xidian.edu.cn/",
+      "discovered_from": "https://www.xidian.edu.cn/jgsz.htm",
+      "homepage_check": {
+        "error": "URLError: <urlopen error [WinError 10054] 远程主机强迫关闭了一个现有的连接。>",
+        "checked_at": "2026-10-24T13:04:02.153022+00:00"
+      },
+      "access": "连接异常，待复核",
+      "note": "官方目录已确认，但本次 HTTPS 连接被重置、HTTP 返回 502，待复核。",
+      "content_scope": "只收通知、公告、公示与可行动的报名/选拔/赛程信息；排除新闻、宣传、微博、校报及获奖报道",
+      "recommended": false,
+      "columns": [],
+      "samples": []
+    },
+    {
+      "id": "S17",
+      "name": "信息网络技术中心",
+      "group": "学业与校园服务",
+      "url": "https://xxzx.xidian.edu.cn/",
+      "directory_url": "https://xxzx.xidian.edu.cn/",
+      "discovered_from": "https://www.xidian.edu.cn/jgsz.htm",
+      "homepage_check": {
+        "status": 200,
+        "final_url": "https://xxzx.xidian.edu.cn/",
+        "title": "信息网络技术中心-西安电子科技大学",
+        "checked_at": "2026-10-24T13:04:03.851797+00:00"
+      },
+      "access": "已读取公开栏目",
+      "note": "官方目录发现，本次已检查首页；后续仅取通知公告，不采集新闻、宣传或活动回顾。是否保留由用户按需要决定。",
+      "content_scope": "只收通知、公告、公示与可行动的报名/选拔/赛程信息；排除新闻、宣传、微博、校报及获奖报道",
+      "recommended": false,
+      "columns": [
+        {
+          "source_id": "S17",
+          "name": "中心动态",
+          "url": "https://xxzx.xidian.edu.cn/zxdt/xwgg.htm",
+          "discovered_from": "https://xxzx.xidian.edu.cn/",
+          "verified": true,
+          "title": "新闻公告-信息网络技术中心-西安电子科技大学",
+          "status": 200,
+          "error": null,
+          "access_hint": "",
+          "checked_at": "2026-10-24T13:07:33.978038+00:00"
+        }
+      ],
+      "samples": [
+        {
+          "title": "西安电子科技大学“AI+”教育创新应用技能大赛通知 2026-10-10 西安电子科技大学“AI+”教育创新应用技能大赛通知",
+          "url": "https://xxzx.xidian.edu.cn/info/1245/4723.htm",
+          "listed_on": "https://xxzx.xidian.edu.cn/zxdt/xwgg.htm"
+        },
+        {
+          "title": "关于提升业务系统算力服务的通知 2026-08-18 关于提升业务系统算力服务的通知",
+          "url": "https://xxzx.xidian.edu.cn/content.jsp?urltype=news.NewsContentUrl&wbtreeid=1245&wbnewsid=4633",
+          "listed_on": "https://xxzx.xidian.edu.cn/zxdt/xwgg.htm"
+        },
+        {
+          "title": "关于雁塔校区高算中心服务中断的通知 2026-07-08 关于雁塔校区高算中心服务中断的通知",
+          "url": "https://xxzx.xidian.edu.cn/info/1245/4573.htm",
+          "listed_on": "https://xxzx.xidian.edu.cn/zxdt/xwgg.htm"
+        },
+        {
+          "title": "关于办理毕业生离校一卡通余额清退及校园网账号注销的通知 2026-07-07 关于办理毕业生离校一卡通余额清退及校园网账号注销的通知",
+          "url": "https://xxzx.xidian.edu.cn/info/1245/4563.htm",
+          "listed_on": "https://xxzx.xidian.edu.cn/zxdt/xwgg.htm"
+        }
+      ]
+    },
+    {
+      "id": "S18",
+      "name": "国际合作与交流处 / 港澳台事务办公室",
+      "group": "学业与校园服务",
+      "url": "https://oice.xidian.edu.cn/",
+      "directory_url": "http://oice.xidian.edu.cn/hzhb1/yhyx.htm",
+      "discovered_from": "https://www.xidian.edu.cn/jgsz.htm",
+      "homepage_check": {
+        "status": 200,
+        "final_url": "https://oice.xidian.edu.cn/",
+        "title": "西安电子科技大学-国际合作交流处港澳台事务办公室",
+        "checked_at": "2026-10-24T13:04:04.970389+00:00"
+      },
+      "access": "已读取公开栏目",
+      "note": "官方目录发现，本次已检查首页；后续仅取通知公告，不采集新闻、宣传或活动回顾。是否保留由用户按需要决定。",
+      "content_scope": "只收通知、公告、公示与可行动的报名/选拔/赛程信息；排除新闻、宣传、微博、校报及获奖报道",
+      "recommended": false,
+      "columns": [
+        {
+          "source_id": "S18",
+          "name": "通知公告与考试资讯",
+          "url": "https://oice.xidian.edu.cn/gjjyyfwzx/tzggykszx.htm",
+          "discovered_from": "https://oice.xidian.edu.cn/",
+          "verified": true,
+          "title": "通知公告与考试资讯-西安电子科技大学-国际合作交流处港澳台事务办公室",
+          "status": 200,
+          "error": null,
+          "access_hint": "",
+          "checked_at": "2026-10-24T13:07:34.839621+00:00"
+        }
+      ],
+      "samples": [
+        {
+          "title": "西安电子科技大学-莫斯科国立大学国际学士项目2026年自主选拔考试通知（8.14场次）",
+          "url": "https://oice.xidian.edu.cn/info/4248/20235.htm",
+          "listed_on": "https://oice.xidian.edu.cn/gjjyyfwzx/tzggykszx.htm"
+        },
+        {
+          "title": "西安电子科技大学/莫斯科国立大学国际学士项目2026年自主选拔考试通知（7月中旬-8月中旬多场次）",
+          "url": "https://oice.xidian.edu.cn/info/4248/20165.htm",
+          "listed_on": "https://oice.xidian.edu.cn/gjjyyfwzx/tzggykszx.htm"
+        },
+        {
+          "title": "西安电子科技大学/赫瑞-瓦特大学（马来西亚校区）学士项目2026年自主选拔考试通知（7月9日场次）",
+          "url": "https://oice.xidian.edu.cn/info/4248/20125.htm",
+          "listed_on": "https://oice.xidian.edu.cn/gjjyyfwzx/tzggykszx.htm"
+        },
+        {
+          "title": "西安电子科技大学-莫斯科国立大学国际学士项目2026年自主选拔考试通知（6月下旬-7月上旬多场次）",
+          "url": "https://oice.xidian.edu.cn/info/4248/20095.htm",
+          "listed_on": "https://oice.xidian.edu.cn/gjjyyfwzx/tzggykszx.htm"
+        },
+        {
+          "title": "西安电子科技大学与马来西亚拉曼大学“2+2”学士学位联合教育项目2026年自主选拔考试通知 （7月上旬多场次）",
+          "url": "https://oice.xidian.edu.cn/info/4248/20085.htm",
+          "listed_on": "https://oice.xidian.edu.cn/gjjyyfwzx/tzggykszx.htm"
+        }
+      ]
+    },
+    {
+      "id": "S19",
+      "name": "本科生招生",
+      "group": "学业与校园服务",
+      "url": "https://zsb.xidian.edu.cn/",
+      "directory_url": "http://zsb.xidian.edu.cn/",
+      "discovered_from": "https://www.xidian.edu.cn/jgsz.htm",
+      "homepage_check": {
+        "status": 200,
+        "final_url": "https://zsb.xidian.edu.cn/",
+        "title": "西安电子科技大学本科招生信息网",
+        "checked_at": "2026-10-24T13:04:07.186930+00:00"
+      },
+      "access": "已读取首页",
+      "note": "官方目录发现，本次已检查首页；后续仅取通知公告，不采集新闻、宣传或活动回顾。是否保留由用户按需要决定。",
+      "content_scope": "只收通知、公告、公示与可行动的报名/选拔/赛程信息；排除新闻、宣传、微博、校报及获奖报道",
+      "recommended": false,
+      "columns": [],
+      "samples": [
+        {
+          "title": "西安电子科技大学2026年艺术类专业招生简章06-03 西安电子科技大学2026年艺术类专业招生简章",
+          "url": "https://zsb.xidian.edu.cn/info/1009/6693.htm",
+          "listed_on": "https://zsb.xidian.edu.cn/"
+        },
+        {
+          "title": "西安电子科技大学2026年第二学士学位招生简章05-13 西安电子科技大学2026年第二学士学位招生简章",
+          "url": "https://zsb.xidian.edu.cn/info/1009/6613.htm",
+          "listed_on": "https://zsb.xidian.edu.cn/"
+        },
+        {
+          "title": "西安电子科技大学2026年保送录取优秀运动员招生简章01-16 西安电子科技大学2026年保送录取优秀运动员招生简章",
+          "url": "https://zsb.xidian.edu.cn/info/1009/6393.htm",
+          "listed_on": "https://zsb.xidian.edu.cn/"
+        },
+        {
+          "title": "西安电子科技大学2026年运动训练专业招生简章01-16 西安电子科技大学2026年运动训练专业招生简章",
+          "url": "https://zsb.xidian.edu.cn/info/1009/6373.htm",
+          "listed_on": "https://zsb.xidian.edu.cn/"
+        },
+        {
+          "title": "西安电子科技大学2026年外语类、竞赛类保送生招生简章01-10 西安电子科技大学2026年外语类、竞赛类保送生招生简章",
+          "url": "https://zsb.xidian.edu.cn/info/1009/6353.htm",
+          "listed_on": "https://zsb.xidian.edu.cn/"
+        }
+      ]
+    },
+    {
+      "id": "S20",
+      "name": "校医院",
+      "group": "学业与校园服务",
+      "url": "https://xyy.xidian.edu.cn/",
+      "directory_url": "http://xyy.xidian.edu.cn/",
+      "discovered_from": "https://www.xidian.edu.cn/jgsz.htm",
+      "homepage_check": {
+        "status": 200,
+        "final_url": "https://xyy.xidian.edu.cn/",
+        "title": "西安电子科技大学-校医院",
+        "checked_at": "2026-10-24T13:04:08.008880+00:00"
+      },
+      "access": "已读取公开栏目",
+      "note": "官方目录发现，本次已检查首页；后续仅取通知公告，不采集新闻、宣传或活动回顾。是否保留由用户按需要决定。",
+      "content_scope": "只收通知、公告、公示与可行动的报名/选拔/赛程信息；排除新闻、宣传、微博、校报及获奖报道",
+      "recommended": false,
+      "columns": [
+        {
+          "source_id": "S20",
+          "name": "通知公告",
+          "url": "https://xyy.xidian.edu.cn/ywgk/tzgg.htm",
+          "discovered_from": "https://xyy.xidian.edu.cn/",
+          "verified": true,
+          "title": "通知公告-西安电子科技大学-校医院",
+          "status": 200,
+          "error": null,
+          "access_hint": "",
+          "checked_at": "2026-10-24T13:07:35.291015+00:00"
+        }
+      ],
+      "samples": [
+        {
+          "title": "2026年学校党委第二轮巡察第一巡察组巡察校医院党总支的公告",
+          "url": "https://xyy.xidian.edu.cn/info/1011/4516.htm",
+          "listed_on": "https://xyy.xidian.edu.cn/ywgk/tzgg.htm"
+        },
+        {
+          "title": "校医院无菌纯水机自行采购项目结果公告",
+          "url": "https://xyy.xidian.edu.cn/info/1011/4476.htm",
+          "listed_on": "https://xyy.xidian.edu.cn/ywgk/tzgg.htm"
+        },
+        {
+          "title": "校医院无菌纯水机自行采购项目公告",
+          "url": "https://xyy.xidian.edu.cn/info/1011/4466.htm",
+          "listed_on": "https://xyy.xidian.edu.cn/ywgk/tzgg.htm"
+        },
+        {
+          "title": "校医院加压冷热敷仪采购结果公告",
+          "url": "https://xyy.xidian.edu.cn/info/1011/4446.htm",
+          "listed_on": "https://xyy.xidian.edu.cn/ywgk/tzgg.htm"
+        },
+        {
+          "title": "校医院动态心电图工作站采购结果公告",
+          "url": "https://xyy.xidian.edu.cn/info/1011/4436.htm",
+          "listed_on": "https://xyy.xidian.edu.cn/ywgk/tzgg.htm"
+        }
+      ]
+    },
+    {
+      "id": "S21",
+      "name": "通信工程学院",
+      "group": "其他学院与竞赛线索",
+      "url": "https://ste.xidian.edu.cn/",
+      "directory_url": "http://ste.xidian.edu.cn/",
+      "discovered_from": "https://www.xidian.edu.cn/jgsz.htm",
+      "homepage_check": {
+        "status": 200,
+        "final_url": "https://ste.xidian.edu.cn/",
+        "title": "通信工程学院",
+        "checked_at": "2026-10-24T13:07:58.166327+00:00"
+      },
+      "access": "已读取首页",
+      "note": "官方目录发现，本次已检查首页；后续仅取通知公告，不采集新闻、宣传或活动回顾。是否保留由用户按需要决定。",
+      "content_scope": "只收通知、公告、公示与可行动的报名/选拔/赛程信息；排除新闻、宣传、微博、校报及获奖报道",
+      "recommended": false,
+      "columns": [],
+      "samples": [
+        {
+          "title": "通信工程学院关于调整党章、院章使用时间的通知通信工程学院关于调整党章、院章使用时间的通知09-01",
+          "url": "https://ste.xidian.edu.cn/info/1145/5393.htm",
+          "listed_on": "https://ste.xidian.edu.cn/"
+        },
+        {
+          "title": "科研协作项目公示信息科研协作项目公示信息10-16",
+          "url": "https://ste.xidian.edu.cn/info/1338/16626.htm",
+          "listed_on": "https://ste.xidian.edu.cn/"
+        },
+        {
+          "title": "科研协作项目公示信息科研协作项目公示信息10-12",
+          "url": "https://ste.xidian.edu.cn/info/1338/16606.htm",
+          "listed_on": "https://ste.xidian.edu.cn/"
+        },
+        {
+          "title": "科研协作项目公示信息科研协作项目公示信息10-09",
+          "url": "https://ste.xidian.edu.cn/info/1338/16596.htm",
+          "listed_on": "https://ste.xidian.edu.cn/"
+        },
+        {
+          "title": "科研协作项目公示信息科研协作项目公示信息10-09",
+          "url": "https://ste.xidian.edu.cn/info/1338/16586.htm",
+          "listed_on": "https://ste.xidian.edu.cn/"
+        }
+      ]
+    },
+    {
+      "id": "S22",
+      "name": "电子工程学院",
+      "group": "其他学院与竞赛线索",
+      "url": "https://see.xidian.edu.cn/",
+      "directory_url": "https://see.xidian.edu.cn/",
+      "discovered_from": "https://www.xidian.edu.cn/jgsz.htm",
+      "homepage_check": {
+        "status": 200,
+        "final_url": "https://see.xidian.edu.cn/",
+        "title": "西安电子科技大学电子工程学院",
+        "checked_at": "2026-10-24T13:04:12.101237+00:00"
+      },
+      "access": "已读取公开栏目",
+      "note": "官方目录发现，本次已检查首页；后续仅取通知公告，不采集新闻、宣传或活动回顾。是否保留由用户按需要决定。",
+      "content_scope": "只收通知、公告、公示与可行动的报名/选拔/赛程信息；排除新闻、宣传、微博、校报及获奖报道",
+      "recommended": false,
+      "columns": [
+        {
+          "source_id": "S22",
+          "name": "通知公告",
+          "url": "https://see.xidian.edu.cn/tzgg.htm",
+          "discovered_from": "https://see.xidian.edu.cn/",
+          "verified": true,
+          "title": "通知公告-西安电子科技大学电子工程学院",
+          "status": 200,
+          "error": null,
+          "access_hint": "",
+          "checked_at": "2026-10-24T13:07:35.588113+00:00"
+        },
+        {
+          "source_id": "S22",
+          "name": "本科生通知",
+          "url": "https://see.xidian.edu.cn/bks.htm",
+          "discovered_from": "https://see.xidian.edu.cn/",
+          "verified": true,
+          "title": "本科生-西安电子科技大学电子工程学院",
+          "status": 200,
+          "error": null,
+          "access_hint": "",
+          "checked_at": "2026-10-24T13:07:35.898710+00:00"
+        }
+      ],
+      "samples": [
+        {
+          "title": "关于学校2026年度研究生赴国（境）外参加高水平国际会议资助第二批次申请的通知 关于学校2026年度研究生赴国（境）外参加高水平国际会议资助第二批次申请的通知 2026-10-10",
+          "url": "https://see.xidian.edu.cn/info/1052/105661.htm",
+          "listed_on": "https://see.xidian.edu.cn/tzgg.htm"
+        },
+        {
+          "title": "关于遴选2025级本科卓越班科研导师的通知 关于遴选2025级本科卓越班科研导师的通知 2026-09-21",
+          "url": "https://see.xidian.edu.cn/info/1052/105501.htm",
+          "listed_on": "https://see.xidian.edu.cn/tzgg.htm"
+        },
+        {
+          "title": "电子工程学院关于开展2026～2027学年第一学期研究生承担本科助教工作的通知 电子工程学院关于开展2026～2027学年第一学期研究生承担本科助教工作的通知 2026-09-18",
+          "url": "https://see.xidian.edu.cn/info/1052/105451.htm",
+          "listed_on": "https://see.xidian.edu.cn/tzgg.htm"
+        },
+        {
+          "title": "关于2026年秋季学期青年教师助教报名工作的通知 关于2026年秋季学期青年教师助教报名工作的通知 2026-09-16",
+          "url": "https://see.xidian.edu.cn/info/1052/104981.htm",
+          "listed_on": "https://see.xidian.edu.cn/tzgg.htm"
+        },
+        {
+          "title": "关于评选2026年度本科优质教学奖的通知 关于评选2026年度本科优质教学奖的通知 2026-09-11",
+          "url": "https://see.xidian.edu.cn/info/1052/104961.htm",
+          "listed_on": "https://see.xidian.edu.cn/tzgg.htm"
+        }
+      ]
+    },
+    {
+      "id": "S23",
+      "name": "计算机科学与技术学院",
+      "group": "其他学院与竞赛线索",
+      "url": "https://cs.xidian.edu.cn/",
+      "directory_url": "http://cs.xidian.edu.cn/",
+      "discovered_from": "https://www.xidian.edu.cn/jgsz.htm",
+      "homepage_check": {
+        "status": 200,
+        "final_url": "https://cs.xidian.edu.cn/",
+        "title": "西安电子科技大学计算机科学与技术学院",
+        "checked_at": "2026-10-24T13:04:12.497758+00:00"
+      },
+      "access": "已读取公开栏目",
+      "note": "官方目录发现，本次已检查首页；后续仅取通知公告，不采集新闻、宣传或活动回顾。是否保留由用户按需要决定。",
+      "content_scope": "只收通知、公告、公示与可行动的报名/选拔/赛程信息；排除新闻、宣传、微博、校报及获奖报道",
+      "recommended": false,
+      "columns": [
+        {
+          "source_id": "S23",
+          "name": "通知公告",
+          "url": "https://cs.xidian.edu.cn/xsgz1/tzgg.htm",
+          "discovered_from": "https://cs.xidian.edu.cn/",
+          "verified": true,
+          "title": "通知公告-西安电子科技大学计算机科学与技术学院",
+          "status": 200,
+          "error": null,
+          "access_hint": "",
+          "checked_at": "2026-10-24T13:07:36.821068+00:00"
+        },
+        {
+          "source_id": "S23",
+          "name": "科技竞赛",
+          "url": "https://cs.xidian.edu.cn/bkjy/kjjs.htm",
+          "discovered_from": "https://cs.xidian.edu.cn/",
+          "verified": true,
+          "title": "科技竞赛-西安电子科技大学计算机科学与技术学院",
+          "status": 200,
+          "error": null,
+          "access_hint": "",
+          "checked_at": "2026-10-24T13:07:36.823611+00:00"
+        },
+        {
+          "source_id": "S23",
+          "name": "教学通知",
+          "url": "https://cs.xidian.edu.cn/bkjy/jxtz.htm",
+          "discovered_from": "https://cs.xidian.edu.cn/",
+          "verified": true,
+          "title": "教学通知-西安电子科技大学计算机科学与技术学院",
+          "status": 200,
+          "error": null,
+          "access_hint": "",
+          "checked_at": "2026-10-24T13:07:36.917271+00:00"
+        }
+      ],
+      "samples": [
+        {
+          "title": "第三届中国研究生操作系统开源创新大赛校内赛通知",
+          "url": "https://cs.xidian.edu.cn/info/1261/24934.htm",
+          "listed_on": "https://cs.xidian.edu.cn/xsgz1/tzgg.htm"
+        },
+        {
+          "title": "计算机科学与技术学院关于2024-2025年度共青团先进集体和先进个人评选结果的公示",
+          "url": "https://cs.xidian.edu.cn/info/1261/19914.htm",
+          "listed_on": "https://cs.xidian.edu.cn/xsgz1/tzgg.htm"
+        },
+        {
+          "title": "计算机科学与技术学院2025年春季困难补助评审结果公示",
+          "url": "https://cs.xidian.edu.cn/info/1261/18924.htm",
+          "listed_on": "https://cs.xidian.edu.cn/xsgz1/tzgg.htm"
+        },
+        {
+          "title": "计算机科学与技术学院2024年社会奖助学金拟推荐名单公示",
+          "url": "https://cs.xidian.edu.cn/info/1261/17774.htm",
+          "listed_on": "https://cs.xidian.edu.cn/xsgz1/tzgg.htm"
+        },
+        {
+          "title": "2021年计科院拔尖卓越选拔面试分组",
+          "url": "https://cs.xidian.edu.cn/info/1261/12102.htm",
+          "listed_on": "https://cs.xidian.edu.cn/xsgz1/tzgg.htm"
+        }
+      ]
+    },
+    {
+      "id": "S24",
+      "name": "光电工程学院",
+      "group": "其他学院与竞赛线索",
+      "url": "https://soe.xidian.edu.cn/",
+      "directory_url": "https://soe.xidian.edu.cn/",
+      "discovered_from": "https://www.xidian.edu.cn/jgsz.htm",
+      "homepage_check": {
+        "status": 200,
+        "final_url": "https://soe.xidian.edu.cn/",
+        "title": "光电工程学院-西安电子科技大学",
+        "checked_at": "2026-10-24T13:04:13.379469+00:00"
+      },
+      "access": "已读取首页",
+      "note": "官方目录发现，本次已检查首页；后续仅取通知公告，不采集新闻、宣传或活动回顾。是否保留由用户按需要决定。",
+      "content_scope": "只收通知、公告、公示与可行动的报名/选拔/赛程信息；排除新闻、宣传、微博、校报及获奖报道",
+      "recommended": false,
+      "columns": [],
+      "samples": [
+        {
+          "title": "人才招聘",
+          "url": "https://soe.xidian.edu.cn/info/1923/13755.htm",
+          "listed_on": "https://soe.xidian.edu.cn/"
+        },
+        {
+          "title": "【2026】光电工程学院人才招聘公告 03-29 2022 【2026】光电工程学院人才招聘公告",
+          "url": "https://soe.xidian.edu.cn/info/1095/9385.htm",
+          "listed_on": "https://soe.xidian.edu.cn/"
+        },
+        {
+          "title": "科研协作项目公示-20261023-1 10-23 2026 科研协作项目公示-20261023-1",
+          "url": "https://soe.xidian.edu.cn/info/1095/18385.htm",
+          "listed_on": "https://soe.xidian.edu.cn/"
+        },
+        {
+          "title": "科研协作项目公示-20261016-1 10-16 2026 科研协作项目公示-20261016-1",
+          "url": "https://soe.xidian.edu.cn/info/1095/18305.htm",
+          "listed_on": "https://soe.xidian.edu.cn/"
+        },
+        {
+          "title": "光电工程学院2026年研究生国家奖学金评审结果公示 10-08 2026 光电工程学院2026年研究生国家奖学金评审结果公示",
+          "url": "https://soe.xidian.edu.cn/info/1095/18245.htm",
+          "listed_on": "https://soe.xidian.edu.cn/"
+        }
+      ]
+    },
+    {
+      "id": "S25",
+      "name": "物理学院",
+      "group": "其他学院与竞赛线索",
+      "url": "https://phy.xidian.edu.cn/",
+      "directory_url": "https://phy.xidian.edu.cn/",
+      "discovered_from": "https://www.xidian.edu.cn/jgsz.htm",
+      "homepage_check": {
+        "status": 200,
+        "final_url": "https://phy.xidian.edu.cn/",
+        "title": "西安电子科技大学物理学院",
+        "checked_at": "2026-10-24T13:04:13.978634+00:00"
+      },
+      "access": "已读取公开栏目",
+      "note": "官方目录发现，本次已检查首页；后续仅取通知公告，不采集新闻、宣传或活动回顾。是否保留由用户按需要决定。",
+      "content_scope": "只收通知、公告、公示与可行动的报名/选拔/赛程信息；排除新闻、宣传、微博、校报及获奖报道",
+      "recommended": false,
+      "columns": [
+        {
+          "source_id": "S25",
+          "name": "通知公告",
+          "url": "https://phy.xidian.edu.cn/tzgg.htm",
+          "discovered_from": "https://phy.xidian.edu.cn/",
+          "verified": true,
+          "title": "通知公告-西安电子科技大学物理学院",
+          "status": 200,
+          "error": null,
+          "access_hint": "",
+          "checked_at": "2026-10-24T13:07:37.565605+00:00"
+        }
+      ],
+      "samples": [
+        {
+          "title": "科研协作项目公示信息20261021-1 21 2026-10 科研协作项目公示信息20261021-1",
+          "url": "https://phy.xidian.edu.cn/info/1012/12383.htm",
+          "listed_on": "https://phy.xidian.edu.cn/tzgg.htm"
+        },
+        {
+          "title": "科研协作项目公示信息20261019-2 19 2026-10 科研协作项目公示信息20261019-2",
+          "url": "https://phy.xidian.edu.cn/info/1012/12353.htm",
+          "listed_on": "https://phy.xidian.edu.cn/tzgg.htm"
+        },
+        {
+          "title": "科研协作项目公示信息20261019-1 19 2026-10 科研协作项目公示信息20261019-1",
+          "url": "https://phy.xidian.edu.cn/info/1012/12343.htm",
+          "listed_on": "https://phy.xidian.edu.cn/tzgg.htm"
+        },
+        {
+          "title": "关于首届“王中林原创科学奖”评选结果公示的通知 13 2026-10 关于首届“王中林原创科学奖”评选结果公示的通知 公示已结束。",
+          "url": "https://phy.xidian.edu.cn/info/1012/12303.htm",
+          "listed_on": "https://phy.xidian.edu.cn/tzgg.htm"
+        },
+        {
+          "title": "科研协作项目公示信息20261010-1 10 2026-10 科研协作项目公示信息20261010-1",
+          "url": "https://phy.xidian.edu.cn/info/1012/12273.htm",
+          "listed_on": "https://phy.xidian.edu.cn/tzgg.htm"
+        }
+      ]
+    },
+    {
+      "id": "S26",
+      "name": "经济与管理学院",
+      "group": "其他学院与竞赛线索",
+      "url": "https://sem.xidian.edu.cn/",
+      "directory_url": "https://sem.xidian.edu.cn/",
+      "discovered_from": "https://www.xidian.edu.cn/jgsz.htm",
+      "homepage_check": {
+        "status": 200,
+        "final_url": "https://sem.xidian.edu.cn/",
+        "title": "西安电子科技大学经济与管理学院",
+        "checked_at": "2026-10-24T13:04:16.280934+00:00"
+      },
+      "access": "已读取公开栏目",
+      "note": "官方目录发现，本次已检查首页；后续仅取通知公告，不采集新闻、宣传或活动回顾。是否保留由用户按需要决定。",
+      "content_scope": "只收通知、公告、公示与可行动的报名/选拔/赛程信息；排除新闻、宣传、微博、校报及获奖报道",
+      "recommended": false,
+      "columns": [
+        {
+          "source_id": "S26",
+          "name": "通知公告",
+          "url": "https://sem.xidian.edu.cn/tzgg.htm",
+          "discovered_from": "https://sem.xidian.edu.cn/",
+          "verified": true,
+          "title": "通知公告-西安电子科技大学经济与管理学院",
+          "status": 200,
+          "error": null,
+          "access_hint": "",
+          "checked_at": "2026-10-24T13:07:38.334739+00:00"
+        },
+        {
+          "source_id": "S26",
+          "name": "信息公示",
+          "url": "https://sem.xidian.edu.cn/xxgs.htm",
+          "discovered_from": "https://sem.xidian.edu.cn/",
+          "verified": true,
+          "title": "信息公示-西安电子科技大学经济与管理学院",
+          "status": 200,
+          "error": null,
+          "access_hint": "",
+          "checked_at": "2026-10-24T13:07:38.474036+00:00"
+        }
+      ],
+      "samples": [
+        {
+          "title": "中国运筹学会企业运筹学分会第十九届学术年会会议通知中国运筹学会企业运筹学分会第十九届学术年会会议通知2026-10-18",
+          "url": "https://sem.xidian.edu.cn/info/1536/15481.htm",
+          "listed_on": "https://sem.xidian.edu.cn/tzgg.htm"
+        },
+        {
+          "title": "经济与管理学院2027年推荐免试研究生招生预报名通知经济与管理学院2027年推荐免试研究生招生预报名通知2026-07-27",
+          "url": "https://sem.xidian.edu.cn/info/1536/15221.htm",
+          "listed_on": "https://sem.xidian.edu.cn/tzgg.htm"
+        },
+        {
+          "title": "西安电子科技大学经济与管理学院AI+CFA实验班招生简章西安电子科技大学经济与管理学院AI+CFA实验班招生简章2026-07-21",
+          "url": "https://sem.xidian.edu.cn/info/1536/15201.htm",
+          "listed_on": "https://sem.xidian.edu.cn/tzgg.htm"
+        },
+        {
+          "title": "经济与管理学院关于2024级本科生转专业选拔工作安排经济与管理学院关于2024级本科生转专业选拔工作安排2026-07-07",
+          "url": "https://sem.xidian.edu.cn/info/1536/15071.htm",
+          "listed_on": "https://sem.xidian.edu.cn/tzgg.htm"
+        },
+        {
+          "title": "西安电子科技大学经济与管理学院CPA菁英班2026级提前批招生公告西安电子科技大学经济与管理学院CPA菁英班2026级提前批招生公告2026-07-02",
+          "url": "https://sem.xidian.edu.cn/info/1536/15031.htm",
+          "listed_on": "https://sem.xidian.edu.cn/tzgg.htm"
+        }
+      ]
+    },
+    {
+      "id": "S27",
+      "name": "人文学院",
+      "group": "其他学院与竞赛线索",
+      "url": "https://rwxy.xidian.edu.cn/",
+      "directory_url": "http://rwxy.xidian.edu.cn/",
+      "discovered_from": "https://www.xidian.edu.cn/jgsz.htm",
+      "homepage_check": {
+        "status": 200,
+        "final_url": "https://rwxy.xidian.edu.cn/",
+        "title": "西安电子科技大学人文学院",
+        "checked_at": "2026-10-24T13:04:16.819482+00:00"
+      },
+      "access": "已读取首页",
+      "note": "官方目录发现，本次已检查首页；后续仅取通知公告，不采集新闻、宣传或活动回顾。是否保留由用户按需要决定。",
+      "content_scope": "只收通知、公告、公示与可行动的报名/选拔/赛程信息；排除新闻、宣传、微博、校报及获奖报道",
+      "recommended": false,
+      "columns": [],
+      "samples": [
+        {
+          "title": "人文学院赴武汉大学开展调研交流与招聘宣讲 212026-10 人文学院赴武汉大学开展调研交流与招聘宣讲 （通讯员 田昶奇）为拓展合作资源，推进学科建设，引进优质师资，10月19日，人文学院院长石福祁、副院长孙宁和哲学系教师田昶奇一行3人赴武汉大学继续教育学院和哲学学院开展调研并进行招聘宣讲工作。武汉大学继续教育学院拥有中组部全国干部教育培训基地、人社部国家级",
+          "url": "https://rwxy.xidian.edu.cn/info/1022/17964.htm",
+          "listed_on": "https://rwxy.xidian.edu.cn/"
+        },
+        {
+          "title": "关于开展2026-2027学年第一学期通识选修课程遴选工作的通知 222026-10 关于开展2026-2027学年第一学期通识选修课程遴选工作的通知 关于开展2026-2027学年第一学期通识选修课程遴选工作的通知各单位：为落实《西安电子科技大学本科人才培养质量提升行动计划》（西电发〔2024〕14号）和《西安电子科技大学2024 版本科人才培养方案修订指",
+          "url": "https://rwxy.xidian.edu.cn/info/1023/17914.htm",
+          "listed_on": "https://rwxy.xidian.edu.cn/"
+        },
+        {
+          "title": "人文学院2026年中秋节、国庆节假期值班安排 242026-09 人文学院2026年中秋节、国庆节假期值班安排 各位师生：按照学校《关于2026年中秋节、国庆节放假时间安排的通知》要求，现将学院2026年中秋节、国庆节假期值班安排如下：",
+          "url": "https://rwxy.xidian.edu.cn/info/1023/17844.htm",
+          "listed_on": "https://rwxy.xidian.edu.cn/"
+        },
+        {
+          "title": "讲座预告|北雷哲学讲堂第15期——神秘性真正的终结 讲座预告|北雷哲学讲堂第15期——神秘性真正的终结 报告人：汤志恒 时 间：9月21日19：00—21：30 地 点：人文学院135会议室（信远II区一楼）",
+          "url": "https://rwxy.xidian.edu.cn/info/1062/17754.htm",
+          "listed_on": "https://rwxy.xidian.edu.cn/"
+        },
+        {
+          "title": "讲座预告|西电“智能与智慧”论坛名家讲座第八、九期——面向数字人文研究的人工智能基础 讲座预告|西电“智能与智慧”论坛名家讲座第八、九期——面向数字人文研究的人工智能基础 报告人：Donald Sturgeon（德龙） 时 间：7月1日、2日19：00-21：00、7月3日14：30-17：30 地 点：长安校区信远楼II区135会议室",
+          "url": "https://rwxy.xidian.edu.cn/info/1062/17434.htm",
+          "listed_on": "https://rwxy.xidian.edu.cn/"
+        }
+      ]
+    },
+    {
+      "id": "S28",
+      "name": "语言智能学部",
+      "group": "其他学院与竞赛线索",
+      "url": "https://sfl.xidian.edu.cn/",
+      "directory_url": "http://sfl.xidian.edu.cn/",
+      "discovered_from": "https://www.xidian.edu.cn/jgsz.htm",
+      "homepage_check": {
+        "status": 200,
+        "final_url": "https://sfl.xidian.edu.cn/",
+        "title": "西安电子科技大学语言智能学部",
+        "checked_at": "2026-10-24T13:04:19.230092+00:00"
+      },
+      "access": "已读取首页",
+      "note": "主页已变为语言智能学部；尚需定位与核实其通知栏目，不使用学院团委/学生会介绍页充当通知来源。",
+      "content_scope": "只收通知、公告、公示与可行动的报名/选拔/赛程信息；排除新闻、宣传、微博、校报及获奖报道",
+      "recommended": false,
+      "columns": [],
+      "samples": [
+        {
+          "title": "西安电子科技大学语言智能学部一般专任教师岗常年招聘公告 西安电子科技大学语言智能学部一般专任教师岗常年招聘公告 06-01",
+          "url": "https://sfl.xidian.edu.cn/info/1031/3986.htm",
+          "listed_on": "https://sfl.xidian.edu.cn/"
+        },
+        {
+          "title": "关于外语学科竞赛基地赛事变更的通知 关于外语学科竞赛基地赛事变更的通知 09-23",
+          "url": "https://sfl.xidian.edu.cn/info/1031/12328.htm",
+          "listed_on": "https://sfl.xidian.edu.cn/"
+        },
+        {
+          "title": "西安电子科技大学语言智能学部国际预科教育中心外聘人员一般岗位招聘公告 西安电子科技大学语言智能学部国际预科教育中心外聘人员一般岗位... 08-21",
+          "url": "https://sfl.xidian.edu.cn/info/1031/18288.htm",
+          "listed_on": "https://sfl.xidian.edu.cn/"
+        },
+        {
+          "title": "语言智能学部2027年推荐免试研究生招生预报名通知 语言智能学部2027年推荐免试研究生招生预报名通知 08-06",
+          "url": "https://sfl.xidian.edu.cn/info/1031/18278.htm",
+          "listed_on": "https://sfl.xidian.edu.cn/"
+        },
+        {
+          "title": "关于2025-2026学年春季学期、2026-2027 学年秋季学期教材选用结果的公示 关于2025-2026学年春季学期、2026-2027 学年秋季学期教材选用结果... 07-10",
+          "url": "https://sfl.xidian.edu.cn/info/1031/18088.htm",
+          "listed_on": "https://sfl.xidian.edu.cn/"
+        }
+      ]
+    },
+    {
+      "id": "S29",
+      "name": "集成电路学部 / 微电子学院",
+      "group": "其他学院与竞赛线索",
+      "url": "https://sme.xidian.edu.cn/",
+      "directory_url": "https://sme.xidian.edu.cn/index.html",
+      "discovered_from": "https://www.xidian.edu.cn/jgsz.htm",
+      "homepage_check": {
+        "status": 200,
+        "final_url": "https://sme.xidian.edu.cn/index.html",
+        "title": "西安电子科技大学集成电路学部_微电子学院",
+        "checked_at": "2026-10-24T13:04:21.773035+00:00"
+      },
+      "access": "已读取公开栏目",
+      "note": "官方目录发现，本次已检查首页；后续仅取通知公告，不采集新闻、宣传或活动回顾。是否保留由用户按需要决定。",
+      "content_scope": "只收通知、公告、公示与可行动的报名/选拔/赛程信息；排除新闻、宣传、微博、校报及获奖报道",
+      "recommended": false,
+      "columns": [
+        {
+          "source_id": "S29",
+          "name": "通知公告",
+          "url": "https://sme.xidian.edu.cn/plus/list.php?tid=6",
+          "discovered_from": "https://sme.xidian.edu.cn/index.html",
+          "verified": true,
+          "title": "通知公告_西安电子科技大学集成电路学部_微电子学院",
+          "status": 200,
+          "error": null,
+          "access_hint": "",
+          "checked_at": "2026-10-24T13:07:41.256587+00:00"
+        }
+      ],
+      "samples": []
+    },
+    {
+      "id": "S30",
+      "name": "生命科学技术学院",
+      "group": "其他学院与竞赛线索",
+      "url": "https://life.xidian.edu.cn/",
+      "directory_url": "http://life.xidian.edu.cn/",
+      "discovered_from": "https://www.xidian.edu.cn/jgsz.htm",
+      "homepage_check": {
+        "status": 200,
+        "final_url": "https://life.xidian.edu.cn/",
+        "title": "西安电子科技大学生命科学技术学院",
+        "checked_at": "2026-10-24T13:04:23.288627+00:00"
+      },
+      "access": "已读取公开栏目",
+      "note": "官方目录发现，本次已检查首页；后续仅取通知公告，不采集新闻、宣传或活动回顾。是否保留由用户按需要决定。",
+      "content_scope": "只收通知、公告、公示与可行动的报名/选拔/赛程信息；排除新闻、宣传、微博、校报及获奖报道",
+      "recommended": false,
+      "columns": [
+        {
+          "source_id": "S30",
+          "name": "通知公告",
+          "url": "https://life.xidian.edu.cn/tzgg.htm",
+          "discovered_from": "https://life.xidian.edu.cn/",
+          "verified": true,
+          "title": "通知公告-西安电子科技大学生命科学技术学院",
+          "status": 200,
+          "error": null,
+          "access_hint": "",
+          "checked_at": "2026-10-24T13:07:43.115333+00:00"
+        }
+      ],
+      "samples": [
+        {
+          "title": "关于调整生命科学技术学院2027年推荐免试研究生招生预报名时间的通知",
+          "url": "https://life.xidian.edu.cn/info/1048/17471.htm",
+          "listed_on": "https://life.xidian.edu.cn/tzgg.htm"
+        },
+        {
+          "title": "生命科学技术学院关于开展2026级实验班选拔面试的通知",
+          "url": "https://life.xidian.edu.cn/info/1048/17441.htm",
+          "listed_on": "https://life.xidian.edu.cn/tzgg.htm"
+        },
+        {
+          "title": "生命科学技术学院2027年推荐免试研究生招生预报名通知",
+          "url": "https://life.xidian.edu.cn/info/1048/17301.htm",
+          "listed_on": "https://life.xidian.edu.cn/tzgg.htm"
+        },
+        {
+          "title": "生命科学技术学院关于2025级生命智能英才班第一次分流结果的公示",
+          "url": "https://life.xidian.edu.cn/info/1048/17221.htm",
+          "listed_on": "https://life.xidian.edu.cn/tzgg.htm"
+        },
+        {
+          "title": "关于教材选用结果的公示",
+          "url": "https://life.xidian.edu.cn/info/1048/17211.htm",
+          "listed_on": "https://life.xidian.edu.cn/tzgg.htm"
+        }
+      ]
+    },
+    {
+      "id": "S31",
+      "name": "空间科学与技术学院",
+      "group": "其他学院与竞赛线索",
+      "url": "https://sast.xidian.edu.cn/",
+      "directory_url": "http://sast.xidian.edu.cn/",
+      "discovered_from": "https://www.xidian.edu.cn/jgsz.htm",
+      "homepage_check": {
+        "status": 200,
+        "final_url": "https://sast.xidian.edu.cn/",
+        "title": "空间科学与技术学院",
+        "checked_at": "2026-10-24T13:04:23.345888+00:00"
+      },
+      "access": "已读取公开栏目",
+      "note": "官方目录发现，本次已检查首页；后续仅取通知公告，不采集新闻、宣传或活动回顾。是否保留由用户按需要决定。",
+      "content_scope": "只收通知、公告、公示与可行动的报名/选拔/赛程信息；排除新闻、宣传、微博、校报及获奖报道",
+      "recommended": false,
+      "columns": [
+        {
+          "source_id": "S31",
+          "name": "通知公告",
+          "url": "https://sast.xidian.edu.cn/xszj/tzgg.htm",
+          "discovered_from": "https://sast.xidian.edu.cn/",
+          "verified": true,
+          "title": "通知公告-空间科学与技术学院",
+          "status": 200,
+          "error": null,
+          "access_hint": "",
+          "checked_at": "2026-10-24T13:07:44.098741+00:00"
+        },
+        {
+          "source_id": "S31",
+          "name": "学生竞赛",
+          "url": "https://sast.xidian.edu.cn/bkjy/xsjs.htm",
+          "discovered_from": "https://sast.xidian.edu.cn/",
+          "verified": true,
+          "title": "学生竞赛-空间科学与技术学院",
+          "status": 200,
+          "error": null,
+          "access_hint": "",
+          "checked_at": "2026-10-24T13:07:44.256756+00:00"
+        }
+      ],
+      "samples": [
+        {
+          "title": "科研协作项目公示信息 2026-10-22",
+          "url": "https://sast.xidian.edu.cn/info/1014/22707.htm",
+          "listed_on": "https://sast.xidian.edu.cn/"
+        },
+        {
+          "title": "关于对空间科学与技术学院2026-2027学年第一学期推荐优秀共青团员作入党积极分子人选结果公示的通知 2026-10-14",
+          "url": "https://sast.xidian.edu.cn/info/1014/22527.htm",
+          "listed_on": "https://sast.xidian.edu.cn/"
+        },
+        {
+          "title": "空间科学与技术学院2026年研究生国家奖学金评审结果公示 2026-10-09",
+          "url": "https://sast.xidian.edu.cn/info/1014/22417.htm",
+          "listed_on": "https://sast.xidian.edu.cn/"
+        },
+        {
+          "title": "空间科学与技术学院2026年研究生国家奖学金推荐人员名单公示 2026-10-09",
+          "url": "https://sast.xidian.edu.cn/info/1014/22407.htm",
+          "listed_on": "https://sast.xidian.edu.cn/"
+        },
+        {
+          "title": "空间科学与技术学院研究生国家奖学金公开答辩通知 2026-10-07",
+          "url": "https://sast.xidian.edu.cn/info/1014/22217.htm",
+          "listed_on": "https://sast.xidian.edu.cn/"
+        }
+      ]
+    },
+    {
+      "id": "S32",
+      "name": "先进材料与纳米科技学院",
+      "group": "其他学院与竞赛线索",
+      "url": "https://amn.xidian.edu.cn/",
+      "directory_url": "http://amn.xidian.edu.cn/",
+      "discovered_from": "https://www.xidian.edu.cn/jgsz.htm",
+      "homepage_check": {
+        "status": 200,
+        "final_url": "https://amn.xidian.edu.cn/",
+        "title": "先进材料与纳米科技学院",
+        "checked_at": "2026-10-24T13:04:25.250328+00:00"
+      },
+      "access": "已读取首页",
+      "note": "官方目录发现，本次已检查首页；后续仅取通知公告，不采集新闻、宣传或活动回顾。是否保留由用户按需要决定。",
+      "content_scope": "只收通知、公告、公示与可行动的报名/选拔/赛程信息；排除新闻、宣传、微博、校报及获奖报道",
+      "recommended": false,
+      "columns": [],
+      "samples": [
+        {
+          "title": "“材”聚未来 “料”定辉煌丨材料学院诚聘全球英才 17 2025-03 “材”聚未来 “料”定辉煌丨材料学院诚聘全球英才 学院面向海内外常年招聘物理、化学、力学、材料科学与工程、材料学、材料物理与化学、纳米材料与技术、微电子学、电子科学与技术等相关学科的优秀人才，共绘辉煌事业新蓝图！期待您的加入！招聘岗位优秀青年科学基金项目（海外）人选条件：遵守中华人民共和",
+          "url": "https://amn.xidian.edu.cn/info/1013/8142.htm",
+          "listed_on": "https://amn.xidian.edu.cn/"
+        },
+        {
+          "title": "关于做好先进材料与纳米科技学院2025级师昌绪电子材料菁英班补录工作的通知 11 2026-09 关于做好先进材料与纳米科技学院2025级师昌绪电子材料菁英班补录工作的通知 为保障师昌绪电子材料菁英班（以下简称“实验班”）人才培养质量，根据《西安电子科技大学实验班分流与补录实施办法》（西电本〔2025〕161号）、《西安电子科技大学推荐优秀应届本科毕业生免试",
+          "url": "https://amn.xidian.edu.cn/info/1013/19902.htm",
+          "listed_on": "https://amn.xidian.edu.cn/"
+        },
+        {
+          "title": "先进材料与纳米科技学院2027年推荐免试研究生接收工作实施方案 10 2026-09 先进材料与纳米科技学院2027年推荐免试研究生接收工作实施方案 为规范有序推进先进材料与纳米科技学院推荐免试攻读硕士研究生、直接攻读博士学位研究生（以下简称“推免生”）接收工作，根据相关文件要求，结合学院实际情况，特制定本实施方案。一、组织机构学院成立研究生招生委员会，全面",
+          "url": "https://amn.xidian.edu.cn/info/1013/19802.htm",
+          "listed_on": "https://amn.xidian.edu.cn/"
+        },
+        {
+          "title": "先进材料与纳米科技学院 2026级师昌绪电子材料菁英班选拔面试的通知 07 2026-09 先进材料与纳米科技学院 2026级师昌绪电子材料菁英班选拔面试的通知 各位同学：根据相关工作安排，现将先进材料与纳米科技学院2026级师昌绪电子材料菁英班（以下简称师班）学生选拔面试有关事宜通知如下：一、面试时间2026年9月8日（周二）14:00二、面试地点南校区C",
+          "url": "https://amn.xidian.edu.cn/info/1013/19762.htm",
+          "listed_on": "https://amn.xidian.edu.cn/"
+        },
+        {
+          "title": "先进材料与纳米科技学院2027年推荐免试研究生招生预报名的通知 20 2026-07 先进材料与纳米科技学院2027年推荐免试研究生招生预报名的通知 为做好先进材料与纳米科技学院2027年推荐免试研究生接收工作，根据学校相关文件要求和招生政策，学院现启动推免生预报名工作。相关要求通知如下：一、招生类型招收推荐免试攻读硕士学位研究生（简称：推免生）和直接攻读博",
+          "url": "https://amn.xidian.edu.cn/info/1013/19522.htm",
+          "listed_on": "https://amn.xidian.edu.cn/"
+        }
+      ]
+    },
+    {
+      "id": "S33",
+      "name": "网络与信息安全学院（目录标为网络安全与密码学部）",
+      "group": "其他学院与竞赛线索",
+      "url": "https://ce.xidian.edu.cn/",
+      "directory_url": "https://ce.xidian.edu.cn/",
+      "discovered_from": "https://www.xidian.edu.cn/jgsz.htm",
+      "homepage_check": {
+        "status": 200,
+        "final_url": "https://ce.xidian.edu.cn/",
+        "title": "西安电子科技大学网络与信息安全学院",
+        "checked_at": "2026-10-24T13:04:25.608552+00:00"
+      },
+      "access": "已读取公开栏目",
+      "note": "官方目录发现，本次已检查首页；后续仅取通知公告，不采集新闻、宣传或活动回顾。是否保留由用户按需要决定。",
+      "content_scope": "只收通知、公告、公示与可行动的报名/选拔/赛程信息；排除新闻、宣传、微博、校报及获奖报道",
+      "recommended": false,
+      "columns": [
+        {
+          "source_id": "S33",
+          "name": "学生工作",
+          "url": "https://ce.xidian.edu.cn/sy/xsgz/tzgg.htm",
+          "discovered_from": "https://ce.xidian.edu.cn/",
+          "verified": true,
+          "title": "通知公告-西安电子科技大学网络与信息安全学院",
+          "status": 200,
+          "error": null,
+          "access_hint": "",
+          "checked_at": "2026-10-24T13:07:44.386069+00:00"
+        },
+        {
+          "source_id": "S33",
+          "name": "本科教育",
+          "url": "https://ce.xidian.edu.cn/sy/bkjy/jxtz.htm",
+          "discovered_from": "https://ce.xidian.edu.cn/",
+          "verified": true,
+          "title": "教学通知-西安电子科技大学网络与信息安全学院",
+          "status": 200,
+          "error": null,
+          "access_hint": "",
+          "checked_at": "2026-10-24T13:07:45.004193+00:00"
+        }
+      ],
+      "samples": [
+        {
+          "title": "网络与信息安全学院关于2024-2025年度共青团系统先进集体和先进个人拟表彰名单的公示 网络与信息安全学院关于2024-2025年度共青团系统先进集体和先进个人拟表彰名单的公示 2025-04-08 根据校团委《关于开展2024-2025年度共青团系统先进集体和先进个人评选工作的通知》要求，经个人申报、支部推荐、学生组织推荐、公开述职评选，现将网络与信息安",
+          "url": "https://ce.xidian.edu.cn/info/1355/13193.htm",
+          "listed_on": "https://ce.xidian.edu.cn/sy/xsgz/tzgg.htm"
+        },
+        {
+          "title": "网络与信息安全学院关于2024-2025年度共青团先进集体和先进个人标兵类奖项拟推荐名单的公示 网络与信息安全学院关于2024-2025年度共青团先进集体和先进个人标兵类奖项拟推荐名单的公示 2025-04-08 根据校团委《关于开展2024-2025年度共青团系统先进集体和先进个人评选工作的通知》要求，经个人申报、支部推荐、学生组织推荐、公开述职评选，现将",
+          "url": "https://ce.xidian.edu.cn/info/1355/13203.htm",
+          "listed_on": "https://ce.xidian.edu.cn/sy/xsgz/tzgg.htm"
+        },
+        {
+          "title": "网络与信息安全学院关于2021级毕业设计（论文）中期检查的通知 网络与信息安全学院关于2021级毕业设计（论文）中期检查的通知 2025-03-10 各位老师、同学：为加强毕业设计的过程管理,提高毕业设计质量,根据学校要求，我院将开展2021级毕业设计（论文）中期检查工作，具体安排如下:一、时间2025年3月21日（星期五）前，完成中期检查答辩、材料上传、导",
+          "url": "https://ce.xidian.edu.cn/info/1355/12213.htm",
+          "listed_on": "https://ce.xidian.edu.cn/sy/xsgz/tzgg.htm"
+        },
+        {
+          "title": "网络与信息安全学院2025春季学期研究生助教课程需求征集及申请通知 网络与信息安全学院2025春季学期研究生助教课程需求征集及申请通知 2025-03-06 各位老师您好：根据学院安排，现开展学院2024-2025学年春季学期研究生担任助教相关工作。请本学期有助教需求和意向的师生查阅《网络与信息安全学院研究生承担助教工作实施细则》（网信院字〔2019〕41号",
+          "url": "https://ce.xidian.edu.cn/info/1355/12223.htm",
+          "listed_on": "https://ce.xidian.edu.cn/sy/xsgz/tzgg.htm"
+        },
+        {
+          "title": "网络与信息安全学院2025年创新型人才国际合作培养项目第一批人员选拔结果公示 网络与信息安全学院2025年创新型人才国际合作培养项目第一批人员选拔结果公示 2025-02-26 根据学校《关于2025年创新型人才国际合作培养项目第一批人员选拔的通知》等相关文件要求和学校工作安排，经个人申报、学院审核、专家评审等环节，现对网络与信息安全学院2025年创新型人才",
+          "url": "https://ce.xidian.edu.cn/info/1355/12233.htm",
+          "listed_on": "https://ce.xidian.edu.cn/sy/xsgz/tzgg.htm"
+        }
+      ]
+    },
+    {
+      "id": "S34",
+      "name": "人工智能学院",
+      "group": "其他学院与竞赛线索",
+      "url": "https://sai.xidian.edu.cn/",
+      "directory_url": "http://sai.xidian.edu.cn/",
+      "discovered_from": "https://www.xidian.edu.cn/jgsz.htm",
+      "homepage_check": {
+        "status": 200,
+        "final_url": "https://sai.xidian.edu.cn/",
+        "title": "西安电子科技大学-人工智能学院",
+        "checked_at": "2026-10-24T13:04:26.682187+00:00"
+      },
+      "access": "已读取公开栏目",
+      "note": "官方目录发现，本次已检查首页；后续仅取通知公告，不采集新闻、宣传或活动回顾。是否保留由用户按需要决定。",
+      "content_scope": "只收通知、公告、公示与可行动的报名/选拔/赛程信息；排除新闻、宣传、微博、校报及获奖报道",
+      "recommended": false,
+      "columns": [
+        {
+          "source_id": "S34",
+          "name": "通知公告",
+          "url": "https://sai.xidian.edu.cn/tzgg.htm",
+          "discovered_from": "https://sai.xidian.edu.cn/",
+          "verified": true,
+          "title": "通知公告-西安电子科技大学-人工智能学院",
+          "status": 200,
+          "error": null,
+          "access_hint": "",
+          "checked_at": "2026-10-24T13:07:46.435359+00:00"
+        },
+        {
+          "source_id": "S34",
+          "name": "学科竞赛",
+          "url": "https://sai.xidian.edu.cn/bkjx1/xkjs.htm",
+          "discovered_from": "https://sai.xidian.edu.cn/",
+          "verified": true,
+          "title": "学科竞赛-西安电子科技大学-人工智能学院",
+          "status": 200,
+          "error": null,
+          "access_hint": "",
+          "checked_at": "2026-10-24T13:07:46.851843+00:00"
+        }
+      ],
+      "samples": [
+        {
+          "title": "2021-04-25西安电子科技大学人工智能学院教师岗位招聘公告",
+          "url": "https://sai.xidian.edu.cn/info/1106/5911.htm",
+          "listed_on": "https://sai.xidian.edu.cn/tzgg.htm"
+        },
+        {
+          "title": "2026-10-23关于开展2026～2027学年（秋季）研究生学业奖学金评定工作的通知",
+          "url": "https://sai.xidian.edu.cn/info/1106/32392.htm",
+          "listed_on": "https://sai.xidian.edu.cn/tzgg.htm"
+        },
+        {
+          "title": "2026-10-09人工智能学院2026年研究生国家奖学金评审结果公示",
+          "url": "https://sai.xidian.edu.cn/info/1106/29292.htm",
+          "listed_on": "https://sai.xidian.edu.cn/tzgg.htm"
+        },
+        {
+          "title": "2026-09-23人工智能学院关于评选2026年本科生国家奖学金的通知",
+          "url": "https://sai.xidian.edu.cn/info/1106/28612.htm",
+          "listed_on": "https://sai.xidian.edu.cn/tzgg.htm"
+        },
+        {
+          "title": "2026-09-21人工智能学院关于开展2026年研究生国家奖学金申报的通知",
+          "url": "https://sai.xidian.edu.cn/info/1106/28582.htm",
+          "listed_on": "https://sai.xidian.edu.cn/tzgg.htm"
+        }
+      ]
+    },
+    {
+      "id": "S35",
+      "name": "信息力学与感知工程学院",
+      "group": "其他学院与竞赛线索",
+      "url": "https://imse.xidian.edu.cn/",
+      "directory_url": "https://imse.xidian.edu.cn/",
+      "discovered_from": "https://www.xidian.edu.cn/jgsz.htm",
+      "homepage_check": {
+        "status": 200,
+        "final_url": "https://imse.xidian.edu.cn/",
+        "title": "西安电子科技大学信息力学与感知工程学院",
+        "checked_at": "2026-10-24T13:04:26.793996+00:00"
+      },
+      "access": "已读取首页",
+      "note": "官方目录发现，本次已检查首页；后续仅取通知公告，不采集新闻、宣传或活动回顾。是否保留由用户按需要决定。",
+      "content_scope": "只收通知、公告、公示与可行动的报名/选拔/赛程信息；排除新闻、宣传、微博、校报及获奖报道",
+      "recommended": false,
+      "columns": [],
+      "samples": [
+        {
+          "title": "04-27 2025 西安电子科技大学信息力学与感知工程学院诚聘海内外高层次人才和优秀青年博士简章 （长期招聘）",
+          "url": "https://imse.xidian.edu.cn/info/1030/2421.htm",
+          "listed_on": "https://imse.xidian.edu.cn/"
+        },
+        {
+          "title": "07-20 2026 信息力学与感知工程学院2027年推荐免试研究生招生预报名通知",
+          "url": "https://imse.xidian.edu.cn/info/1030/6891.htm",
+          "listed_on": "https://imse.xidian.edu.cn/"
+        },
+        {
+          "title": "信息力学与感知工程学院2026年推荐免试研究生招生预报名通知 2025-07-14",
+          "url": "https://imse.xidian.edu.cn/info/1024/3401.htm",
+          "listed_on": "https://imse.xidian.edu.cn/"
+        },
+        {
+          "title": "关于公布我院2026年硕士研究生招生考试初试专业课科目的通知 2025-07-11",
+          "url": "https://imse.xidian.edu.cn/info/1024/3361.htm",
+          "listed_on": "https://imse.xidian.edu.cn/"
+        }
+      ]
+    },
+    {
+      "id": "S36",
+      "name": "国家卓越工程师学院",
+      "group": "其他学院与竞赛线索",
+      "url": "https://ncee.xidian.edu.cn/",
+      "directory_url": "https://ncee.xidian.edu.cn/",
+      "discovered_from": "https://www.xidian.edu.cn/jgsz.htm",
+      "homepage_check": {
+        "status": 200,
+        "final_url": "https://ncee.xidian.edu.cn/",
+        "title": "西安电子科技大学国家卓越工程师学院",
+        "checked_at": "2026-10-24T13:04:28.736735+00:00"
+      },
+      "access": "已读取公开栏目",
+      "note": "官方目录发现，本次已检查首页；后续仅取通知公告，不采集新闻、宣传或活动回顾。是否保留由用户按需要决定。",
+      "content_scope": "只收通知、公告、公示与可行动的报名/选拔/赛程信息；排除新闻、宣传、微博、校报及获奖报道",
+      "recommended": false,
+      "columns": [
+        {
+          "source_id": "S36",
+          "name": "通知公告",
+          "url": "https://ncee.xidian.edu.cn/xwdt/tzgg.htm",
+          "discovered_from": "https://ncee.xidian.edu.cn/",
+          "verified": true,
+          "title": "通知公告-西安电子科技大学国家卓越工程师学院",
+          "status": 200,
+          "error": null,
+          "access_hint": "",
+          "checked_at": "2026-10-24T13:07:47.395200+00:00"
+        }
+      ],
+      "samples": [
+        {
+          "title": "关于开展2026年西安电子科技大学国家卓越工程师学院“卓越实践奖学金”评选工作的通知 20 2026-10 关于开展2026年西安电子科技大学国家卓越工程师学院“卓越实践奖学金”评选工作的通知 卓越工程师专项研究生：为深入贯彻落实党中央、国务院关于深化产教融合改革部署，全面落实中央人才工作会议与全国教育大会精神，深化工程硕博士培养改革，强化实践创新能力培养，",
+          "url": "https://ncee.xidian.edu.cn/info/1111/4501.htm",
+          "listed_on": "https://ncee.xidian.edu.cn/xwdt/tzgg.htm"
+        },
+        {
+          "title": "关于教育部学位中心2026年度工程案例拟推荐名单的公示 14 2026-09 关于教育部学位中心2026年度工程案例拟推荐名单的公示 公示期已过，感谢师生群众的支持与关注。",
+          "url": "https://ncee.xidian.edu.cn/info/1111/4381.htm",
+          "listed_on": "https://ncee.xidian.edu.cn/xwdt/tzgg.htm"
+        },
+        {
+          "title": "西电2027年工程硕博士专项招生报名通知 12 2026-09 西电2027年工程硕博士专项招生报名通知 一、专项招生介绍根据上级部门工作安排，2027年学校设立工程硕博士专项招收优秀推免生，包含工程硕博士培养改革专项和“卓越·芯”计划研究生专项班两个专项。二、报名条件申请报名考生须为我校普通高等教育全日制在读已获取推荐免试资格的2023级本科生，其中工程硕",
+          "url": "https://ncee.xidian.edu.cn/info/1111/4371.htm",
+          "listed_on": "https://ncee.xidian.edu.cn/xwdt/tzgg.htm"
+        },
+        {
+          "title": "关于拟将冯治存同志转为中共正式党员的公示 07 2026-09 关于拟将冯治存同志转为中共正式党员的公示 公示时间从2026年9月8日起至2026年9月14日止（含5个工作日）。中共西安电子科技大学国家卓越工程师学院第二支部委员会2026年9月7日公示期已结束",
+          "url": "https://ncee.xidian.edu.cn/info/1111/4341.htm",
+          "listed_on": "https://ncee.xidian.edu.cn/xwdt/tzgg.htm"
+        },
+        {
+          "title": "关于组织申报教育部学位中心2026年度工程案例的通知 04 2026-08 关于组织申报教育部学位中心2026年度工程案例的通知 关于组织申报教育部学位与研究生教育发展中心2026年度工程案例的通知各学院：教育部学位与研究生教育发展中心（以下简称“学位中心”）正在面向工程硕博士培养改革专项试点高校、承担国家卓越工程师学院建设任务的相关企业开展2026年度工程",
+          "url": "https://ncee.xidian.edu.cn/info/1111/4291.htm",
+          "listed_on": "https://ncee.xidian.edu.cn/xwdt/tzgg.htm"
+        }
+      ]
+    },
+    {
+      "id": "S37",
+      "name": "数学与交叉科学研究院",
+      "group": "其他学院与竞赛线索",
+      "url": "https://imis.xidian.edu.cn/",
+      "directory_url": "https://imis.xidian.edu.cn/",
+      "discovered_from": "https://www.xidian.edu.cn/jgsz.htm",
+      "homepage_check": {
+        "status": 200,
+        "final_url": "https://imis.xidian.edu.cn/",
+        "title": "数学与交叉科学研究院",
+        "checked_at": "2026-10-24T13:04:32.206664+00:00"
+      },
+      "access": "已读取公开栏目",
+      "note": "官方目录发现，本次已检查首页；后续仅取通知公告，不采集新闻、宣传或活动回顾。是否保留由用户按需要决定。",
+      "content_scope": "只收通知、公告、公示与可行动的报名/选拔/赛程信息；排除新闻、宣传、微博、校报及获奖报道",
+      "recommended": false,
+      "columns": [
+        {
+          "source_id": "S37",
+          "name": "通知公告",
+          "url": "https://imis.xidian.edu.cn/index/tzgg.htm",
+          "discovered_from": "https://imis.xidian.edu.cn/",
+          "verified": true,
+          "title": "通知公告-数学与交叉科学研究院",
+          "status": 200,
+          "error": null,
+          "access_hint": "",
+          "checked_at": "2026-10-24T13:07:47.765949+00:00"
+        },
+        {
+          "source_id": "S37",
+          "name": "系列报告",
+          "url": "https://imis.xidian.edu.cn/xshd1/xlbg.htm",
+          "discovered_from": "https://imis.xidian.edu.cn/",
+          "verified": true,
+          "title": "系列报告-数学与交叉科学研究院",
+          "status": 200,
+          "error": null,
+          "access_hint": "",
+          "checked_at": "2026-10-24T13:07:48.468623+00:00"
+        }
+      ],
+      "samples": [
+        {
+          "title": "关于举办数学与交叉科学研究院2025年量子信息暑期班的通知 关于举办数学与交叉科学研究院2025年量子信息暑期班的通知 2025-05-09",
+          "url": "https://imis.xidian.edu.cn/info/1002/1602.htm",
+          "listed_on": "https://imis.xidian.edu.cn/index/tzgg.htm"
+        },
+        {
+          "title": "西安电子科技大学数学与交叉科学研究院关于举办“2024年大学生夏令营活动”通知 西安电子科技大学数学与交叉科学研究院关于举办“2024年大学生夏令营活动”通知 2024-06-06",
+          "url": "https://imis.xidian.edu.cn/info/1002/1103.htm",
+          "listed_on": "https://imis.xidian.edu.cn/index/tzgg.htm"
+        },
+        {
+          "title": "关于开展陕西省“校招共用”引才用才工作的通知 关于开展陕西省“校招共用”引才用才工作的通知 2024-03-14",
+          "url": "https://imis.xidian.edu.cn/info/1002/1043.htm",
+          "listed_on": "https://imis.xidian.edu.cn/index/tzgg.htm"
+        }
+      ]
+    },
+    {
+      "id": "S38",
+      "name": "学校通知公告门户",
+      "group": "重点关注",
+      "url": "https://notice.xidian.edu.cn/",
+      "directory_url": "http://notice.xidian.edu.cn/2016lanmuye.jsp?urltype=tree.TreeTempUrl&wbtreeid=1227",
+      "discovered_from": "https://www.xidian.edu.cn/",
+      "homepage_check": {
+        "status": 200,
+        "final_url": "https://notice.xidian.edu.cn/",
+        "title": "系统提示",
+        "checked_at": "2026-10-24T13:04:33.650567+00:00"
+      },
+      "access": "校园网络受限",
+      "note": "学校通知门户本次明确提示校外访问受限，要求学校 aTrust 零信任系统。仅保存登录 Cookie 不保证能访问；需用户在学校允许的网络环境下运行。",
+      "content_scope": "只收通知、公告、公示与可行动的报名/选拔/赛程信息；排除新闻、宣传、微博、校报及获奖报道",
+      "recommended": false,
+      "columns": [
+        {
+          "source_id": "S38",
+          "name": "学校通知",
+          "url": "https://notice.xidian.edu.cn/2016lanmuye.jsp?urltype=tree.TreeTempUrl&wbtreeid=1227",
+          "discovered_from": "https://www.xidian.edu.cn/",
+          "verified": false,
+          "title": "系统提示",
+          "status": 200,
+          "error": null,
+          "access_hint": "校外访问受限：页面要求通过学校 aTrust 零信任系统访问",
+          "checked_at": "2026-10-24T13:13:28.761042+00:00"
+        },
+        {
+          "source_id": "S38",
+          "name": "学校公告",
+          "url": "https://notice.xidian.edu.cn/2016lanmuye.jsp?urltype=tree.TreeTempUrl&wbtreeid=1235",
+          "discovered_from": "https://www.xidian.edu.cn/",
+          "verified": false,
+          "title": "系统提示",
+          "status": 200,
+          "error": null,
+          "access_hint": "校外访问受限：页面要求通过学校 aTrust 零信任系统访问",
+          "checked_at": "2026-10-24T13:13:28.762054+00:00"
+        }
+      ],
+      "samples": []
+    },
+    {
+      "id": "S40",
+      "name": "创新创业训练计划平台",
+      "group": "竞赛与项目补充",
+      "url": "http://cxcycs.xidian.edu.cn/",
+      "directory_url": "http://cxcycs.xidian.edu.cn/",
+      "discovered_from": "https://ie.xidian.edu.cn/",
+      "homepage_check": {
+        "status": 502,
+        "final_url": "http://cxcycs.xidian.edu.cn/",
+        "error": "HTTP Error 502: Bad Gateway",
+        "checked_at": "2026-10-24T13:07:49.349338+00:00"
+      },
+      "access": "连接异常，待复核",
+      "note": "官方创新创业学院链接到此平台，本次返回 502；未确认当前登录或通知能力。",
+      "content_scope": "只收通知、公告、公示与可行动的报名/选拔/赛程信息；排除新闻、宣传、微博、校报及获奖报道",
+      "recommended": false,
+      "columns": [],
+      "samples": []
+    },
+    {
+      "id": "S41",
+      "name": "西电 ACM 竞赛网",
+      "group": "竞赛与项目补充",
+      "url": "http://acm.xidian.edu.cn/",
+      "directory_url": "http://acm.xidian.edu.cn/",
+      "discovered_from": "https://cs.xidian.edu.cn/",
+      "homepage_check": {
+        "status": 200,
+        "final_url": "https://acm.xidian.edu.cn/",
+        "title": "Welcome To Online Judge",
+        "checked_at": "2026-10-24T13:07:49.893952+00:00"
+      },
+      "access": "已读取首页",
+      "note": "已跳转到 HTTPS 在线评测平台，偏程序设计比赛与作业，不是全校竞赛通知中心。",
+      "content_scope": "只收通知、公告、公示与可行动的报名/选拔/赛程信息；排除新闻、宣传、微博、校报及获奖报道",
+      "recommended": false,
+      "columns": [],
+      "samples": []
+    },
+    {
+      "id": "S42",
+      "name": "全国大学生数学建模竞赛（校外官网）",
+      "group": "校外赛事补充",
+      "url": "https://www.mcm.edu.cn/",
+      "directory_url": "https://www.mcm.edu.cn/",
+      "discovered_from": "https://math.xidian.edu.cn/",
+      "homepage_check": {
+        "status": 200,
+        "final_url": "https://www.mcm.edu.cn/",
+        "title": "全国大学生数学建模竞赛",
+        "checked_at": "2026-10-24T13:07:50.674597+00:00"
+      },
+      "access": "已读取首页",
+      "note": "由数学与统计学院官网友情链接发现；校外赛事官网，不代表学校报名安排。",
+      "content_scope": "只收通知、公告、公示与可行动的报名/选拔/赛程信息；排除新闻、宣传、微博、校报及获奖报道",
+      "recommended": false,
+      "columns": [],
+      "samples": []
+    },
+    {
+      "id": "S43",
+      "name": "中国研究生数学建模竞赛（校外官网）",
+      "group": "校外赛事补充",
+      "url": "https://cpipc.acge.org.cn/cw/hp/4",
+      "directory_url": "https://cpipc.acge.org.cn/cw/hp/4",
+      "discovered_from": "https://math.xidian.edu.cn/",
+      "homepage_check": {
+        "status": 200,
+        "final_url": "https://cpipc.acge.org.cn/cw/hp/4",
+        "title": "中国研究生创新实践系列大赛管理平台",
+        "checked_at": "2026-10-24T13:07:50.966069+00:00"
+      },
+      "access": "已读取首页",
+      "note": "由数学与统计学院官网友情链接发现；校外研究生赛事平台，不代表学校报名安排。",
+      "content_scope": "只收通知、公告、公示与可行动的报名/选拔/赛程信息；排除新闻、宣传、微博、校报及获奖报道",
+      "recommended": false,
+      "columns": [],
+      "samples": []
+    },
+    {
+      "id": "S44",
+      "name": "综合信息网",
+      "group": "重点关注",
+      "url": "http://info.xidian.edu.cn/",
+      "directory_url": "http://info.xidian.edu.cn/",
+      "discovered_from": "https://www.xidian.edu.cn/",
+      "homepage_check": {
+        "status": 200,
+        "final_url": "https://info.xidian.edu.cn/",
+        "title": "西安电子科技大学 综合信息网",
+        "checked_at": "2026-10-24T13:07:51.171048+00:00"
+      },
+      "access": "已读取首页",
+      "note": "综合信息网首页本次可公开读取，聚合多个部门通知。详情可能另需登录或校园网络，不能假定全部公开。",
+      "content_scope": "只收通知、公告、公示与可行动的报名/选拔/赛程信息；排除新闻、宣传、微博、校报及获奖报道",
+      "recommended": true,
+      "columns": [],
+      "samples": [
+        {
+          "title": "关于两校区供暖管网注水的通知",
+          "url": "https://info.xidian.edu.cn/zContent.jsp?urltype=news.NewsContentUrl&wbtreeid=1011&wbnewsid=118430",
+          "listed_on": "http://info.xidian.edu.cn/"
+        },
+        {
+          "title": "关于CURA中国大学生路跑联赛期间临时交通管制的通知",
+          "url": "https://info.xidian.edu.cn/zContent.jsp?urltype=news.NewsContentUrl&wbtreeid=1011&wbnewsid=118100",
+          "listed_on": "http://info.xidian.edu.cn/"
+        },
+        {
+          "title": "关于举办第二届“百班千人国防尖兵挑战赛”的通知",
+          "url": "https://info.xidian.edu.cn/zContent.jsp?urltype=news.NewsContentUrl&wbtreeid=1011&wbnewsid=118090",
+          "listed_on": "http://info.xidian.edu.cn/"
+        },
+        {
+          "title": "关于2025年度第二批横向科研项目绩效发放的通知",
+          "url": "https://info.xidian.edu.cn/info/1014/114400.htm",
+          "listed_on": "http://info.xidian.edu.cn/"
+        },
+        {
+          "title": "西安电子科技大学2025-2026学年学生国际交流资助的公示",
+          "url": "https://info.xidian.edu.cn/info/1015/107740.htm",
+          "listed_on": "http://info.xidian.edu.cn/"
+        }
+      ]
+    },
+    {
+      "id": "S45",
+      "name": "一网通办",
+      "group": "需另行确认的登录入口",
+      "url": "https://ywtb.xidian.edu.cn/",
+      "directory_url": "https://ywtb.xidian.edu.cn/",
+      "discovered_from": "https://www.xidian.edu.cn/",
+      "homepage_check": {
+        "error": "URLError: <urlopen error _ssl.c:993: The handshake operation timed out>",
+        "checked_at": "2026-10-24T13:07:51.610993+00:00"
+      },
+      "access": "连接异常，待复核",
+      "note": "官方入口已发现，本次 TLS 握手超时；尚未确认登录后有哪些可用通知。",
+      "content_scope": "只收通知、公告、公示与可行动的报名/选拔/赛程信息；排除新闻、宣传、微博、校报及获奖报道",
+      "recommended": false,
+      "columns": [],
+      "samples": []
+    },
+    {
+      "id": "S46",
+      "name": "教务系统",
+      "group": "需另行确认的登录入口",
+      "url": "https://ehall.xidian.edu.cn/",
+      "directory_url": "https://ehall.xidian.edu.cn/",
+      "discovered_from": "https://www.xidian.edu.cn/",
+      "homepage_check": {
+        "status": 200,
+        "final_url": "https://ehall.xidian.edu.cn/new/index_xd.html#/education",
+        "title": "西电一站式网上办事大厅",
+        "access_hint": "公开页面可读取；通知详情与附件权限需分别确认",
+        "checked_at": "2026-10-24T13:13:30.100286+00:00"
+      },
+      "access": "待本人登录确认",
+      "note": "可打开办事大厅外壳页面，未登录、未验证业务或通知内容；不采集成绩或个人资料。",
+      "content_scope": "只收通知、公告、公示与可行动的报名/选拔/赛程信息；排除新闻、宣传、微博、校报及获奖报道",
+      "recommended": false,
+      "columns": [],
+      "samples": []
+    },
+    {
+      "id": "S47",
+      "name": "学工系统",
+      "group": "需另行确认的登录入口",
+      "url": "https://xgxt.xidian.edu.cn/",
+      "directory_url": "https://xgxt.xidian.edu.cn/",
+      "discovered_from": "https://www.xidian.edu.cn/",
+      "homepage_check": {
+        "status": 200,
+        "final_url": "https://ids.xidian.edu.cn/authserver/login?service=https%3A%2F%2Fxgxt.xidian.edu.cn%2Fxsfw%2Fsys%2Fxggzptapp%2Findex.do",
+        "title": "统一身份认证平台",
+        "access_hint": "已到达登录入口；未登录，尚未验证通知内容",
+        "checked_at": "2026-10-24T13:13:28.762054+00:00"
+      },
+      "access": "待本人登录确认",
+      "note": "已跳转统一身份认证平台，未登录；不采集个人资料、奖助申请或其他业务记录。",
+      "content_scope": "只收通知、公告、公示与可行动的报名/选拔/赛程信息；排除新闻、宣传、微博、校报及获奖报道",
+      "recommended": false,
+      "columns": [],
+      "samples": []
+    }
+  ]
+}
