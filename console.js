@@ -231,6 +231,39 @@
     if (dirty) return;
     renderSources(data);
   }
+  let undoTimer = null;
+  function offerUndo(item) {
+    const element = $('notices-message');
+    clearTimeout(undoTimer);
+    element.className = 'notice neutral';
+    element.hidden = false;
+    element.replaceChildren(document.createTextNode(`已标记已读：${item.title || '该通知'} `));
+    const undo = node('button', 'button small', '撤销');
+    undo.type = 'button';
+    undo.addEventListener('click', async () => {
+      undo.disabled = true;
+      try {
+        const data = await api('/api/notice', {method: 'PUT', body: {key: item.key, read: false}});
+        item.read = data.read;
+        message('notices-message', '已撤销，通知重新显示。', 'success');
+        await loadNotices();
+      } catch (error) {
+        message('notices-message', error.message, 'error');
+      }
+    });
+    element.append(undo);
+    undoTimer = setTimeout(() => { if (element.contains(undo)) message('notices-message'); }, 6000);
+  }
+  function dismissCard(card, item) {
+    card.classList.add('notice-card-dismissed');
+    card.setAttribute('aria-hidden', 'true');
+    setTimeout(() => {
+      card.remove();
+      // 划走最后一张时自动补上下一页，省得手动翻页。
+      if ($('view').value === 'recent' && !$('notices').childElementCount && connected && !closed) loadNotices();
+    }, 220);
+    offerUndo(item);
+  }
   function noticeFlagButton(card, item, kind) {
     const button = node('button', 'button small notice-flag');
     button.type = 'button';
@@ -255,6 +288,7 @@
         item[kind] = data[kind];
         if (kind === 'favorite') card.dataset.favorite = String(Boolean(data.favorite));
         render();
+        if (kind === 'read' && data.read) dismissCard(card, item);
       } catch (error) {
         message('notices-message', `${error.message}`, 'error');
       } finally {
@@ -298,6 +332,8 @@
   async function loadNotices() {
     const sequence = ++noticeSequence;
     const query = new URLSearchParams({view: $('view').value, days: $('days').value, q: $('search').value, source_id: $('source-filter').value, offset: String(offset), limit: String(limit)});
+    // 近期视图只列未读且非以往已收录的通知（收藏始终保留），避免每轮重复显示。
+    if ($('view').value === 'recent') query.set('fresh', '1');
     loading = true;
     $('notices').dataset.loading = 'true';
     $('notices').setAttribute('aria-busy', 'true');
@@ -319,8 +355,8 @@
       $('notices').dataset.view = $('view').value;
       $('empty-notices').hidden = data.items.length > 0;
       const filtered = $('search').value.trim() || $('source-filter').value;
-      $('empty-notices').textContent = data.recorded === false ? data.message || '最近一次运行未记录变化明细，不能判断为没有更新。请切换“近期通知”查看已存通知。' : filtered ? '没有符合当前筛选的通知，可调整关键词、来源或日期范围。' : $('view').value === 'changes' ? '最近一次已提交采集没有发现 / 变化条目。请结合上方覆盖结论判断，不代表所有来源都没有更新。' : latest ? '当前时间范围没有已收录通知。可扩大日期范围；失败或受限不代表没有通知。' : '尚未采集通知。选择来源后点击“开始采集”。';
-      $('notice-count').textContent = `共 ${total} 条 · ${$('view').value === 'recent' ? '读取本地已存通知' : '最近一次已提交采集的变化'}`;
+      $('empty-notices').textContent = data.recorded === false ? data.message || '最近一次运行未记录变化明细，不能判断为没有更新。请切换“近期通知”查看已存通知。' : filtered ? '没有符合当前筛选的通知，可调整关键词、来源或日期范围。' : $('view').value === 'changes' ? '最近一次已提交采集没有发现 / 变化条目。请结合上方覆盖结论判断，不代表所有来源都没有更新。' : latest ? ($('view').value === 'recent' ? '当前时间范围没有未读的新通知。已读与以往已收录的通知默认隐藏，收藏的仍会显示；可扩大日期范围或点击“清理已读”。' : '当前时间范围没有已收录通知。可扩大日期范围；失败或受限不代表没有通知。') : '尚未采集通知。选择来源后点击“开始采集”。';
+      $('notice-count').textContent = `共 ${total} 条 · ${$('view').value === 'recent' ? '未读 / 新发现通知（已读与以往已收录的默认隐藏，收藏始终显示）' : '最近一次已提交采集的变化'}`;
       const rangeText = Number($('days').value) ? `最近 ${$('days').value} 天` : '不限日期';
       $('notice-count').textContent += ` · ${rangeText}（按发布日期，含日期未知项）`;
       $('page-label').textContent = total ? `${offset + 1}–${Math.min(offset + limit, total)} / ${total} · 每页 50 条` : '每页 50 条';

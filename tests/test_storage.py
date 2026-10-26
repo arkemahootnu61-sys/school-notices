@@ -171,6 +171,23 @@ class StorageTests(unittest.TestCase):
         finally:
             store.close()
 
+    def test_fresh_only_hides_dismissed_and_seen_but_keeps_favorites(self):
+        store = Store(self.path)
+        try:
+            old = self.notice('https://a.example/info/1/1.htm')
+            new = self.notice('https://a.example/info/1/2.htm'); new['content_hash'] = 'newer'
+            for item in (old, new):
+                store.remember(item, True)
+            self.commit(store, [{**old, 'state': 'seen'}, {**new, 'state': 'new'}])
+            self.assertEqual(store.list_notices()['total'], 2)
+            self.assertEqual([i['key'] for i in store.list_notices(fresh_only=True)['items']], [new['key']])
+            store.set_notice_flags(new['key'], read=True)
+            self.assertEqual(store.list_notices(fresh_only=True)['total'], 0)
+            store.set_notice_flags(old['key'], favorite=True)
+            self.assertEqual([i['key'] for i in store.list_notices(fresh_only=True)['items']], [old['key']])
+        finally:
+            store.close()
+
     def test_atomic_failure_preserves_latest(self):
         path = self.path.with_name('latest.html'); path.write_text('complete',encoding='utf-8')
         with patch('pathlib.Path.replace',side_effect=OSError('injected write failure')):

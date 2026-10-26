@@ -167,12 +167,14 @@ class ConsoleController:
                 return self.sources()[0]
 
     def notices(self, query):
-        if set(query) - {'view', 'days', 'q', 'source_id', 'offset', 'limit'} or any(len(v) != 1 for v in query.values()):
+        if set(query) - {'view', 'days', 'q', 'source_id', 'offset', 'limit', 'fresh'} or any(len(v) != 1 for v in query.values()):
             raise APIError(400, 'invalid_parameter', '查询参数不正确')
         values = {key: value[0] for key, value in query.items()}
         view = values.get('view', 'recent')
         if view not in {'recent', 'changes'}:
             raise APIError(400, 'invalid_parameter', 'view 必须为 recent 或 changes')
+        if values.get('fresh', '0') not in {'0', '1'}:
+            raise APIError(400, 'invalid_parameter', 'fresh 必须为 0 或 1')
         numbers = {}
         for key, default in (('days', 30), ('offset', 0), ('limit', 50)):
             text = values.get(key, str(default))
@@ -189,7 +191,8 @@ class ConsoleController:
         source_id, text = values.get('source_id') or None, values.get('q', '')
         with self.store() as store:
             if view == 'recent':
-                result = store.list_notices(cutoff=cutoff, source_id=source_id, query=text, offset=offset, limit=limit)
+                result = store.list_notices(cutoff=cutoff, source_id=source_id, query=text, offset=offset,
+                                            limit=limit, fresh_only=values.get('fresh') == '1')
             else:
                 latest = store.latest_result()
                 if latest is None:

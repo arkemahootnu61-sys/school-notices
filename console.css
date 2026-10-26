@@ -64,7 +64,8 @@ summary { cursor: pointer; font-size: 14px; font-weight: 600; }
 .filters { display: grid; grid-template-columns: 180px minmax(180px, 1fr) minmax(150px, 220px); gap: 12px; }
 .count { margin: 18px 0; font-size: 13px; color: #526b7c; }
 .notice-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
-.notice-card { border: 1px solid #dce4ea; border-radius: 9px; padding: 14px; min-width: 0; }
+.notice-card { border: 1px solid #dce4ea; border-radius: 9px; padding: 14px; min-width: 0; transition: opacity .22s ease, transform .22s ease; }
+.notice-card.notice-card-dismissed { opacity: 0; transform: translateX(24px); pointer-events: none; }
 .notice-card[data-favorite="true"] { border-left: 4px solid #c9a227; }
 .notice-card h3 { font-size: 15px; margin: 8px 0; line-height: 1.5; }
 .notice-card h3 a { text-decoration: none; }

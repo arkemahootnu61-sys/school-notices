@@ -231,7 +231,7 @@ class Store:
             (utc_now(), outcome, stored_notice_key, scope_key, notice_key))
 
     def list_notices(self, *, cutoff: str | None = None, source_id: str | None = None,
-                     query: str = '', offset: int = 0, limit: int = 50) -> dict:
+                     query: str = '', offset: int = 0, limit: int = 50, fresh_only: bool = False) -> dict:
         rows = self.db.execute('''SELECT n.*,c.source_id,c.source_name FROM notices n
             LEFT JOIN notice_candidates c ON COALESCE(c.stored_notice_key,c.notice_key)=n.key
             WHERE (? IS NULL OR n.published_date IS NULL OR n.published_date>=?)''', (cutoff, cutoff))
@@ -258,6 +258,11 @@ class Store:
         for item in notices.values():
             item['state'] = states.get(item['url'], 'seen')
         items = merge_notices(list(notices.values()))
+        if fresh_only:
+            # Inbox rule: hide already-dismissed (read) and previously-collected
+            # (state 'seen') notices, but never hide a favorite.
+            items = [item for item in items
+                     if item.get('favorite') or (not item.get('read') and item.get('state') != 'seen')]
         text = query.casefold()
         items = [item for item in items
                  if (not source_id or any(s['id'] == source_id for s in item['sources'])) and

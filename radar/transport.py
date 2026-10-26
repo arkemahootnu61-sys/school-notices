@@ -46,9 +46,13 @@ class Throttle:
         self.last[host] = time.monotonic()
 
 
-def chrome_launch_options(direct=True):
-    """Use installed Chrome only; never alter the user's proxy or everyday profile."""
-    return {'channel': 'chrome', 'headless': False, 'accept_downloads': False,
+def chrome_launch_options(direct=True, headless=False):
+    """Use installed Chrome only; never alter the user's proxy or everyday profile.
+
+    Collection runs headless so it stays in the background; the manual login window
+    must stay visible because a person has to type credentials into it.
+    """
+    return {'channel': 'chrome', 'headless': headless, 'accept_downloads': False,
             'viewport': {'width': 1280, 'height': 850},
             'args': ['--no-proxy-server'] if direct else []}
 
@@ -238,7 +242,7 @@ class BrowserTransport:
             from playwright.sync_api import sync_playwright
             self.playwright = sync_playwright().start()
             self.context = self.playwright.chromium.launch_persistent_context(
-                str(self.data_dir / 'browser-profile'), **chrome_launch_options(direct),
+                str(self.data_dir / 'browser-profile'), **chrome_launch_options(direct, headless=True),
                 service_workers='block', user_agent=USER_AGENT)
             restore_browser_state(self.context, self.data_dir / 'browser-state.json')
             self.page = self.context.new_page()

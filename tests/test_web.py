@@ -376,6 +376,36 @@ class ConsoleTests(unittest.TestCase):
         self.assertEqual(self.state()['latest']['outcome'], 'failed')
         self.assertEqual(self.request('GET', '/api/notices')[1]['total'], 3)
 
+    def test_notice_flags_fresh_filter_and_cleanup(self):
+        self.collect()
+        notices = self.request('GET', '/api/notices')[1]
+        self.assertEqual(notices['total'], 2)
+        first = notices['items'][0]['key']
+        # 首次收录仍算“新”，fresh 显示两条。
+        self.assertEqual(self.request('GET', '/api/notices?fresh=1')[1]['total'], 2)
+        # 已读：默认视图仍可看全部，fresh 隐藏。
+        self.assertEqual(self.request('PUT', '/api/notice', {'key': first, 'read': True})[0], 200)
+        self.assertEqual(self.request('GET', '/api/notices')[1]['total'], 2)
+        self.assertEqual([item['key'] for item in self.request('GET', '/api/notices?fresh=1')[1]['items']],
+                         [item['key'] for item in notices['items'] if item['key'] != first])
+        # 收藏优先于已读：收藏后重新出现在 fresh。
+        self.request('PUT', '/api/notice', {'key': first, 'favorite': True})
+        self.assertEqual(self.request('GET', '/api/notices?fresh=1')[1]['total'], 2)
+        # 再次采集：之前已收录的条目变为 seen，fresh 不再显示（收藏除外）。
+        self.collect()
+        self.assertEqual([item['key'] for item in self.request('GET', '/api/notices?fresh=1')[1]['items']], [first])
+        # 清理只删“已读且未收藏”。
+        self.request('PUT', '/api/notice', {'key': first, 'favorite': False})
+        status, cleaned, _ = self.request('POST', '/api/notices/cleanup', {})
+        self.assertEqual((status, cleaned), (200, {'removed': 1}))
+        self.assertEqual(self.request('GET', '/api/notices')[1]['total'], 1)
+        # 参数与鉴权边界。
+        for body in ({}, {'key': ''}, {'key': 1}, {'key': first, 'read': 'yes'}, {'key': first, 'extra': 1}):
+            self.assertEqual(self.request('PUT', '/api/notice', body)[0], 400)
+        self.assertEqual(self.request('PUT', '/api/notice', {'key': first, 'read': True}, auth=False)[0], 403)
+        self.assertEqual(self.request('POST', '/api/notices/cleanup', {}, auth=False)[0], 403)
+        self.assertEqual(self.request('GET', '/api/notices?fresh=2')[0], 400)
+
     def test_custom_site_rules_collect_real_pages_and_reject_invalid_updates(self):
         revision = self.request('GET', '/api/sources')[1]['revision']
         rules = {'seed_urls': [self.origin+'/board'], 'list_selector': '.bulletins',
