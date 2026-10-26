@@ -95,6 +95,10 @@ def merge_notices(items: list[dict]) -> list[dict]:
                 current['alternative_urls'].append(url)
         if rank.get(item.get('state'), 0) > rank.get(current.get('state'), 0):
             current['state'] = item['state']
+        # Exact copies are one notice to the user; a flag on any copy wins.
+        for field in ('favorite', 'read'):
+            if field in current or field in item:
+                current[field] = bool(current.get(field) or item.get(field))
         for field in ('last_seen', 'last_checked_at'):
             if item.get(field, '') > current.get(field, ''):
                 current[field] = item[field]

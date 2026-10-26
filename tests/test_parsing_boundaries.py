@@ -185,6 +185,39 @@ class DetailDateBoundaryTests(unittest.TestCase):
             self.detail('''<article><h1>学院成功举办交流活动</h1>
               <div class="v_news_content">活动纪实</div></article>''')
 
+    def test_article_title_meta_does_not_replace_visible_heading(self):
+        detail = self.detail('''<html><head>
+          <meta name="ArticleTitle" content="关于报名的通知"></head><body>
+          <div class="article"><h1>关于报名的通知</h1>
+          <p>发布时间：2014-03-05</p><div class="v_news_content">报名详情</div></div></body></html>''')
+        self.assertEqual(detail['title'], '关于报名的通知')
+        self.assertEqual(detail['published_date'], '2014-03-05')
+
+    def test_article_title_meta_is_a_title_fallback(self):
+        detail = self.detail('''<html><head>
+          <meta name="ArticleTitle" content="关于举办数学建模竞赛的通知"></head>
+          <body><div class="v_news_content">竞赛详情</div></body></html>''')
+        self.assertEqual(detail['title'], '关于举办数学建模竞赛的通知')
+
+    def test_section_heading_is_not_the_article_title(self):
+        detail = self.detail('''<div class="position"><h2 class="title">通知公告</h2></div>
+          <div class="main"><div class="title"><h4>关于举办数学建模竞赛的通知</h4></div>
+          <p>发布时间：2026-10-01</p><div class="v_news_content">竞赛详情</div></div>''')
+        self.assertEqual(detail['title'], '关于举办数学建模竞赛的通知')
+        self.assertEqual(detail['published_date'], '2026-10-01')
+
+    def test_site_header_heading_does_not_mask_article_title(self):
+        detail = self.detail('''<div class="header"><h1>西安电子科技大学</h1></div>
+          <div class="main"><div class="title"><h4>关于举办数学建模竞赛的通知</h4></div>
+          <p>发布时间：2026-10-01</p><div class="v_news_content">竞赛详情</div></div>''')
+        self.assertEqual(detail['title'], '关于举办数学建模竞赛的通知')
+        self.assertEqual(detail['published_date'], '2026-10-01')
+
+    def test_untitled_detail_does_not_borrow_sidebar_date(self):
+        detail = self.detail('''<div class="main"><div class="side"><span>发布日期：2013-05-01</span></div>
+          <div class="v_news_content">报名详情</div></div>''', '2026-10-20')
+        self.assertEqual(detail['published_date'], '2026-10-20')
+
 
 class AccessCodeTests(unittest.TestCase):
     def test_access_classification_exposes_stable_codes(self):

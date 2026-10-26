@@ -145,6 +145,15 @@ class StorageTests(unittest.TestCase):
         b['content_hash']=a['content_hash']
         self.assertEqual(len(merge_notices([a,b])),2)
 
+    def test_merge_propagates_favorite_and_read_flags(self):
+        a = self.notice(); a.update(sources=[], state='seen', favorite=False, read=False)
+        b = self.notice('https://b.example/info/1/2.htm')
+        b.update(sources=[], state='seen', favorite=True, read=True)
+        merged = merge_notices([a, b])
+        self.assertEqual(len(merged), 1)
+        self.assertTrue(merged[0]['favorite'])
+        self.assertTrue(merged[0]['read'])
+
     def test_recent_merge_search_and_latest_state_cover_alternative_urls(self):
         store = Store(self.path)
         try:

@@ -254,11 +254,13 @@
     element.append(undo);
     undoTimer = setTimeout(() => { if (element.contains(undo)) message('notices-message'); }, 6000);
   }
-  function dismissCard(card, item, undo = true) {
+  function dismissCard(card, item, undo = true, refresh = false) {
     card.classList.add('notice-card-dismissed');
     card.setAttribute('aria-hidden', 'true');
     setTimeout(() => {
       card.remove();
+      // 条数 / 页码交给重新加载，避免“共 N 条”停留在旧值。
+      if (refresh) { if (connected && !closed) loadNotices(); return; }
       // 划走最后一张时自动补上下一页，省得手动翻页。
       if (['recent', 'favorites'].includes($('view').value) && !$('notices').childElementCount && connected && !closed) loadNotices();
     }, 220);
@@ -288,8 +290,13 @@
         item[kind] = data[kind];
         if (kind === 'favorite') card.dataset.favorite = String(Boolean(data.favorite));
         render();
-        // 收藏视图里取消收藏后移出列表；已读只在“近期”视图划走，收藏中仍保留。
-        if (kind === 'favorite' && !data.favorite && $('view').value === 'favorites') dismissCard(card, item, false);
+        // 收藏视图里取消收藏后移出列表；“近期”视图里已读通知取消收藏后也不再符合条件。
+        if (kind === 'favorite' && !data.favorite) {
+          if ($('view').value === 'favorites' || ($('view').value === 'recent' && item.read)) {
+            dismissCard(card, item, false, true);
+          }
+        }
+        // 已读只在“近期”视图划走，收藏中仍保留。
         if (kind === 'read' && data.read && $('view').value !== 'favorites') dismissCard(card, item);
       } catch (error) {
         message('notices-message', `${error.message}`, 'error');

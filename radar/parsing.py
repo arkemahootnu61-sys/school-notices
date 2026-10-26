@@ -273,22 +273,46 @@ def extract_listing(content: str, url: str, hosts: set[str], source: dict, *,
                    bool(re.search('暂无相关|暂无信息|暂无内容|没有相关', soup.get_text(' ', strip=True))), trusted)
 
 
+def _find_title(soup, body=None):
+    """Pick the heading nearest the article body; metadata and section labels are not titles."""
+    candidates, seen = [], set()
+    for selector in TITLE_SELECTORS:
+        for node in soup.select(selector):
+            if id(node) in seen:
+                continue
+            seen.add(id(node))
+            text = node.get_text(' ', strip=True)
+            if node.name != 'meta' and text and not SECTION_LABEL.fullmatch(text):
+                candidates.append(node)
+    if not candidates:
+        return None
+    if body is None:
+        return candidates[0]
+    ancestors, node, depth = {}, body, 0
+    while node is not None:
+        ancestors[id(node)] = depth
+        node, depth = node.parent, depth + 1
+    def distance(candidate):
+        node = candidate
+        while node is not None:
+            if id(node) in ancestors:
+                return ancestors[id(node)]
+            node = node.parent
+        return len(ancestors)
+    return min(candidates, key=distance)
+
+
 def _detail_date(soup, title_node, body) -> str | None:
     if body is None:
         return None
     if title_node is None or title_node.name == 'meta':
-        for selector in TITLE_SELECTORS:
-            title_node = soup.select_one(selector)
-            if title_node:
-                break
-    # A document-wide common ancestor is not evidence of a single article. When no
-    # title element exists, fall back to the body's nearest ancestor.
-    if title_node is not None:
-        region = body if any(node is title_node for node in body.descendants) else next(
-            (parent for parent in body.parents
-             if any(node is title_node for node in parent.descendants)), None)
-    else:
-        region = next(body.parents, None)
+        title_node = _find_title(soup, body)
+    # A document-wide common ancestor is not evidence of a single article.
+    if title_node is None:
+        return None
+    region = body if any(node is title_node for node in body.descendants) else next(
+        (parent for parent in body.parents
+         if any(node is title_node for node in parent.descendants)), None)
     if region is None or region.name in ('[document]', 'html', 'body'):
         return None
     # Scripts are common inside the metadata paragraph (click counters) and their
@@ -325,11 +349,15 @@ def _detail_date(soup, title_node, body) -> str | None:
 
 def extract_detail(content: str, url: str, candidate: Candidate, source: dict) -> dict:
     soup = soup_page(content)
+    body = None
+    selectors = [source['content_selector']] if source.get('content_selector') else ARTICLE_SELECTORS
+    for selector in selectors:
+        body = soup.select_one(selector)
+        if body: break
     title_node = soup.select_one(source['title_selector']) if source.get('title_selector') else None
     if title_node is None:
-        for selector in TITLE_SELECTORS:
-            title_node = soup.select_one(selector)
-            if title_node: break
+        # Visible heading first; the metadata title is a text-only fallback.
+        title_node = _find_title(soup, body) or soup.select_one('meta[name="ArticleTitle"]')
     raw_title = (title_node.get('content') or title_node.get_text(' ', strip=True)) if title_node else candidate.title
     title = clean_title(raw_title)
     if NEWS.search(title) and not EXPLICIT.search(title):
@@ -337,11 +365,6 @@ def extract_detail(content: str, url: str, candidate: Candidate, source: dict) -
     if len(title) < 4 or not (notice_title(title) or title[:12] in candidate.title or candidate.title[:12] in title):
         title = candidate.title
     if not notice_title(title, candidate.trusted): raise ValueError('详情标题判定为新闻或非通知，已排除')
-    body = None
-    selectors = [source['content_selector']] if source.get('content_selector') else ARTICLE_SELECTORS
-    for selector in selectors:
-        body = soup.select_one(selector)
-        if body: break
     published = None
     if source.get('date_selector'):
         dates = {value for tag in soup.select(source['date_selector']) if (value := _date_node(tag))}
