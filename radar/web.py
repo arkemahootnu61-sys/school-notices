@@ -81,6 +81,10 @@ class ConsoleController:
         try:
             store = Store(self.data_dir / 'notices.sqlite3')
             yield store
+        except sqlite3.OperationalError as error:
+            if 'locked' in str(error).lower() or 'busy' in str(error).lower():
+                raise APIError(409, 'task_conflict', '数据库正被采集任务写入，请稍后重试') from None
+            raise APIError(503, 'storage_unavailable', '无法读取通知数据库，请检查本地文件后重试') from None
         except (OSError, sqlite3.Error, ValueError, TypeError, KeyError):
             raise APIError(503, 'storage_unavailable', '无法读取通知数据库，请检查本地文件后重试') from None
         finally:
@@ -237,12 +241,16 @@ class ConsoleController:
             raise APIError(400, 'invalid_parameter', 'favorite 必须为布尔值')
         if read is not None and not isinstance(read, bool):
             raise APIError(400, 'invalid_parameter', 'read 必须为布尔值')
+        # Collection holds one write transaction; fail predictably instead of
+        # stalling behind the database lock.
+        self._idle()
         with self.store() as store:
             flags = store.set_notice_flags(key, favorite=favorite, read=read)
         return {'key': key, **flags}
 
     def cleanup_notices(self, body):
         _fields(body, set())
+        self._idle()
         with self.store() as store:
             removed = store.cleanup_read_notices()
         return {'removed': removed}

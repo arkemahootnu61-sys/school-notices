@@ -246,6 +246,18 @@ class ConsoleTests(unittest.TestCase):
         self.assertFalse(any(source['allow_robots_unavailable'] for source in revoked['sources']))
         self.assertEqual(CountingFixture.reads, [])
 
+    def test_url_change_resets_http_detail_permission(self):
+        config = json_read(self.config)
+        config['sources'][0]['allow_http_detail'] = True
+        save_config(self.config, config)
+        _, current, _ = self.request('GET', '/api/sources')
+        self.assertTrue(current['sources'][0]['allow_http_detail'])
+        status, saved, _ = self.request('PUT', '/api/sources', {
+            'revision': current['revision'], 'enabled_ids': ['T01'],
+            'source_urls': {'T01': self.origin + '/new-entry'}})
+        self.assertEqual(status, 200, saved)
+        self.assertFalse(saved['sources'][0]['allow_http_detail'])
+
     def test_edit_existing_source_url_uses_new_entry_and_keeps_history(self):
         self.collect()
         previous = {item['key']: item['first_seen'] for item in self.request('GET', '/api/notices')[1]['items']}
@@ -405,6 +417,19 @@ class ConsoleTests(unittest.TestCase):
         self.assertEqual(self.request('PUT', '/api/notice', {'key': first, 'read': True}, auth=False)[0], 403)
         self.assertEqual(self.request('POST', '/api/notices/cleanup', {}, auth=False)[0], 403)
         self.assertEqual(self.request('GET', '/api/notices?fresh=2')[0], 400)
+
+    def test_notice_flags_and_cleanup_reject_active_task(self):
+        self.collect()
+        key = self.request('GET', '/api/notices')[1]['items'][0]['key']
+        self.controller.job['status'] = 'running'
+        try:
+            status, payload, _ = self.request('PUT', '/api/notice', {'key': key, 'favorite': True})
+            self.assertEqual((status, payload['error']['code']), (409, 'task_conflict'))
+            status, payload, _ = self.request('POST', '/api/notices/cleanup', {})
+            self.assertEqual((status, payload['error']['code']), (409, 'task_conflict'))
+        finally:
+            self.controller.job['status'] = 'idle'
+        self.assertEqual(self.request('PUT', '/api/notice', {'key': key, 'favorite': True})[0], 200)
 
     def test_favorites_view_ignores_date_range_and_survives_read(self):
         self.collect()

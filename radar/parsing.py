@@ -23,6 +23,7 @@ ARTICLE_SELECTORS = ('.v_news_content', '#vsb_content', '#vsb_content_2', '.vsb_
 # Campus templates put the title in varied headings: `<h2 class="title">`, `.title h4`, etc.
 TITLE_SELECTORS = ('meta[name="ArticleTitle"]', '.arti-title', '.article-title', '.news-title',
                    'h1', 'h2.title', '.title h1', '.title h2', '.title h3', '.title h4', '.title h5')
+INLINE_TAGS = {'a', 'b', 'em', 'font', 'i', 'small', 'span', 'strong', 'sub', 'sup'}
 SELECTOR_FIELDS = ('list_selector', 'detail_link_selector', 'list_date_selector',
                    'next_page_selector', 'title_selector', 'date_selector', 'content_selector')
 SECTION_LABEL = re.compile(r'通知公告|公告通知|通知|公告|公示公告|教学通知|竞赛通知|学生竞赛|科技竞赛|学科竞赛|创新实践系列大赛')
@@ -274,7 +275,7 @@ def extract_listing(content: str, url: str, hosts: set[str], source: dict, *,
 
 
 def _find_title(soup, body=None):
-    """Pick the heading nearest the article body; metadata and section labels are not titles."""
+    """Pick the formal heading; headings inside the article body are subheadings."""
     candidates, seen = [], set()
     for selector in TITLE_SELECTORS:
         for node in soup.select(selector):
@@ -288,17 +289,20 @@ def _find_title(soup, body=None):
         return None
     if body is None:
         return candidates[0]
+    external = [node for node in candidates if not any(parent is body for parent in node.parents)]
+    if external:
+        candidates = external
     ancestors, node, depth = {}, body, 0
     while node is not None:
         ancestors[id(node)] = depth
         node, depth = node.parent, depth + 1
     def distance(candidate):
-        node = candidate
+        node, steps = candidate, 0
         while node is not None:
             if id(node) in ancestors:
-                return ancestors[id(node)]
-            node = node.parent
-        return len(ancestors)
+                return (ancestors[id(node)], steps)
+            node, steps = node.parent, steps + 1
+        return (len(ancestors), steps)
     return min(candidates, key=distance)
 
 
@@ -330,6 +334,13 @@ def _detail_date(soup, title_node, body) -> str | None:
     dates = set()
     for node in region.descendants:
         if id(node) in excluded or any(id(parent) in excluded for parent in node.parents):
+            continue
+        # The title's own text may mention an event date; metadata blocks nested
+        # inside broken heading markup still count.
+        in_title = title_node is not None and node is not title_node and any(
+            parent is title_node for parent in node.parents)
+        if node is title_node or (in_title and (not getattr(node, 'name', None)
+                                               or node.name in INLINE_TAGS)):
             continue
         if getattr(node, 'name', None):
             # Do not join the article title/body or unrelated subtrees to metadata.

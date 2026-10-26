@@ -218,6 +218,31 @@ class DetailDateBoundaryTests(unittest.TestCase):
           <div class="v_news_content">报名详情</div></div>''', '2026-10-20')
         self.assertEqual(detail['published_date'], '2026-10-20')
 
+    def test_body_subheading_does_not_override_formal_title(self):
+        detail = self.detail('''<div class="article"><h2 class="title">关于报名的通知</h2>
+          <p>发布时间：2026-10-25</p>
+          <div class="v_news_content"><h1>报名须知</h1><p>报名详情</p></div></div>''')
+        self.assertEqual(detail['title'], '关于报名的通知')
+        self.assertEqual(detail['published_date'], '2026-10-25')
+
+    def test_body_subheading_news_title_does_not_exclude_notice(self):
+        detail = self.detail('''<div class="article"><h2 class="title">关于报名的通知</h2>
+          <div class="v_news_content"><h1>学院成功举办交流活动</h1><p>报名详情</p></div></div>''')
+        self.assertEqual(detail['title'], '关于报名的通知')
+
+    def test_event_date_in_title_is_not_publication_date(self):
+        detail = self.detail('''<div class="article">
+          <h2 class="title">关于报名的通知（日期：2026-11-01）</h2>
+          <div class="v_news_content">报名详情</div></div>''', '2026-10-25')
+        self.assertEqual(detail['published_date'], '2026-10-25')
+
+    def test_title_text_does_not_hide_nested_publication_metadata(self):
+        detail = self.detail('''<div class="article">
+          <h2 class="title">关于报名的通知（日期：2026-11-01）
+          <p class="info">发布时间：2026-10-25</p></h2>
+          <div class="v_news_content">报名详情</div></div>''', '2026-10-20')
+        self.assertEqual(detail['published_date'], '2026-10-25')
+
 
 class AccessCodeTests(unittest.TestCase):
     def test_access_classification_exposes_stable_codes(self):

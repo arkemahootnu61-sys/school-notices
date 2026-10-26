@@ -254,15 +254,16 @@
     element.append(undo);
     undoTimer = setTimeout(() => { if (element.contains(undo)) message('notices-message'); }, 6000);
   }
-  function dismissCard(card, item, undo = true, refresh = false) {
+  function dismissCard(card, item, undo = true, refresh = true) {
     card.classList.add('notice-card-dismissed');
     card.setAttribute('aria-hidden', 'true');
     setTimeout(() => {
       card.remove();
-      // 条数 / 页码交给重新加载，避免“共 N 条”停留在旧值。
-      if (refresh) { if (connected && !closed) loadNotices(); return; }
+      if (!connected || closed) return;
       // 划走最后一张时自动补上下一页，省得手动翻页。
-      if (['recent', 'favorites'].includes($('view').value) && !$('notices').childElementCount && connected && !closed) loadNotices();
+      if (!refresh && !(['recent', 'favorites'].includes($('view').value) && !$('notices').childElementCount)) return;
+      // 重新拉取同一偏移，补齐空出的位置，并同步总数与页码，避免翻页跳项。
+      loadNotices().then(() => { if (undo && item.read) offerUndo(item); });
     }, 220);
     if (undo) offerUndo(item);
   }
@@ -293,11 +294,11 @@
         // 收藏视图里取消收藏后移出列表；“近期”视图里已读通知取消收藏后也不再符合条件。
         if (kind === 'favorite' && !data.favorite) {
           if ($('view').value === 'favorites' || ($('view').value === 'recent' && item.read)) {
-            dismissCard(card, item, false, true);
+            dismissCard(card, item, false);
           }
         }
-        // 已读只在“近期”视图划走，收藏中仍保留。
-        if (kind === 'read' && data.read && $('view').value !== 'favorites') dismissCard(card, item);
+        // 只有“近期”视图把已读卡片划走；收藏和“本次变化”由后端继续保留。
+        if (kind === 'read' && data.read && $('view').value === 'recent' && !item.favorite) dismissCard(card, item);
       } catch (error) {
         message('notices-message', `${error.message}`, 'error');
       } finally {
@@ -578,7 +579,7 @@
   $('previous').addEventListener('click', () => goToPage(Math.max(0, offset - limit)));
   $('next').addEventListener('click', () => goToPage(offset + limit));
   $('cleanup-read').addEventListener('click', () => {
-    if (!window.confirm('将删除所有“已读且未收藏”的通知，收藏的通知会保留。此操作不可撤销，确定继续？')) return;
+    if (!window.confirm('将清理所有“已读且未收藏”的通知，收藏的通知会保留。清理后再次采集不会重新显示，确定继续？')) return;
     action(async () => {
       const data = await api('/api/notices/cleanup', {method: 'POST', body: {}});
       message('notices-message', data.removed ? `已清理 ${data.removed} 条已读且未收藏的通知。` : '没有可清理的已读通知；已收藏的通知会保留。', 'success');

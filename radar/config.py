@@ -141,6 +141,7 @@ def update_source_urls(config: dict, source_urls: dict) -> dict:
             source['allowed_hosts'] = [urlsplit(url).hostname]
             source['seed_urls'] = [url]
             source['allow_robots_unavailable'] = False
+            source['allow_http_detail'] = False
             for key in SELECTOR_FIELDS:
                 source.pop(key, None)
     return validate_config(updated)

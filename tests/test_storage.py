@@ -42,7 +42,7 @@ class StorageTests(unittest.TestCase):
         for _ in range(2):
             store = Store(self.path)
             try:
-                self.assertEqual(store.db.execute('PRAGMA user_version').fetchone()[0], 3)
+                self.assertEqual(store.db.execute('PRAGMA user_version').fetchone()[0], 4)
                 item = store.list_notices()['items'][0]
                 self.assertEqual((item['first_seen'],item['last_seen'],item['content_hash']), ('first','last','same'))
                 self.assertEqual(item['sources'], [])
@@ -60,7 +60,7 @@ class StorageTests(unittest.TestCase):
         finally: store.close()
 
     def test_future_version_leaves_bytes_unchanged(self):
-        db = sqlite3.connect(self.path); db.execute('PRAGMA user_version=4'); db.close()
+        db = sqlite3.connect(self.path); db.execute('PRAGMA user_version=5'); db.close()
         before = self.path.read_bytes()
         with self.assertRaises(ValueError): Store(self.path)
         self.assertEqual(self.path.read_bytes(), before)
@@ -73,6 +73,7 @@ class StorageTests(unittest.TestCase):
         store.db.execute('DROP TABLE list_checkpoints')
         store.db.execute('ALTER TABLE notices DROP COLUMN read_at')
         store.db.execute('ALTER TABLE notices DROP COLUMN favorite')
+        store.db.execute('ALTER TABLE notices DROP COLUMN cleaned_at')
         store.db.execute('PRAGMA user_version=1')
         store.db.commit()
         store.close()
@@ -153,6 +154,57 @@ class StorageTests(unittest.TestCase):
         self.assertEqual(len(merged), 1)
         self.assertTrue(merged[0]['favorite'])
         self.assertTrue(merged[0]['read'])
+
+    def test_cleanup_keeps_identity_and_recollection_stays_hidden(self):
+        store = Store(self.path)
+        try:
+            source = {'id': 'T', 'name': '学院'}
+            notice = self.notice()
+            candidate = Candidate(notice['url'], notice['title'], None, 'list', True)
+            store.discover_candidates(source, 's', [candidate], initialized=False)
+            self.assertEqual(store.remember(notice, False), 'baseline')
+            store.initialize('T')
+            store.set_notice_flags(notice['key'], read=True)
+            self.assertEqual(store.cleanup_read_notices(), 1)
+            self.assertEqual(store.list_notices()['total'], 0)
+            # 再次采集同一页面：保留的指纹让它仍是已读的“已见”，不会当成新通知。
+            store.discover_candidates(source, 's', [candidate], initialized=True)
+            self.assertEqual(store.remember(notice, True), 'seen')
+            self.assertEqual(store.list_notices()['total'], 0)
+            self.assertEqual(store.cleanup_read_notices(), 0)
+            # 正文真正变化时重新出现。
+            changed = {**notice, 'content_hash': 'changed', 'summary': '更新后的报名要求。' * 20}
+            self.assertEqual(store.remember(changed, True), 'updated')
+            self.assertEqual(store.list_notices()['total'], 1)
+        finally:
+            store.close()
+
+    def test_flag_update_covers_merged_copies(self):
+        store = Store(self.path)
+        try:
+            a = self.notice()
+            b = self.notice('https://b.example/info/1/2.htm')
+            for sid, item in (('A', a), ('B', b)):
+                store.discover_candidates({'id': sid, 'name': sid}, sid,
+                    [Candidate(item['url'], item['title'], None, 'list', True)], initialized=False)
+                store.remember(item, False)
+            store.db.commit()
+            merged = store.list_notices()['items']
+            self.assertEqual(len(merged), 1)
+            representative = merged[0]['key']
+            other = b['key'] if representative == a['key'] else a['key']
+            store.set_notice_flags(other, favorite=True, read=True)
+            self.assertTrue(store.list_notices()['items'][0]['favorite'])
+            store.set_notice_flags(representative, favorite=False, read=False)
+            item = store.list_notices()['items'][0]
+            self.assertFalse(item['favorite'])
+            self.assertFalse(item['read'])
+            rows = {row['key']: (row['favorite'], row['read_at'])
+                    for row in store.db.execute('SELECT key,favorite,read_at FROM notices')}
+            self.assertEqual(rows[a['key']], (0, None))
+            self.assertEqual(rows[b['key']], (0, None))
+        finally:
+            store.close()
 
     def test_recent_merge_search_and_latest_state_cover_alternative_urls(self):
         store = Store(self.path)

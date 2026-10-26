@@ -47,6 +47,31 @@ class GuardTests(unittest.TestCase):
                 self.assertNotIn('private', str(transport._navigation_issue))
         self.assertEqual(transport.blocked_methods, 1)
 
+    def test_http_detail_permission_only_applies_to_opted_in_fetches(self):
+        transport = BrowserTransport.__new__(BrowserTransport)
+        transport.hosts = {'eme.xidian.edu.cn'}
+        transport.blocked_methods = 0
+        transport._navigation_issue = None
+        route = self.Route(self.Request('http://eme.xidian.edu.cn/info/1/1.htm'))
+        transport._guard(route)
+        self.assertEqual(route.result, 'abort')
+        self.assertEqual(transport._navigation_issue.code, 'unsafe_redirect')
+
+        transport._navigation_issue = None
+        transport._allow_http = True
+        route = self.Route(self.Request('http://eme.xidian.edu.cn/info/1/1.htm'))
+        transport._guard(route)
+        self.assertEqual(route.result, 'continue')
+
+        # 规则文件 (raw) 的许可在 fetch 中始终为 False，HTTP 仍被拒绝。
+        transport._navigation_issue = None
+        transport._allow_http = False
+        transport._raw_target = 'http://eme.xidian.edu.cn/robots.txt'
+        route = self.Route(self.Request('http://eme.xidian.edu.cn/robots.txt'))
+        transport._guard(route)
+        self.assertEqual(route.result, 'abort')
+        self.assertEqual(transport._navigation_issue.code, 'unsafe_redirect')
+
     def test_raw_rules_cannot_redirect_to_another_path_or_origin(self):
         transport = BrowserTransport.__new__(BrowserTransport)
         transport.hosts = {'eme.xidian.edu.cn', 'other.xidian.edu.cn'}

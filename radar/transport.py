@@ -283,7 +283,8 @@ class BrowserTransport:
         try:
             if main_document and _authentication_url(request.url):
                 raise AccessIssue('浏览器转向本人登录入口；请先手动登录', code='login_required')
-            if main_document and urlsplit(request.url).scheme != 'https':
+            if (main_document and urlsplit(request.url).scheme != 'https'
+                    and not getattr(self, '_allow_http', False)):
                 raise FetchError('拒绝 HTTPS 降级跳转', code='unsafe_redirect')
             allowed_url(request.url, self.hosts)
             if main_document and getattr(self, '_raw_target', None):
@@ -307,6 +308,7 @@ class BrowserTransport:
             raise FetchError('专用浏览器只允许已确认的 HTTPS 入口', code='unsafe_redirect')
         self.hosts = set(hosts)
         self._navigation_issue = None
+        self._allow_http = bool(allow_http_detail and not raw)
         self._raw_target = target if raw and urlsplit(target).path == '/robots.txt' else None
         self.throttle.wait(target)
         self.calls += 1
@@ -420,7 +422,7 @@ class AutoTransport:
     def fetch(self, url, hosts, *, raw=False, allow_http_detail=False):
         allowed_url(url, hosts)
         if self.mode == 'browser':
-            return self._chrome().fetch(url, hosts, raw=raw)
+            return self._chrome().fetch(url, hosts, raw=raw, allow_http_detail=allow_http_detail)
         try:
             return self.http.fetch(url, hosts, raw=raw, allow_http_detail=allow_http_detail)
         except (FetchError, AccessIssue) as error:
@@ -435,7 +437,7 @@ class AutoTransport:
             if not eligible:
                 raise
             try:
-                return self._chrome().fetch(url, hosts, raw=raw)
+                return self._chrome().fetch(url, hosts, raw=raw, allow_http_detail=allow_http_detail)
             except (FetchError, AccessIssue) as browser_error:
                 error_type = AccessIssue if isinstance(browser_error, AccessIssue) else FetchError
                 raise error_type(

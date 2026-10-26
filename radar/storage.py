@@ -115,13 +115,13 @@ class Store:
         self.db.execute('PRAGMA busy_timeout=2000')
         try:
             version = self.db.execute('PRAGMA user_version').fetchone()[0]
-            if version > 3:
+            if version > 4:
                 raise ValueError('通知数据库版本高于本程序支持的版本，未修改文件')
-            if version < 3:
+            if version < 4:
                 # Every schema step and version stamp commit together, including legacy v0.
                 self.db.execute('BEGIN IMMEDIATE')
                 version = self.db.execute('PRAGMA user_version').fetchone()[0]
-                if version > 3:
+                if version > 4:
                     raise ValueError('通知数据库版本高于本程序支持的版本，未修改文件')
                 if version == 0:
                     self.db.execute('''CREATE TABLE IF NOT EXISTS notices (
@@ -156,6 +156,11 @@ class Store:
                     self.db.execute('ALTER TABLE notices ADD COLUMN read_at TEXT')
                     self.db.execute('ALTER TABLE notices ADD COLUMN favorite INTEGER NOT NULL DEFAULT 0')
                     self.db.execute('PRAGMA user_version = 3')
+                if version < 4:
+                    # Cleaned notices keep identity, fingerprint and read state so a
+                    # later collection cannot present them as new again.
+                    self.db.execute('ALTER TABLE notices ADD COLUMN cleaned_at TEXT')
+                    self.db.execute('PRAGMA user_version = 4')
                 self.db.commit()
         except BaseException:
             self.db.rollback()
@@ -175,7 +180,9 @@ class Store:
             ON CONFLICT(key) DO UPDATE SET title=excluded.title, url=excluded.url,
             published_date=excluded.published_date, summary=excluded.summary,
             content_hash=excluded.content_hash, last_seen=excluded.last_seen,
-            detail_parsed=COALESCE(excluded.detail_parsed,notices.detail_parsed)''',
+            detail_parsed=COALESCE(excluded.detail_parsed,notices.detail_parsed),
+            cleaned_at=CASE WHEN notices.content_hash<>excluded.content_hash
+                THEN NULL ELSE notices.cleaned_at END''',
             (notice['key'], notice['title'], notice['url'], notice['published_date'],
              notice['summary'], notice['content_hash'], now, now,
              int(notice['detail_parsed']) if 'detail_parsed' in notice else None))
@@ -239,7 +246,8 @@ class Store:
                      favorite_only: bool = False) -> dict:
         rows = self.db.execute('''SELECT n.*,c.source_id,c.source_name FROM notices n
             LEFT JOIN notice_candidates c ON COALESCE(c.stored_notice_key,c.notice_key)=n.key
-            WHERE (? IS NULL OR n.published_date IS NULL OR n.published_date>=?)''', (cutoff, cutoff))
+            WHERE (n.cleaned_at IS NULL OR n.favorite=1)
+              AND (? IS NULL OR n.published_date IS NULL OR n.published_date>=?)''', (cutoff, cutoff))
         notices = {}
         for row in rows:
             key = row['key']
@@ -301,12 +309,24 @@ class Store:
         return {row['key']: {'favorite': bool(row['favorite']), 'read': row['read_at'] is not None}
                 for row in rows}
 
+    def _merge_group(self, key):
+        """Keys merged into one card by merge_notices (substantial identical bodies)."""
+        row = self.db.execute('SELECT content_hash, summary FROM notices WHERE key=?', (key,)).fetchone()
+        if row is None or len(row['summary']) <= 60:
+            return [key]
+        return [item['key'] for item in self.db.execute(
+            'SELECT key FROM notices WHERE content_hash=? AND length(summary)>60', (row['content_hash'],))]
+
     def set_notice_flags(self, key, *, favorite=None, read=None):
         """Set favorite and/or read on a notice; returns the resulting flags."""
+        keys = self._merge_group(key)
+        placeholders = ','.join('?' for _ in keys)
         if favorite is not None:
-            self.db.execute('UPDATE notices SET favorite=? WHERE key=?', (1 if favorite else 0, key))
+            self.db.execute(f'UPDATE notices SET favorite=? WHERE key IN ({placeholders})',
+                            (1 if favorite else 0, *keys))
         if read is not None:
-            self.db.execute('UPDATE notices SET read_at=? WHERE key=?', (utc_now() if read else None, key))
+            self.db.execute(f'UPDATE notices SET read_at=? WHERE key IN ({placeholders})',
+                            (utc_now() if read else None, *keys))
         self.db.commit()
         row = self.db.execute('SELECT favorite, read_at FROM notices WHERE key=?', (key,)).fetchone()
         if row is None:
@@ -314,8 +334,9 @@ class Store:
         return {'favorite': bool(row['favorite']), 'read': row['read_at'] is not None}
 
     def cleanup_read_notices(self):
-        """Delete read, non-favorited notices; returns the number removed."""
-        cursor = self.db.execute('DELETE FROM notices WHERE read_at IS NOT NULL AND favorite = 0')
+        """Hide read, non-favorited notices; returns the number cleaned."""
+        cursor = self.db.execute('''UPDATE notices SET cleaned_at=?
+            WHERE read_at IS NOT NULL AND favorite=0 AND cleaned_at IS NULL''', (utc_now(),))
         self.db.commit()
         return cursor.rowcount
 

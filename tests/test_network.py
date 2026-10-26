@@ -103,6 +103,19 @@ class NetworkTests(unittest.TestCase):
         self.assertEqual(caught.exception.code, expected)
         return str(caught.exception)
 
+    def test_browser_mode_receives_http_detail_permission(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            transport = AutoTransport(tmp, mode='browser')
+            calls = []
+            class Recorder:
+                def fetch(self, url, hosts, **kwargs):
+                    calls.append(kwargs)
+                    return Page(url, '', 200, 'text/html')
+            transport.browser = Recorder()
+            transport.fetch('https://a.example/info/1/1.htm', {'a.example'}, allow_http_detail=True)
+            self.assertTrue(calls[0]['allow_http_detail'])
+            self.assertFalse(calls[0]['raw'])
+
     def test_direct_default_and_explicit_broken_system_proxy(self):
         with local_server() as (_, base):
             proxy = 'http://127.0.0.1:1'
